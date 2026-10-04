@@ -1,0 +1,13 @@
+{
+  "appId": "com.ezzdigi.sahmnegar.personal",
+  "appName": "سهام یکم شخصی",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "CapacitorHttp": {
+      "enabled": true
+    }
+  }
+}
