@@ -2379,6 +2379,28 @@ input:focus,select:focus,textarea:focus{outline:0;border-color:var(--green)!impo
 .screener-list>*:nth-child(4),.rp-grid>*:nth-child(4){animation-delay:.18s}.screener-list>*:nth-child(n+5){animation-delay:.24s}
 .rp-stat.g{animation:appIn .5s both,appGlow 3.5s ease-in-out 1s infinite}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+/* ===== اعلان‌ها، آلارم و کادر بهترین انتخاب ===== */
+.ez-toast-wrap{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:99999;display:flex;flex-direction:column;gap:8px;width:min(92vw,420px);pointer-events:none}
+.ez-toast{pointer-events:auto;background:#0f1a14;border:1px solid var(--green);border-radius:12px;padding:10px 12px;box-shadow:0 8px 24px rgba(0,0,0,.5);animation:ezIn .3s ease both;cursor:pointer}
+.ez-toast b{display:block;font-size:13px;color:var(--green);margin-bottom:2px}
+.ez-toast span{font-size:11.5px;color:var(--text);line-height:1.8}
+@keyframes ezIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
+.ez-best{position:relative;border-radius:16px;padding:16px 14px 14px;margin:16px 0 12px;cursor:pointer;background:linear-gradient(135deg,rgba(61,220,151,.16),rgba(10,10,10,.96));border:2px solid #3DDC97;animation:ezPulse 2.2s ease-in-out infinite}
+.ez-best.ez-best-none{border-color:var(--amber);animation:none;cursor:default;background:var(--panel)}
+.ez-best-tag{position:absolute;top:-12px;right:14px;background:#3DDC97;color:#04120b;font-weight:800;font-size:11.5px;padding:3px 12px;border-radius:999px}
+@keyframes ezPulse{0%,100%{box-shadow:0 0 0 0 rgba(61,220,151,.45),0 0 16px rgba(61,220,151,.22)}50%{box-shadow:0 0 0 7px rgba(61,220,151,0),0 0 30px rgba(61,220,151,.45)}}
+.rant-row{flex-wrap:wrap;cursor:pointer}
+.rant-row .rant-detail{flex-basis:100%;width:100%;cursor:default}
+.al-form{display:grid;gap:8px;margin:10px 0}
+.al-item{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px;background:var(--panel-raised)}
+.al-item.done{border-color:var(--green);background:rgba(61,220,151,.08)}
+.al-item .al-sym{font-weight:800;font-size:14px}
+.al-item .al-sub{font-size:10.5px;color:var(--dim);line-height:1.8}
+.al-item button{background:transparent;border:1px solid var(--line);color:var(--text);border-radius:8px;padding:4px 8px;font-size:11px;cursor:pointer;font-family:inherit}
+.al-set{display:grid;gap:10px;font-size:12.5px}
+.al-row{display:flex;align-items:center;gap:8px}
+.al-row select{background:var(--panel-raised);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:4px 8px;font-family:inherit}
 </style>
 </head>
 <body>
@@ -2543,6 +2565,7 @@ input:focus,select:focus,textarea:focus{outline:0;border-color:var(--green)!impo
 
     <div class="main-nav-section">
       <div class="main-nav-section-title">ابزارها</div>
+      <div class="main-nav-tab" data-view="stockAlarm">⏰ سهام آلارم</div>
       <div class="main-nav-tab" data-view="wallet">👛 کیف پول</div>
       <div class="main-nav-tab" data-view="settings">⚙️ تنظیمات</div>
     </div>
@@ -2704,16 +2727,7 @@ input:focus,select:focus,textarea:focus{outline:0;border-color:var(--green)!impo
         <span><i class="legend-dot" style="background:#B68CF2"></i>پولبک ۶۱.۸٪</span>
         <span><i class="legend-dot" style="background:#3DDC97;opacity:0.5"></i>محدوده خرید</span>
         <span><i class="legend-dot" style="background:#FF5C72;opacity:0.5"></i>محدوده فروش</span>
-        <span><i class="legend-dot" style="background:#FFB020"></i>تریگر شکست</span>
-      </div>
-      <div class="breakout-trigger-card" id="breakoutTriggerCard">
-        <div class="btc-icon">⚡</div>
-        <div class="btc-body">
-          <div class="btc-title">تریگر شکست</div>
-          <div class="btc-text" id="breakoutTriggerText">در حال محاسبه...</div>
-        </div>
-        <div class="btc-badge" id="breakoutTriggerBadge">—</div>
-      </div>
+              </div>
       <div class="chart-svg-wrap">
         <svg class="chart-svg" id="chartSvg" viewBox="0 0 720 340" preserveAspectRatio="xMidYMid meet"></svg>
       </div>
@@ -3079,7 +3093,7 @@ input:focus,select:focus,textarea:focus{outline:0;border-color:var(--green)!impo
         <button class="screener-refresh-btn" id="rantScreenerRefreshBtn">⟲ به‌روزرسانی</button>
       </div>
       <div class="screener-desc">
-        نمادهایی که به‌طور ساختاری از یک مزیت ساختاری بهره می‌برند — نرخ خوراک/انرژی ارزان دولتی، نرخ ارز ترجیحی یا نیمایی برای صادرات، انحصار یا شبه‌انحصار در بازار داخلی، یا قیمت‌گذاری دستوری محصول — که معمولاً حاشیه سود آن‌ها را در برابر نوسان هزینه محافظت می‌کند. سیگنال خرید/فروش بر اساس همان موتور تحلیل (RSI، روند، ساختار اسمارت مانی، Pivot) محاسبه می‌شود.
+        نمادهایی که به‌طور ساختاری از یک مزیت ساختاری بهره می‌برند — نرخ خوراک/انرژی ارزان دولتی، نرخ ارز ترجیحی یا نیمایی برای صادرات، انحصار یا شبه‌انحصار در بازار داخلی، یا قیمت‌گذاری دستوری محصول — که معمولاً حاشیه سود آن‌ها را در برابر نوسان هزینه محافظت می‌کند. سیگنال خرید/فروش بر اساس همان موتور تحلیل (RSI، روند، ساختار اسمارت مانی، Pivot، MACD و ATR) محاسبه می‌شود. روی هر سهم بزنید تا تحلیل کامل (شامل MACD و ATR) و سطوح ورود/حد ضرر/حد سود باز شود.
       </div>
       <div class="tf-tabs screener-tf-tabs" id="rantScreenerTfTabs">
         <div class="tf-tab" data-tf="15m">۱۵ دقیقه</div>
@@ -3103,6 +3117,8 @@ input:focus,select:focus,textarea:focus{outline:0;border-color:var(--green)!impo
     </div>
 
   <!-- ══ رد پول بورس ══ -->
+  <div id="rpBestBox"></div>
+
   <div id="radPoolView">
 
     <!-- stats row -->
@@ -3509,7 +3525,7 @@ input:focus,select:focus,textarea:focus{outline:0;border-color:var(--green)!impo
       <div class="rp-panel-hd">
         <div class="opt-hero"><span class="opt-live"></span><div class="opt-hero-title">اختیار معامله</div><div class="opt-hero-sub">OPTIONS · TERMINAL</div></div>
       </div>
-      <div class="screener-desc">۱۰ اختیار خرید و ۱۰ اختیار فروش پرحجم بازار. روی «تحلیل» بزنید تا سیگنال، ریسک، ارزش ذاتی/زمانی و یونانی‌ها نمایش داده شود.</div>
+      <div class="screener-desc">۱۰ اختیار خرید و ۱۰ اختیار فروش پرحجم بازار (یا هر نماد را جستجو کنید). روی «تحلیل» بزنید تا سیگنال، ریسک، ارزش ذاتی/زمانی و یونانی‌ها نمایش داده شود.</div>
       <div class="search-row" style="margin-bottom:10px;display:none;">
         <input type="text" class="coin-input" id="optSymbolInput" placeholder="نماد (یک یا چند نماد با فاصله): ضخود7020 طخود7020" />
         <button class="analyze-btn" id="optAddBtn">افزودن</button>
@@ -3524,6 +3540,9 @@ input:focus,select:focus,textarea:focus{outline:0;border-color:var(--green)!impo
         <button class="rp-fbtn" data-optf="in">ورود پول زیاد ⬆</button>
         <button class="rp-fbtn" data-optf="out">خروج پول زیاد ⬇</button>
       </div>
+      <div class="search-row" style="margin-bottom:10px;">
+        <input type="text" class="coin-input" id="optSearchInput" placeholder="🔍 جستجوی اختیار معامله (مثلا ضخود، طخود، خودرو یا قیمت اعمال)" autocomplete="off" />
+      </div>
       <div id="optTop"></div>
       <div class="screener-list" id="optList" style="display:none">
         <div class="screener-status">هنوز نمادی اضافه نکرده‌اید — یک نماد اختیار معامله وارد کنید و «افزودن» را بزنید.</div>
@@ -3533,6 +3552,37 @@ input:focus,select:focus,textarea:focus{outline:0;border-color:var(--green)!impo
     </div>
 
   </div><!-- /#optionsView -->
+
+  <div id="stockAlarmView" style="display:none;">
+    <div class="rp-panel">
+      <div class="rp-panel-hd">
+        <div class="rp-panel-title">⏰ سهام آلارم</div>
+        <span id="alarmPerm" style="font-size:11px;color:var(--muted)"></span>
+      </div>
+      <div class="screener-desc">نماد سهم و قیمت هدف را ثبت کنید. وقتی قیمت آخرین معامله به آن عدد برسد نوتیفیکیشن می‌آید. قیمت‌ها هر ۱۰ ثانیه بررسی می‌شود و به‌محض رسیدن به عدد ثبت‌شده اعلان می‌آید (تا وقتی برنامه باز است).</div>
+      <div class="al-form">
+        <input type="text" class="coin-input" id="alarmSym" placeholder="نام نماد (مثلا فولاد)" autocomplete="off" />
+        <input type="text" class="coin-input" id="alarmTarget" inputmode="decimal" placeholder="قیمت هدف (ریال، همان واحد قیمت در برنامه)" autocomplete="off" />
+        <button class="analyze-btn" id="alarmAddBtn">➕ ثبت آلارم</button>
+      </div>
+      <div class="screener-status" id="alarmMsg" style="display:none"></div>
+      <div id="alarmList"></div>
+    </div>
+    <div class="rp-panel">
+      <div class="rp-panel-hd"><div class="rp-panel-title">🔔 تنظیمات اعلان</div></div>
+      <div class="al-set">
+        <label class="al-row"><input type="checkbox" id="buyNotifToggle"> اعلان وقتی موقعیت خرید پیدا شد</label>
+        <label class="al-row">بررسی خودکار رد پول هر
+          <select id="scanIntervalSel"><option value="0">خاموش</option><option value="5">۵ دقیقه</option><option value="10">۱۰ دقیقه</option><option value="30">۳۰ دقیقه</option></select>
+        </label>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="screener-refresh-btn" id="notifPermBtn">🔔 فعال‌سازی اعلان</button>
+          <button class="screener-refresh-btn" id="notifTestBtn">🧪 تست اعلان</button>
+        </div>
+        <div class="rp-info" style="margin-top:8px">ℹ️ اعلان فقط تا وقتی برنامه/تب باز است کار می‌کند؛ برای اعلان وقتی برنامه بسته است به سرور Push نیاز است.</div>
+      </div>
+    </div>
+  </div><!-- /#stockAlarmView -->
 
   <div id="rightsView" style="display:none;">
 
@@ -4308,14 +4358,38 @@ function jumpToAnalyzer(symbolValue) {
   if (optionsView) optionsView.style.display = 'none';
   if (rightsView) rightsView.style.display = 'none';
   if (tableauView) tableauView.style.display = 'none';
+  if (typeof stockAlarmView !== 'undefined' && stockAlarmView) stockAlarmView.style.display = 'none';
   coinInput.value = symbolValue;
   analyze(symbolValue);
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+function rantPlan(d) {
+  const price = d.price, atr = calcATR(d.candles);
+  let r = atr ? 1.5 * atr : price * 0.05;
+  r = Math.min(Math.max(r, price * 0.02), price * 0.15);
+  return { entry: price, stop: price - r, tps: [1.5, 3].map(k => price + r * k), atr };
+}
+function rantDetailHtml(item) {
+  const d = item.d, f = item.fmtAny;
+  const votes = item.votes.slice();
+  if (!votes.some(v => v.label === 'MACD')) votes.push({ label: 'MACD', verdict: 'neutral', note: 'تعداد کندل برای محاسبه MACD کافی نیست.' });
+  if (!votes.some(v => v.label.indexOf('ATR') === 0)) votes.push({ label: 'ATR (نوسان)', verdict: 'neutral', note: 'تعداد کندل برای محاسبه ATR کافی نیست.' });
+  const rows = votes.map(v => `<div class="signal-row"><div class="signal-row-label">${escapeHtml(v.label)}<br><span style="font-size:10.5px;color:var(--dim)">${escapeHtml(v.note)}</span></div><div class="signal-row-badge ${v.verdict}">${v.verdict === 'buy' ? 'خرید' : v.verdict === 'sell' ? 'فروش' : 'خنثی'}</div></div>`).join('');
+  let plan = '';
+  if (/buy/.test(item.finalClass)) {
+    const p = rantPlan(d), pc = v => { const x = (v / p.entry - 1) * 100; return (x >= 0 ? '+' : '−') + Math.abs(x).toFixed(1).replace(/\d/g, k => '۰۱۲۳۴۵۶۷۸۹'[k]) + '٪'; };
+    plan = `<div class="rp-suggest-targets" style="margin-top:8px"><span class="rp-target t-buy">ورود: ${escapeHtml(f(p.entry))}</span><span class="rp-target t-sell">SL: ${escapeHtml(f(p.stop))} (${pc(p.stop)})</span><span class="rp-target t-tp">TP1: ${escapeHtml(f(p.tps[0]))} (${pc(p.tps[0])})</span><span class="rp-target t-tp">TP2: ${escapeHtml(f(p.tps[1]))} (${pc(p.tps[1])})</span></div><div style="font-size:10px;color:var(--dim);margin-top:4px">حد ضرر و حد سود بر پایه ۱٫۵×ATR محاسبه شده است.</div>`;
+  } else {
+    plan = '<div style="font-size:11px;color:var(--dim);margin-top:8px">سیگنال خرید فعال نیست؛ سطح ورود نمایش داده نمی‌شود.</div>';
+  }
+  return `<div style="margin-top:8px">${rows}${plan}<button class="screener-refresh-btn rant-open-btn" style="margin-top:10px">📊 تحلیل کامل با چارت</button></div>`;
+}
+
 async function loadScreener(symbols, isBourse, tf, statusElId, listElId) {
   const statusEl = document.getElementById(statusElId);
   const listEl = document.getElementById(listElId);
+  const isRant = listElId === 'rantScreenerList';
   statusEl.style.display = 'block';
   statusEl.textContent = 'در حال دریافت پیشنهادها…';
   listEl.innerHTML = '';
@@ -4323,8 +4397,8 @@ async function loadScreener(symbols, isBourse, tf, statusElId, listElId) {
   const results = await Promise.allSettled(symbols.map(async sym => {
     const d = await buildAnalysisData(sym, tf, isBourse, false);
     const fmtAny = (n) => isBourse ? fmtRial(n) : fmtPrice(n);
-    const { finalLabel, finalClass } = computeSignalVotes(d, fmtAny);
-    return { symbol: sym, d, finalLabel, finalClass, fmtAny };
+    const { votes, finalLabel, finalClass } = computeSignalVotes(d, fmtAny);
+    return { symbol: sym, d, votes, finalLabel, finalClass, fmtAny };
   }));
 
   const succeeded = results
@@ -4341,21 +4415,37 @@ async function loadScreener(symbols, isBourse, tf, statusElId, listElId) {
   listEl.innerHTML = succeeded.map(item => {
     const isUp = item.d.changePct >= 0;
     const displayName = item.d.isBourse ? (item.d.bourseName || item.symbol) : (persianNames[item.symbol] || item.symbol);
-    return `
-      <div class="screener-row" data-symbol="${escapeHtml(item.symbol)}">
+    const main = `
         <div class="screener-row-main">
           <div class="screener-row-symbol">${escapeHtml(displayName)}</div>
           <div class="screener-row-price">${escapeHtml(item.fmtAny(item.d.price))}</div>
           <div class="screener-row-change ${isUp ? 'up' : 'down'}">${(isUp ? '▲ +' : '▼ ') + Math.abs(item.d.changePct).toFixed(2)}%</div>
         </div>
-        <div class="screener-row-badge ${item.finalClass}">${escapeHtml(item.finalLabel)}</div>
-      </div>
-    `;
+        <div class="screener-row-badge ${item.finalClass}">${escapeHtml(item.finalLabel)}${isRant ? ' ▾' : ''}</div>`;
+    if (!isRant) return `<div class="screener-row" data-symbol="${escapeHtml(item.symbol)}">${main}</div>`;
+    return `<div class="screener-row rant-row" data-symbol="${escapeHtml(item.symbol)}">${main}<div class="rant-detail" style="display:none">${rantDetailHtml(item)}</div></div>`;
   }).join('');
 
   listEl.querySelectorAll('.screener-row').forEach(rowEl => {
-    rowEl.addEventListener('click', () => jumpToAnalyzer(rowEl.dataset.symbol));
+    rowEl.addEventListener('click', ev => {
+      if (isRant) {
+        if (ev.target.closest('.rant-open-btn')) { jumpToAnalyzer(rowEl.dataset.symbol); return; }
+        if (ev.target.closest('.rant-detail')) return;
+        const det = rowEl.querySelector('.rant-detail');
+        if (det) det.style.display = det.style.display === 'none' ? 'block' : 'none';
+        return;
+      }
+      jumpToAnalyzer(rowEl.dataset.symbol);
+    });
   });
+
+  try {
+    const buys = succeeded.filter(i => /buy/.test(i.finalClass)).map(i => ({
+      sym: i.symbol, name: i.d.isBourse ? (i.d.bourseName || i.symbol) : (persianNames[i.symbol] || i.symbol),
+      label: i.finalLabel, price: i.d.isBourse ? i.d.price : 0
+    }));
+    ezBuyAlerts(buys, isRant ? 'سهام پرپتانسیل' : (isBourse ? 'پیشنهاد بورس' : 'ارز دیجیتال'));
+  } catch (e) { /* اعلان اختیاری است */ }
 
   const failedCount = symbols.length - succeeded.length;
   if (failedCount > 0) {
@@ -4734,15 +4824,29 @@ async function fetchBourseData(symbolFa, tf) {
     try {
       const raw = await candleRes.json();
       const points = Array.isArray(raw) ? raw : (raw.candles || raw.data || raw.result || []);
-      candles = points.map(p => ({
-        t: new Date(p.date || p.time || p.t || Date.now()).getTime() || Date.now(),
-        o: Number(p.open ?? p.o), h: Number(p.high ?? p.h),
-        l: Number(p.low ?? p.l), c: Number(p.close ?? p.c)
-      })).filter(c => c.o > 0 && c.h > 0 && c.l > 0 && c.c > 0);
+      candles = points.map(p => {
+        const tt = p.date || p.time || p.t || p.dEven || p.datetime;
+        let t = NaN;
+        if (tt != null) {
+          const ts = String(tt);
+          if (/^\d{8}$/.test(ts)) t = new Date(+ts.slice(0,4), +ts.slice(4,6) - 1, +ts.slice(6,8)).getTime();
+          else if (/^\d{10}$/.test(ts)) t = +ts * 1000;
+          else if (/^\d{13}$/.test(ts)) t = +ts;
+          else t = new Date(tt).getTime();
+        }
+        return {
+          t: isNaN(t) ? Date.now() : t,
+          o: Number(p.open ?? p.o ?? p.pf ?? p.first), h: Number(p.high ?? p.h ?? p.pmax ?? p.max),
+          l: Number(p.low ?? p.l ?? p.pmin ?? p.min), c: Number(p.close ?? p.c ?? p.pc ?? p.pl ?? p.last)
+        };
+      }).filter(c => c.o > 0 && c.h > 0 && c.l > 0 && c.c > 0);
     } catch (e) { /* fall through to synthetic */ }
   }
+  const realCandles = candles.slice(-CANDLE_COUNT);
+  let synthetic = false;
   if (candles.length < 5) {
     candles = buildSyntheticCandles(price, symbolFa);
+    synthetic = true;
   } else {
     // کندل‌های بورس فقط با دقت روزانه در دسترس‌اند؛ صرف نظر از تب تایم‌فریم انتخاب‌شده
     // (که برای فلز/بورس بازه‌های موجود را حفظ می‌کند) آخرین ۲۵ کندل روزانه نمایش داده می‌شود
@@ -4762,7 +4866,7 @@ async function fetchBourseData(symbolFa, tf) {
     low: (pmin > 0) ? pmin : Math.min(...lows),
     volume: Number(s.tvol ?? 0),
     hasVolume: !!s.tvol,
-    candles,
+    candles, realCandles, synthetic,
     fullName: s.l30 || bourseChipNames[symbolFa] || symbolFa,
     bidPrice: Number(s.pd1 ?? s.pmd1 ?? 0) || null,
     askPrice: Number(s.po1 ?? s.pmo1 ?? 0) || null
@@ -4962,14 +5066,14 @@ function findCandleIndexByPrice(candles, price, useHigh) {
   return bestIdx;
 }
 
-function drawCandleChart(candles, support, resistance, orderBlock, liquidity, isBourse, pullback, breakout) {
+function drawCandleChart(candles, support, resistance, orderBlock, liquidity, isBourse, pullback, breakout, opts) {
   const fmtAxis = isBourse ? fmtRial : fmtPrice;
-  const svg = document.getElementById('chartSvg');
+  const svg = (opts && opts.svgEl) || document.getElementById('chartSvg');
   const W = 720, H = 340, padR = 72, R = W - padR;
   const padTop = 16, padBottom = 24, padX = 12;
   const n = candles.length;
 
-  const plan = (typeof currentTradePlan !== 'undefined') ? currentTradePlan : null;
+  const plan = (opts && 'plan' in opts) ? opts.plan : (typeof currentTradePlan !== 'undefined' ? currentTradePlan : null);
   const allVals = candles.flatMap(c => [c.h, c.l]).concat([support, resistance]);
   if (plan) allVals.push(plan.entry, plan.stop, plan.tps[0], plan.tps[1], plan.tps[2]);
   const min = Math.min(...allVals);
@@ -5120,7 +5224,7 @@ function drawCandleChart(candles, support, resistance, orderBlock, liquidity, is
     svgContent += `<polygon points="${R},${t.y.toFixed(1)} ${R+5},${(t.y-7).toFixed(1)} ${R+5},${(t.y+7).toFixed(1)}" fill="${t.c}"/><rect x="${R+5}" y="${(t.y-7).toFixed(1)}" width="${padR-7}" height="14" rx="3" fill="${t.c}"/>`;
     svgContent += `<text x="${(R+5+(padR-7)/2).toFixed(1)}" y="${(t.y+3.5).toFixed(1)}" text-anchor="middle" fill="${t.fg}" font-size="9" font-weight="800" font-family="Vazirmatn">${t.t}</text>`;
   });
-  window.__chartGeom = { candles, padX, slotW, W, n, fmt: fmtAxis };
+  svg.__geom = { candles, padX, slotW, W, n, fmt: fmtAxis };
   svgContent += '<g id="chartCross" pointer-events="none"></g>';
   svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
   svg.innerHTML = svgContent;
@@ -5149,19 +5253,20 @@ function calcMACD(closes) {
   return { macd: m[n-1], signal: sig[n-1], hist: h[n-1], prevHist: h[n-2], short };
 }
 (function setupChartCrosshair(){
-  const svg = document.getElementById('chartSvg'); if (!svg) return;
-  const clear = () => { const cg = svg.querySelector('#chartCross'); if (cg) cg.innerHTML = ''; };
+  const clearAll = svg => { const cg = svg && svg.querySelector('#chartCross'); if (cg) cg.innerHTML = ''; };
   const show = e => {
-    const g = window.__chartGeom, cg = svg.querySelector('#chartCross'); if (!g || !cg) return;
+    const svg = e.target && e.target.closest ? e.target.closest('svg.chart-svg') : null; if (!svg) return;
+    const g = svg.__geom, cg = svg.querySelector('#chartCross'); if (!g || !cg) return;
     const r = svg.getBoundingClientRect(), x = (e.clientX - r.left) / r.width * g.W;
-    const i = Math.floor((x - g.padX) / g.slotW); if (i < 0 || i >= g.n) { clear(); return; }
+    const i = Math.floor((x - g.padX) / g.slotW); if (i < 0 || i >= g.n) { clearAll(svg); return; }
     const c = g.candles[i], cx = g.padX + i * g.slotW + g.slotW / 2, f = g.fmt, up = c.c >= c.o;
     const chg = ((c.c - c.o) / c.o * 100).toFixed(1).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
-    cg.innerHTML = `<line x1="${cx.toFixed(1)}" y1="0" x2="${cx.toFixed(1)}" y2="340" stroke="#E8EAF0" stroke-width="0.7" stroke-dasharray="3,3" opacity="0.6"/>
+    cg.innerHTML = `<line x1="${cx.toFixed(1)}" y1="0" x2="${cx.toFixed(1)}" y2="${g.H || 340}" stroke="#E8EAF0" stroke-width="0.7" stroke-dasharray="3,3" opacity="0.6"/>
       <rect x="6" y="4" width="${g.W-84}" height="19" rx="6" fill="#0B1210" stroke="${up?'#3DDC97':'#FF5C72'}" stroke-width="0.8" opacity="0.96"/>
       <text x="12" y="17" fill="#E8EAF0" font-size="9.5" font-family="Vazirmatn">باز ${f(c.o)} · بالا ${f(c.h)} · پایین ${f(c.l)} · بسته ${f(c.c)} · <tspan fill="${up?'#3DDC97':'#FF5C72'}" font-weight="800">${up?'▲':'▼'} ${chg}٪</tspan></text>`;
   };
-  svg.addEventListener('pointermove', show); svg.addEventListener('pointerdown', show); svg.addEventListener('pointerleave', clear);
+  document.addEventListener('pointermove', show); document.addEventListener('pointerdown', show);
+  document.addEventListener('pointerout', e => { const svg = e.target && e.target.closest ? e.target.closest('svg.chart-svg') : null; if (svg && !svg.contains(e.relatedTarget)) clearAll(svg); });
 })();
 
 function computeSignalVotes(d, fmtAny) {
@@ -5392,7 +5497,7 @@ async function buildAnalysisData(symbol, tf, isBourse, isMetal) {
   const orderBlock = findLastOrderBlock(candles);
   const liquidity = findLiquidityZones(candles);
   const pullback = findPullbackZones(candles, structure.type);
-  const breakout = findBreakoutTrigger(candles, support, resistance);
+  const breakout = null; // تریگر شکست حذف شد
 
   return {
     symbol, isMetal, isBourse, bourseName: data.fullName,
@@ -5401,7 +5506,8 @@ async function buildAnalysisData(symbol, tf, isBourse, isMetal) {
     volume: data.volume, hasVolume: data.hasVolume,
     bidPrice: data.bidPrice || null, askPrice: data.askPrice || null,
     rsi, ma, trendUp, volatility, support, resistance, pivots,
-    candles, structure, orderBlock, liquidity, pullback, breakout, tf, auxRanges
+    candles, structure, orderBlock, liquidity, pullback, breakout, tf, auxRanges,
+    realCandles: data.realCandles || null, synthetic: !!data.synthetic
   };
 }
 
@@ -5703,15 +5809,6 @@ function renderResult(d) {
   currentTradePlan = null;
   chartZoomIndex = 0;
   redrawChartWithZoom();
-
-  const btcText = document.getElementById('breakoutTriggerText');
-  const btcBadge = document.getElementById('breakoutTriggerBadge');
-  const btcCard = document.getElementById('breakoutTriggerCard');
-  if (btcText && btcBadge && btcCard && d.breakout) {
-    btcText.textContent = `${d.breakout.desc} سطح تریگر: ${fmtAny(d.breakout.level)}`;
-    btcBadge.textContent = d.breakout.label;
-    btcCard.className = 'breakout-trigger-card ' + (d.breakout.type || 'neutral');
-  }
 
   // Recommendation card
   const recCard = document.getElementById('recCard');
@@ -6105,6 +6202,7 @@ const indexAnalysisView = document.getElementById('indexAnalysisView');
 const optionsView = document.getElementById('optionsView');
 const rightsView = document.getElementById('rightsView');
 const tableauView = document.getElementById('tableauView');
+const stockAlarmView = document.getElementById('stockAlarmView');
 
 // بارگذاری زیرتب فعال «رد پول» (رد پول بورس / قدرت خرید و فروش حقیقی)
 function loadActiveSmartListTab() {
@@ -6150,9 +6248,14 @@ document.querySelectorAll('.main-nav-tab').forEach(tab => {
     optionsView.style.display = 'none';
     rightsView.style.display = 'none';
     tableauView.style.display = 'none';
+    if (stockAlarmView) stockAlarmView.style.display = 'none';
     if (tab.dataset.view === 'wallet') {
       walletView.style.display = 'block';
       refreshWallet();
+    } else if (tab.dataset.view === 'stockAlarm') {
+      stockAlarmView.style.display = 'block';
+      ezRenderAlarms();
+      ezCheckAlarms();
     } else if (tab.dataset.view === 'settings') {
       settingsView.style.display = 'block';
     } else if (tab.dataset.view === 'bourseScreener') {
@@ -6889,7 +6992,51 @@ function rpRenderTable(q) {
   }).join('');
 }
 
+function rpRenderBest() {
+  const box = document.getElementById('rpBestBox');
+  if (!box) return;
+  if (!rpData.length) { box.innerHTML = ''; return; }
+  // فقط داده زنده API؛ داده تقریبی/شبیه‌سازی‌شده هرگز به‌عنوان «بهترین» معرفی نمی‌شود
+  const cands = rpData.filter(d => (d.status === 'strong_buy' || d.status === 'buy') && d.price > 0 && d.fromAPI);
+  if (!cands.length) {
+    box.innerHTML = '<div class="ez-best ez-best-none"><div class="ez-best-tag" style="background:var(--amber)">🏆 بهترین موقعیت</div><div style="font-size:12px;color:var(--muted);padding-top:6px">فعلاً موقعیت خرید معتبر با داده زنده پیدا نشد. بعد از بروزرسانی دوباره بررسی می‌شود.</div></div>';
+    return;
+  }
+  const score = d => d.strength * 3 + Math.min(d.ratio, 4) * 2 + Math.min(d.volMult, 5) - Math.min(d.legalSellPower, 3) + (d.buyFlow > d.sellFlow ? 1.5 : 0) - (d.change >= 4.5 ? 2 : 0);
+  cands.sort((a, b) => score(b) - score(a));
+  const d = cands[0];
+  const entry = d.price, sl = Math.round(d.price * 0.96), tp1 = Math.round(d.price * 1.05), tp2 = Math.round(d.price * 1.10);
+  const f = v => v.toLocaleString('fa-IR');
+  const reasons = [];
+  if (d.ratio > 1) reasons.push(`نسبت سرانه ${d.ratio}`);
+  if (d.volMult > 2) reasons.push(`حجم ${d.volMult}× میانگین`);
+  if (d.buyFlow > d.sellFlow) reasons.push(`ورود پول خالص ${(d.buyFlow - d.sellFlow).toFixed(1)}B`);
+  if (d.legalSellPower < 0.85) reasons.push(`قدرت فروش حقوقی پایین (${d.legalSellPower})`);
+  if (d.change > 0) reasons.push(`تغییر مثبت ${d.change}٪`);
+  const strong = d.status === 'strong_buy';
+  box.innerHTML = `<div class="ez-best" onclick="jumpToAnalyzer('${d.sym}')">
+    <div class="ez-best-tag">🏆 بهترین سهم و موقعیت رد پول</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:6px">
+      <div><div style="font-size:20px;font-weight:900;color:var(--green)">${d.sym}</div><div style="font-size:11px;color:var(--muted)">${d.full || ''}</div></div>
+      <div style="text-align:left"><div style="font-size:11px;color:var(--muted)">موقعیت</div><span class="rp-badge bg-g" style="font-size:12px">${strong ? 'ورود قوی ⚡' : 'ورود 🟢'}</span></div>
+    </div>
+    <div style="font-size:11.5px;color:var(--muted);margin:8px 0;line-height:1.9">${reasons.join(' · ') || 'بر اساس جریان پول'}</div>
+    <div class="rp-suggest-targets">
+      <span class="rp-target t-buy">ورود: ${f(entry)}</span>
+      <span class="rp-target t-tp">TP1: ${f(tp1)} (+۵٪)</span>
+      <span class="rp-target t-tp">TP2: ${f(tp2)} (+۱۰٪)</span>
+      <span class="rp-target t-sell">SL: ${f(sl)} (−۴٪)</span>
+    </div>
+    <div style="font-size:10px;color:var(--dim);margin-top:6px">برای دیدن تحلیل کامل روی کادر بزنید · توصیه مالی قطعی نیست.</div>
+  </div>`;
+  try {
+    const list = [d].concat(cands.filter(x => x !== d && x.status === 'strong_buy').slice(0, 4));
+    ezBuyAlerts(list.map(x => ({ sym: x.sym, name: x.sym, label: x.status === 'strong_buy' ? 'ورود قوی' : 'ورود', price: x.price })), 'رد پول');
+  } catch (e) { /* اعلان اختیاری است */ }
+}
+
 function rpRenderSuggestions() {
+  rpRenderBest();
   const grid = document.getElementById('rpSuggestGrid');
   const badge = document.getElementById('rpSuggestBadge');
 
@@ -8178,6 +8325,93 @@ function optRisk(c, P, k, fallbackVol){
   return Math.min(97, Math.max(8, Math.round(r)));
 }
 
+// ===== سیگنال اندیکاتوری اختیار (EMA, RSI, MACD, ATR) =====
+function optSignal(candles, under, type, price){
+  if (!candles || candles.length < 8) return null;
+  const closes = candles.map(c => c.c), n = closes.length, last = closes[n-1];
+  const ema = (a, per) => { const k = 2 / (per + 1), o = [a[0]]; for (let i = 1; i < a.length; i++) o.push(a[i] * k + o[i-1] * (1 - k)); return o; };
+  const e9 = ema(closes, 9)[n-1], e21 = ema(closes, 21)[n-1];
+  const fa = v => Math.round(v).toLocaleString('fa-IR'), fd = v => (+v).toFixed(1).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+  const rows = [];
+  // EMA
+  let v = 'neutral', note = 'EMAهای ۹ و ۲۱ هم‌جهت نیستند؛ روند نامشخص است.';
+  if (last > e9 && e9 > e21) { v = 'buy'; note = 'قیمت بالای EMA9 و EMA9 بالای EMA21 است (روند صعودی).'; }
+  else if (last < e9 && e9 < e21) { v = 'sell'; note = 'قیمت زیر EMA9 و EMA9 زیر EMA21 است (روند نزولی).'; }
+  rows.push({ label: 'EMA ۹/۲۱', verdict: v, note });
+  // RSI
+  const rsi = calcRSI(closes);
+  v = rsi <= 35 ? 'buy' : rsi >= 70 ? 'sell' : 'neutral';
+  rows.push({ label: 'RSI', verdict: v, note: `RSI روی ${fd(rsi)} است${v==='buy'?' (اشباع فروش؛ احتمال برگشت صعودی)':v==='sell'?' (اشباع خرید؛ احتمال اصلاح)':' (محدوده متعادل)'}.` });
+  // MACD
+  const mc = calcMACD(closes);
+  if (mc) rows.push({ label: 'MACD', verdict: mc.hist > 0 ? 'buy' : mc.hist < 0 ? 'sell' : 'neutral',
+    note: (mc.hist > 0 ? 'MACD بالای خط سیگنال است' : 'MACD پایین خط سیگنال است') + (mc.prevHist != null && Math.sign(mc.prevHist) !== Math.sign(mc.hist) ? ' (تقاطع تازه)' : '') + (mc.short ? ' · نسخه کوتاه‌شده' : '') + '.' });
+  // ATR
+  const atr = calcATR(candles), atrPct = atr && price ? atr / price * 100 : null;
+  if (atr) rows.push({ label: 'ATR', verdict: 'neutral', note: `ATR ${fa(atr)} (${fd(atrPct)}٪ قیمت)${atrPct > 12 ? ' — نوسان بالا؛ حجم پوزیشن را کم کنید' : ''}؛ حد ضرر ۱٫۵×ATR زیر ورود.` });
+  // جهت دارایی پایه (برای اختیار فروش معکوس می‌شود)
+  if (under) {
+    const up = /buy/.test(under.cls), dn = /sell/.test(under.cls);
+    v = type === 'call' ? (up ? 'buy' : dn ? 'sell' : 'neutral') : (dn ? 'buy' : up ? 'sell' : 'neutral');
+    rows.push({ label: 'جهت دارایی پایه', verdict: v, note: `سیگنال ${under.name}: ${under.label}${type === 'put' ? ' (برای اختیار فروش معکوس لحاظ شد)' : ''}.` });
+  }
+  const buys = rows.filter(r => r.verdict === 'buy').length, sells = rows.filter(r => r.verdict === 'sell').length, net = buys - sells;
+  let label, cls;
+  if (net >= 3) { label = 'خرید قوی'; cls = 'strong-buy'; } else if (net >= 1) { label = 'خرید'; cls = 'buy'; }
+  else if (net <= -3) { label = 'فروش قوی'; cls = 'strong-sell'; } else if (net <= -1) { label = 'فروش'; cls = 'sell'; }
+  else { label = 'خنثی'; cls = 'neutral'; }
+  if (type === 'call' && net <= 0) { label = 'بدون سیگنال خرید'; cls = 'neutral'; }
+  const plan = optPlan(candles, price);
+  return { rows, label, cls, net, type, plan, atr, buys, sells };
+}
+function optFmtVal(rial){
+  const t = rial / 10; // ریال → تومان
+  const fd = v => (+v.toFixed(2)).toLocaleString('fa-IR');
+  if (t >= 1e12) return fd(t / 1e12) + ' بیلیون تومان';
+  if (t >= 1e9) return fd(t / 1e9) + ' میلیارد تومان';
+  if (t >= 1e6) return fd(t / 1e6) + ' میلیون تومان';
+  return Math.round(t).toLocaleString('fa-IR') + ' تومان';
+}
+// نقشه معامله: ورود + ۱ حد ضرر + ۳ حد سود — بر پایه ATR، با فاصله قیمتی بیشتر بین اهداف (۱٫۵R / ۳R / ۵R)
+// و چسباندن هدف به سقف‌های واقعی اخیر (در صورت نزدیک بودن)؛ حداقل فاصله هر هدف از قبلی ۵٪ قیمت ورود
+function optPlan(candles, price){
+  if (!price) return null;
+  const hasC = candles && candles.length >= 5;
+  const atr = hasC ? calcATR(candles) : null;
+  let risk = atr ? 1.5 * atr : price * 0.08;
+  risk = Math.min(Math.max(risk, price * 0.05), price * 0.22);
+  const stop = Math.max(price - risk, price * 0.4), r = price - stop;
+  const rr = [1.5, 3, 5];
+  const highs = hasC ? candles.slice(-30).map(c => c.h).filter(h => h > price * 1.02) : [];
+  let tps = rr.map(k => price + r * k);
+  tps = tps.map(t => { const near = highs.filter(h => Math.abs(h / t - 1) <= 0.06); return near.length ? Math.max.apply(null, near) : t; });
+  for (let i = 0; i < tps.length; i++) {
+    const minV = i === 0 ? price * 1.05 : tps[i - 1] + price * 0.05;
+    if (tps[i] < minV) tps[i] = minV;
+  }
+  return { entry: price, stop: Math.round(stop), tps: tps.map(Math.round), atr, rr };
+}
+function optBuildSignal(d, under, type, price){
+  const real = d.realCandles || [];
+  const useReal = real.length >= 8;
+  const sg = optSignal(useReal ? real : d.candles, under, type, price);
+  if (!sg) return sg;
+  sg.plan = optPlan(real.length >= 5 ? real : null, price);
+  sg.lowData = !useReal;
+  if (!useReal) sg.rows.push({ label: 'کیفیت داده', verdict: 'neutral', note: 'تعداد کندل‌های واقعی دریافت‌شده کافی نیست؛ سیگنال با اطمینان کمتر محاسبه شده است.' });
+  return sg;
+}
+function optChartCandles(d, raw){
+  const rc = (d.realCandles || []).slice(-20);
+  if (rc.length >= 2) return rc;
+  const n = v => Number(v) > 0 ? Number(v) : 0;
+  if (raw) {
+    const o = n(raw.pf) || n(raw.py), h = n(raw.pmax), l = n(raw.pmin), c = n(raw.pl) || n(raw.pc);
+    if (o && h && l && c) return rc.concat([{ t: Date.now(), o, h: Math.max(h, o, c), l: Math.min(l, o, c), c }]);
+  }
+  return rc;
+}
+
 async function analyzeOptionSymbol(sym) {
   OPT_CACHE[sym] = { status: 'loading' };
   renderOptionsList();
@@ -8205,8 +8439,10 @@ async function analyzeOptionSymbol(sym) {
     if (contract) { if (contract.daysLeft < 7) levels.exit1w = null; if (contract.daysLeft < 30) levels.exit1m = null; }
     OPT_CACHE[sym] = {
       status: 'ok', full: fullName || d.bourseName || sym, price: d.price,
+      sym, d, optSig: optBuildSignal(d, under, (contract && contract.type) || (/^ط/.test(sym) ? 'put' : 'call'), d.price),
       finalLabel, finalClass, votes, riskPct, moneyFlow, levels, contract, under, calc,
-      candles: d.candles, volume: d.volume || 0, hasVolume: !!d.hasVolume,
+      candles: d.candles, chartCandles: optChartCandles(d, rawSymbolData), realCount: (d.realCandles || []).length,
+      volume: d.volume || 0, hasVolume: !!d.hasVolume,
       chartOpen: (OPT_CACHE[sym] && OPT_CACHE[sym].chartOpen) || false
     };
   } catch (err) {
@@ -8231,9 +8467,6 @@ function optDetailHtml(x){
   let align='';
   if(u){ const up=/buy/.test(u.cls), dn=/sell/.test(u.cls);
     align = (up&&call)||(dn&&!call) ? '<span class="rp-badge bg-g">هم‌جهت با دارایی پایه ✅</span>' : (up&&!call)||(dn&&call) ? '<span class="rp-badge bg-r">خلاف جهت دارایی پایه ⚠</span>' : '<span class="rp-badge bg-b">پایه: خنثی</span>'; }
-  const strat = call
-    ? '<b>خریدار اختیار خرید:</b> سناریوی صعودی؛ حداکثر ضرر = پریمیوم، سود نامحدود.<br><b>کاورد کال:</b> سهم را دارید و کال می‌فروشید تا پریمیوم بگیرید؛ سود سهم در بالای قیمت اعمال سقف می‌خورد.<br><b>فروشنده کال بدون سهم:</b> ریسک زیان بالا + وجه تضمین.'
-    : '<b>خریدار اختیار فروش:</b> سناریوی نزولی یا بیمه؛ حداکثر ضرر = پریمیوم.<br><b>پروتکتیو پوت:</b> سهم را دارید و پوت می‌خرید تا کفِ ضرر مشخص شود.<br><b>فروشنده پوت:</b> یعنی پذیرش خرید سهم در قیمت اعمال؛ نیازمند وجه تضمین.';
   return `<div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;">
       <span class="rp-badge ${call?'bg-g':'bg-r'}">${call?'اختیار خرید':'اختیار فروش'}</span>${expBadge}
       ${k.moneyness?`<span class="rp-badge ${mCls}">${k.moneyness}</span>`:''}${align}
@@ -8245,8 +8478,7 @@ function optDetailHtml(x){
       <td>${fa(k.intrinsic)}</td><td>${fa(k.timeValue)}</td><td>${k.leverage?fd(k.leverage,1)+'×':'—'}</td><td>${k.iv?fd(k.iv*100,0)+'٪':'—'}</td></tr></tbody></table></div>
     ${k.delta!=null?`<div class="rp-tbl-wrap"><table class="rp-tbl"><thead><tr><th>دلتا</th><th>تتا (روزانه)</th><th>وگا (۱٪)</th><th>قیمت تئوریک</th></tr></thead><tbody><tr>
       <td>${fd(k.delta,2)}</td><td style="color:var(--red)">${fa(k.theta)}</td><td>${fa(k.vega)}</td><td>${fa(k.fair)}</td></tr></tbody></table></div>`:''}
-    <details style="font-size:11px;color:var(--muted);line-height:1.9;"><summary style="cursor:pointer;color:var(--text)">📘 توضیح استراتژی‌ها</summary>${strat}</details>
-    <div style="font-size:10px;color:var(--dim);line-height:1.7;">یونانی‌ها با مدل بلک‌شولز و نوسان تاریخی ۲۵ کندل اخیر پایه حساب شده‌اند و تقریبی‌اند.</div>`;
+    `;
 }
 function renderOptChain(){
   const el=document.getElementById('optChain'); if(!el) return;
@@ -8296,7 +8528,7 @@ document.getElementById('optSymbolInput').addEventListener('keydown', (e) => {
 });
 
 // ===== ۱۰ پرحجم‌ترین اختیار خرید و فروش (از Option.php) =====
-const OPT_TOP = { ts: 0, calls: [], puts: [], loading: false, open: {} };
+const OPT_TOP = { ts: 0, calls: [], puts: [], all: [], q: '', loading: false, open: {} };
 function optNum(o, ...keys){ for (const k of keys){ const v = Number(o[k]); if (!isNaN(v) && v > 0) return v; } return 0; }
 async function loadOptTop(force){
   const st = document.getElementById('optStatus');
@@ -8316,6 +8548,7 @@ async function loadOptTop(force){
     }).filter(o => o.l18 && o._t);
     if (!rows.length) throw new Error('داده‌ای دریافت نشد');
     const byVol = (a, b) => (b._vol - a._vol) || (b._val - a._val);
+    OPT_TOP.all = rows.slice().sort(byVol);
     OPT_TOP.calls = rows.filter(o => o._t === 'call').sort(byVol).slice(0, 10);
     OPT_TOP.puts  = rows.filter(o => o._t === 'put').sort(byVol).slice(0, 10);
     OPT_TOP.ts = Date.now();
@@ -8326,13 +8559,121 @@ async function loadOptTop(force){
   OPT_TOP.loading = false;
   renderOptTop();
 }
-function optDetailCard(x){
-  const cls = (x.finalClass==='strong-buy'||x.finalClass==='buy')?'bg-g':(x.finalClass==='strong-sell'||x.finalClass==='sell')?'bg-r':'bg-b';
+function optRowOf(sym){ return OPT_TOP.calls.concat(OPT_TOP.puts, OPT_TOP.all).find(r => r.l18 === sym) || null; }
+function optValOf(o){ if (!o) return 0; return o._val || (o._vol && optNum(o,'pl','pc') ? o._vol * optNum(o,'pl','pc') * 1000 : 0); } // قرارداد ۱۰۰۰ سهمی
+function optSigBadge(sg){ return `<span class="rp-badge ${/buy/.test(sg.cls)?'bg-g':/sell/.test(sg.cls)?'bg-r':'bg-b'}">${sg.label}</span>`; }
+function optPlanTable(plan){
+  if (!plan) return '';
+  const f = v => Math.round(v).toLocaleString('fa-IR');
+  const pct = v => { const p = (v / plan.entry - 1) * 100; return (p >= 0 ? '+' : '−') + Math.abs(p).toFixed(0).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]) + '٪'; };
+  const sub = v => `<br><span style="font-size:10px;color:var(--dim)">${pct(v)}</span>`;
+  return `<div class="rp-tbl-wrap"><table class="rp-tbl"><thead><tr><th>ورود</th><th>حد ضرر</th><th>حد سود ۱</th><th>حد سود ۲</th><th>حد سود ۳</th></tr></thead><tbody><tr>
+    <td style="color:var(--blue);font-weight:800">${f(plan.entry)}</td>
+    <td style="color:var(--red);font-weight:800">${f(plan.stop)}${sub(plan.stop)}</td>
+    ${plan.tps.map((v, i) => `<td style="color:var(--green);font-weight:800">${f(v)}${sub(v)}<br><span style="font-size:10px;color:var(--dim)">${(plan.rr || [1, 2, 3])[i].toLocaleString('fa-IR')}R</span></td>`).join('')}</tr></tbody></table></div>`;
+}
+function optDetailCard(x, o){
+  const sg = x.optSig;
+  const call = sg ? sg.type === 'call' : (x.contract ? x.contract.type === 'call' : !/^ط/.test(x.sym || ''));
+  const val = optValOf(o);
+  const plan = (sg && sg.plan) || optPlan(x.candles, x.price);
+  const stats = o ? `<div class="rp-tbl-wrap"><table class="rp-tbl"><thead><tr><th>ارزش معامله</th><th>حجم</th><th>موقعیت باز</th></tr></thead><tbody><tr>
+    <td style="font-weight:800;color:var(--amber)">${val ? optFmtVal(val) : '—'}</td><td>${o._vol ? fmtCompact(o._vol) : '—'}</td><td>${o.interest_open ? fmtCompact(Number(o.interest_open)) : '—'}</td></tr></tbody></table></div>` : '';
+  const vv = r => (call && r.verdict === 'sell') ? 'neutral' : r.verdict;
+  const vt = v => v === 'buy' ? 'خرید' : v === 'sell' ? 'فروش' : 'خنثی';
+  const legend = call
+    ? '«خرید» یعنی شرایط ورود به این اختیار خرید مناسب است؛ اگر شرایط مناسب نباشد سیگنال خریدی صادر نمی‌شود.'
+    : '«خرید» یعنی شرایط برای خرید خودِ این قرارداد مناسب است و «فروش» یعنی خروج یا عدم ورود.';
+  const sigHtml = sg ? `<div class="rp-full" style="margin:10px 0 4px;font-weight:800;">🎯 ${call ? 'سیگنال خرید اختیار خرید (Call)' : 'سیگنال اختیار فروش (Put)'} با EMA · RSI · MACD · ATR: ${optSigBadge(sg)}</div>
+    ${sg.rows.map(r => `<div class="signal-row"><div class="signal-row-label">${escapeHtml(r.label)}<br><span style="font-size:10.5px;color:var(--dim)">${escapeHtml(r.note)}</span></div><div class="signal-row-badge ${vv(r)}">${vt(vv(r))}</div></div>`).join('')}
+    <div style="font-size:10px;color:var(--dim);margin:4px 0;">${legend} سطوح ورود/حد ضرر/حد سود روی چارت بر پایه ATR است.</div>` : '';
+  const chartHtml = plan ? `<div class="rp-full" style="margin:8px 0 4px;">📈 چارت کندل‌استیک ${escapeHtml(x.sym || '')} — ۲۰ کندل اخیر با ورود، ۱ حد ضرر و ۳ حد سود</div>
+    <div style="overflow-x:auto;"><svg class="chart-svg" id="optCS_${escapeHtml(x.sym)}" viewBox="0 0 720 420" style="min-width:560px"></svg></div>${(x.chartCandles || []).length < 8 ? `<div style="font-size:10.5px;color:var(--amber);margin:4px 0;">⚠ فقط ${(x.chartCandles || []).length.toLocaleString('fa-IR')} کندل واقعی برای این قرارداد از سرور دریافت شد؛ کندل ساختگی نمایش داده نمی‌شود.</div>` : ''}${optPlanTable(plan)}` : '';
+  const fl = x.finalLabel, fc = x.finalClass;
+  const noBuy = call && /sell/.test(fc);
+  const cls = noBuy ? 'bg-b' : (fc === 'strong-buy' || fc === 'buy') ? 'bg-g' : (fc === 'strong-sell' || fc === 'sell') ? 'bg-r' : 'bg-b';
   return `<div style="display:flex;flex-wrap:wrap;gap:6px;margin:10px 0;">
-    <span class="rp-badge ${cls}">${x.finalLabel}</span>
+    ${sg ? optSigBadge(sg) : `<span class="rp-badge ${cls}">${noBuy ? 'بدون سیگنال خرید' : fl}</span>`}
     <span class="rp-badge ${x.moneyFlow.available?x.moneyFlow.cls:'bg-b'}">${x.moneyFlow.available?x.moneyFlow.label:'ورود/خروج پول: در دسترس نیست'}</span>
     <span class="rp-badge ${x.riskPct>=60?'bg-r':x.riskPct>=35?'bg-a':'bg-g'}">ریسک: ٪${x.riskPct}</span></div>
-    ${optLevelsTable(x.levels, x)}${optDetailHtml(x)}`;
+    ${stats}${sigHtml}${chartHtml}${optLevelsTable(x.levels, x)}${optDetailHtml(x)}`;
+}
+
+// چارت کندل‌استیک اختصاصی اختیار: فقط کندل واقعی، مقیاس عمودی بر پایه خودِ کندل‌ها تا کندل‌ها درشت و کشیده دیده شوند
+function drawOptionChart(svg, candlesIn, plan) {
+  const cs = (candlesIn || []).filter(c => c && c.o > 0 && c.h > 0 && c.l > 0 && c.c > 0 && isFinite(c.h) && isFinite(c.l)).slice(-20);
+  if (cs.length < 1) { svg.setAttribute('viewBox', '0 0 720 160'); svg.innerHTML = '<text x="360" y="80" text-anchor="middle" fill="#8B93A7" font-size="12" font-family="Vazirmatn">داده کندل واقعی برای این قرارداد دریافت نشد</text>'; return; }
+  const W = 720, H = 420, padR = 84, R = W - padR, padTop = 20, padBottom = 28, padX = 12;
+  const n = cs.length, fmt = v => Math.round(v).toLocaleString('fa-IR');
+  let cmin = Math.min(...cs.map(c => c.l)), cmax = Math.max(...cs.map(c => c.h));
+  let cr = cmax - cmin; const minCr = cmax * 0.06;
+  if (cr < minCr) { const m = (cmax + cmin) / 2; cmin = m - minCr / 2; cmax = m + minCr / 2; cr = minCr; }
+  let lo = cmin - cr * 0.10, hi = cmax + cr * 0.10;
+  const levels = [];
+  if (plan) {
+    levels.push({ v: plan.tps[2], c: '#3DDC97', t: 'TP3 · حد سود ۳', w: 1.3, d: '6,4' });
+    levels.push({ v: plan.tps[1], c: '#3DDC97', t: 'TP2 · حد سود ۲', w: 1.3, d: '6,4' });
+    levels.push({ v: plan.tps[0], c: '#3DDC97', t: 'TP1 · حد سود ۱', w: 1.3, d: '6,4' });
+    levels.push({ v: plan.entry, c: '#5B9CF6', t: 'ورود', w: 1.6, d: '4,3' });
+    levels.push({ v: plan.stop, c: '#FF5C72', t: 'SL · حد ضرر', w: 1.8, d: '' });
+    // کندل‌ها اولویت دارند: سطوح فقط تا حدی که کندل‌ها کوچک نشوند وارد مقیاس می‌شوند؛ بقیه با فلش و عدد روی لبه می‌آیند
+    levels.forEach(l => {
+      if (l.v > hi && l.v <= cmax + cr * 0.9) hi = l.v + cr * 0.05;
+      if (l.v < lo && l.v >= cmin - cr * 0.6) lo = l.v - cr * 0.05;
+    });
+  }
+  const range = (hi - lo) || 1;
+  const slots = Math.max(n, 12), slotW = (R - padX) / slots, offset = (R - padX) - n * slotW;
+  const bodyW = Math.min(30, Math.max(6, slotW * 0.72));
+  const yFor = v => padTop + (1 - (v - lo) / range) * (H - padTop - padBottom);
+  const clampY = v => Math.min(H - padBottom, Math.max(padTop, yFor(v)));
+  const xFor = i => padX + offset + i * slotW + slotW / 2;
+
+  let g = `<defs><linearGradient id="ocbg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#101a15"/><stop offset="1" stop-color="#070908"/></linearGradient></defs><rect x="0" y="0" width="${W}" height="${H}" rx="12" fill="url(#ocbg)"/><rect x="${R}" y="0" width="${padR}" height="${H}" fill="#000" opacity="0.35"/>`;
+  for (let k = 0; k <= 5; k++) { const y = padTop + (H - padTop - padBottom) * k / 5; g += `<line x1="${padX}" y1="${y.toFixed(1)}" x2="${R}" y2="${y.toFixed(1)}" stroke="#232A3B" stroke-width="0.6" opacity="0.55"/>`; }
+  const tags = [];
+  if (plan) {
+    const yE = clampY(plan.entry), yS = clampY(plan.stop), yT = clampY(plan.tps[2]);
+    g += `<rect x="${padX}" y="${Math.min(yE, yS).toFixed(1)}" width="${R - padX}" height="${Math.abs(yE - yS).toFixed(1)}" fill="#FF5C72" opacity="0.10"/>`;
+    g += `<rect x="${padX}" y="${Math.min(yE, yT).toFixed(1)}" width="${R - padX}" height="${Math.abs(yE - yT).toFixed(1)}" fill="#3DDC97" opacity="0.07"/>`;
+    levels.forEach(l => {
+      const y = clampY(l.v), clipped = yFor(l.v) < padTop - 0.5 || yFor(l.v) > H - padBottom + 0.5;
+      g += `<line x1="${padX}" y1="${y.toFixed(1)}" x2="${R}" y2="${y.toFixed(1)}" stroke="${l.c}" stroke-width="${l.w}" ${l.d ? `stroke-dasharray="${l.d}"` : ''} opacity="0.95"/>`;
+      tags.push({ y, c: l.c, t: fmt(l.v), label: l.t + (clipped ? (l.v > hi ? ' ▲' : ' ▼') : '') });
+    });
+  }
+  // کندل‌ها: بدنه درشت، فتیله ضخیم، حداقل ارتفاع بدنه برای کندل‌های دوجی
+  cs.forEach((c, i) => {
+    const x = xFor(i), up = c.c >= c.o, color = up ? '#3DDC97' : '#FF5C72';
+    const yO = yFor(c.o), yC = yFor(c.c);
+    const bodyTop = Math.min(yO, yC), bodyH = Math.max(5, Math.abs(yC - yO));
+    const top = Math.abs(yC - yO) < 5 ? (yC - 2.5) : bodyTop;
+    g += `<line x1="${x.toFixed(1)}" y1="${yFor(c.h).toFixed(1)}" x2="${x.toFixed(1)}" y2="${yFor(c.l).toFixed(1)}" stroke="${color}" stroke-width="2.2" stroke-linecap="round"/>`;
+    g += `<rect x="${(x - bodyW / 2).toFixed(1)}" y="${top.toFixed(1)}" width="${bodyW.toFixed(1)}" height="${bodyH.toFixed(1)}" fill="${color}" stroke="${color}" stroke-width="0.8" rx="1.5"/>`;
+    if (i % 4 === 0 || i === n - 1) {
+      let lbl = ''; try { lbl = new Date(c.t).toLocaleDateString('fa-IR', { month: 'numeric', day: 'numeric' }); } catch (e) {}
+      if (lbl) g += `<text x="${x.toFixed(1)}" y="${H - 9}" text-anchor="middle" fill="#5A6379" font-size="9" font-family="Vazirmatn">${lbl}</text>`;
+    }
+  });
+  // برچسب‌ها (بدون روی‌هم‌افتادگی)
+  tags.sort((a, b) => a.y - b.y);
+  for (let i = 1; i < tags.length; i++) if (tags[i].y - tags[i - 1].y < 16) tags[i].y = tags[i - 1].y + 16;
+  tags.forEach(t => {
+    const w = 11 + t.label.length * 5.2;
+    g += `<rect x="${padX + 3}" y="${(t.y - 8).toFixed(1)}" width="${w.toFixed(0)}" height="15" rx="4" fill="#0B1020" stroke="${t.c}" stroke-width="0.7" opacity="0.92"/>`;
+    g += `<text x="${padX + 8}" y="${(t.y + 3).toFixed(1)}" fill="${t.c}" font-size="9.5" font-weight="800" font-family="Vazirmatn">${t.label}</text>`;
+    g += `<polygon points="${R},${t.y.toFixed(1)} ${R + 5},${(t.y - 7).toFixed(1)} ${R + 5},${(t.y + 7).toFixed(1)}" fill="${t.c}"/><rect x="${R + 5}" y="${(t.y - 7).toFixed(1)}" width="${padR - 7}" height="14" rx="3" fill="${t.c}"/>`;
+    g += `<text x="${(R + 5 + (padR - 7) / 2).toFixed(1)}" y="${(t.y + 3.5).toFixed(1)}" text-anchor="middle" fill="#04120b" font-size="9.5" font-weight="800" font-family="Vazirmatn">${t.t}</text>`;
+  });
+  svg.__geom = { candles: cs, padX: padX + offset, slotW, W, H, n, fmt };
+  g += '<g id="chartCross" pointer-events="none"></g>';
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.innerHTML = g;
+}
+function drawOptCandle(sym){
+  const x = OPT_CACHE[sym], svg = document.getElementById('optCS_' + sym);
+  if (!x || x.status !== 'ok' || !svg) return;
+  drawOptionChart(svg, x.chartCandles || [], (x.optSig && x.optSig.plan) || optPlan(null, x.price));
 }
 function optTopRow(o){
   const fa = n => Math.round(n).toLocaleString('fa-IR');
@@ -8351,33 +8692,97 @@ function optTopRow(o){
     </div>
     <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;">
       <span class="rp-badge bg-b">🔊 ${o._vol?fmtCompact(o._vol):'—'}</span>
+      ${optValOf(o)?`<span class="rp-badge bg-a">💰 ${optFmtVal(optValOf(o))}</span>`:''}
+      ${OPT_CACHE[o.l18]&&OPT_CACHE[o.l18].optSig?optSigBadge(OPT_CACHE[o.l18].optSig):''}
       ${mon?`<span class="rp-badge ${mc}">${mon}</span>`:''}
       ${!isNaN(days)&&o.day_remain!=null?`<span class="rp-badge ${days<=3?'bg-r opt-pulse':days<=7?'bg-a':'bg-b'}">${days.toLocaleString('fa-IR')} روز تا سررسید</span>`:''}
       ${o.interest_open?`<span class="rp-badge bg-b">موقعیت باز ${fmtCompact(Number(o.interest_open))}</span>`:''}
       <button class="screener-refresh-btn opt-top-btn" data-osym="${sym}" style="margin-inline-start:auto;">${OPT_TOP.open[o.l18]?'▲ بستن':'📊 تحلیل'}</button>
     </div>
-    <div id="optTD_${sym}" style="display:${OPT_TOP.open[o.l18]?'block':'none'};">${OPT_TOP.open[o.l18]==='ok'&&OPT_CACHE[o.l18]&&OPT_CACHE[o.l18].status==='ok'?optDetailCard(OPT_CACHE[o.l18]):''}</div>
+    <div id="optTD_${sym}" style="display:${OPT_TOP.open[o.l18]?'block':'none'};">${OPT_TOP.open[o.l18]==='ok'&&OPT_CACHE[o.l18]&&OPT_CACHE[o.l18].status==='ok'?optDetailCard(OPT_CACHE[o.l18], o):(OPT_TOP.open[o.l18]==='loading'?'<div class="screener-status">در حال تحلیل...</div>':'')}</div>
   </div>`;
+}
+function optTally(list, buyOnly){
+  const g = list.map(o => OPT_CACHE[o.l18] && OPT_CACHE[o.l18].optSig).filter(Boolean); if (!g.length) return '';
+  const b = g.filter(x => /buy/.test(x.cls)).length, r = g.filter(x => /sell/.test(x.cls)).length;
+  return buyOnly ? ` — ${b.toLocaleString('fa-IR')} سیگنال خرید` : ` — ${b.toLocaleString('fa-IR')} خرید · ${r.toLocaleString('fa-IR')} فروش`;
+}
+function optNorm(s){ return optToEn(String(s == null ? '' : s)).replace(/ي/g, 'ی').replace(/ك/g, 'ک').replace(/[\s\u200c]+/g, '').toLowerCase(); }
+function optVisible(){
+  const q = optNorm(OPT_TOP.q);
+  if (!q) return { calls: OPT_TOP.calls, puts: OPT_TOP.puts, searching: false };
+  const hit = o => [o.l18, o.base_l18, o.l30, o.price_strike].some(v => v != null && optNorm(v).includes(q));
+  const found = OPT_TOP.all.filter(hit);
+  return { calls: found.filter(o => o._t === 'call').slice(0, 30), puts: found.filter(o => o._t === 'put').slice(0, 30), searching: true, total: found.length };
+}
+// بهترین انتخاب: فقط ۱ قرارداد، از بین اختیار خرید و فروش پرحجمِ تحلیل‌شده (سیگنال «خرید» روی خود قرارداد)
+function optBestPick(){
+  const pool = OPT_TOP.calls.concat(OPT_TOP.puts);
+  const ready = pool.map(o => ({ o, x: OPT_CACHE[o.l18] })).filter(r => r.x && r.x.status === 'ok' && r.x.optSig);
+  const buys = ready.filter(r => /buy/.test(r.x.optSig.cls) && r.x.optSig.plan);
+  buys.sort((a, b) => ((b.x.realCount >= 8 ? 1 : 0) - (a.x.realCount >= 8 ? 1 : 0)) || (b.x.optSig.net - a.x.optSig.net) || (a.x.riskPct - b.x.riskPct) || ((b.x.volume || 0) - (a.x.volume || 0)));
+  return { pool, ready, buys, pending: pool.length - ready.length, best: buys[0] || null };
+}
+function optBestCallHtml(){
+  const f = v => Math.round(v).toLocaleString('fa-IR'), fd = v => (+v).toLocaleString('fa-IR');
+  const frame = inner => `<div class="ez-best">${inner}</div>`;
+  const P = optBestPick();
+  const findBtn = `<button class="screener-refresh-btn" id="optBestBtn">${P.ready.length ? '🔄 تحلیل بقیه' : '🏆 تحلیل و پیدا کردن بهترین انتخاب'}</button>`;
+  if (!P.ready.length) return frame(`<div class="ez-best-tag">🏆 بهترین انتخاب اختیار معامله</div><div style="font-size:11.5px;color:var(--muted);margin:8px 0;">اختیارهای پرحجم (خرید و فروش) تحلیل می‌شوند و فقط ۱ قرارداد به‌عنوان بهترین انتخاب معرفی می‌شود.</div>${findBtn}`);
+  const tail = P.pending > 0 ? `<div style="margin-top:8px;">${findBtn}</div>` : '';
+  if (!P.best) return frame(`<div class="ez-best-tag">🏆 بهترین انتخاب اختیار معامله</div><div style="font-size:11.5px;color:var(--muted);margin-top:8px;">در ${fd(P.ready.length)} قرارداد تحلیل‌شده فعلاً سیگنال خریدی وجود ندارد.</div>${tail}`);
+  const { o, x } = P.best, pl = x.optSig.plan, call = x.optSig.type === 'call';
+  const pc = v => { const p = (v / pl.entry - 1) * 100; return (p >= 0 ? '+' : '−') + Math.abs(p).toFixed(0).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]) + '٪'; };
+  return frame(`<div class="ez-best-tag">🏆 بهترین انتخاب</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding-top:6px;">
+      <div><div class="rp-sym" style="font-size:18px">${escapeHtml(o.l18)}</div><div class="rp-full">${call ? 'اختیار خرید (Call)' : 'اختیار فروش (Put)'} · پایه ${escapeHtml(o.base_l18 || '—')}</div></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">${optSigBadge(x.optSig)}<span class="rp-badge ${x.riskPct >= 60 ? 'bg-r' : x.riskPct >= 35 ? 'bg-a' : 'bg-g'}">ریسک: ٪${fd(x.riskPct)}</span></div></div>
+    <div class="rp-suggest-targets" style="margin-top:8px">
+      <span class="rp-target t-buy">ورود: ${f(pl.entry)}</span>
+      <span class="rp-target t-sell">SL: ${f(pl.stop)} (${pc(pl.stop)})</span>
+      <span class="rp-target t-tp">TP1: ${f(pl.tps[0])} (${pc(pl.tps[0])})</span>
+      <span class="rp-target t-tp">TP2: ${f(pl.tps[1])} (${pc(pl.tps[1])})</span>
+      <span class="rp-target t-tp">TP3: ${f(pl.tps[2])} (${pc(pl.tps[2])})</span></div>
+    ${x.optSig.lowData ? '<div style="font-size:10.5px;color:var(--amber);margin-top:6px">⚠ کندل واقعی کافی دریافت نشد؛ اطمینان این سیگنال کمتر است.</div>' : ''}
+    <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;"><button class="screener-refresh-btn opt-top-btn" data-osym="${escapeHtml(o.l18)}">${OPT_TOP.open[o.l18] ? '▲ بستن' : '📊 مشاهده تحلیل و چارت'}</button>${P.pending > 0 ? findBtn : ''}</div>`);
 }
 function renderOptTop(){
   const el = document.getElementById('optTop'); if (!el) return;
   if (OPT_TOP.loading && !OPT_TOP.calls.length) { el.innerHTML = '<div class="screener-status">در حال دریافت...</div>'; return; }
   if (!OPT_TOP.calls.length && !OPT_TOP.puts.length) { el.innerHTML = '<button class="screener-refresh-btn" id="optTopRefresh">🔄 تلاش دوباره</button>'; return; }
-  const sec = (title, list, color) => `<div class="rp-panel-title" style="margin:14px 0 8px;display:flex;align-items:center;gap:8px;"><span style="color:${color}">●</span>${title}</div>${list.map(optTopRow).join('')}`;
-  el.innerHTML = `<div style="display:flex;justify-content:flex-end;margin-bottom:4px;"><button class="screener-refresh-btn" id="optTopRefresh">🔄 بروزرسانی</button></div>`
-    + sec('۱۰ اختیار خرید پرحجم', OPT_TOP.calls, 'var(--green)') + sec('۱۰ اختیار فروش پرحجم', OPT_TOP.puts, 'var(--red)');
+  const V = optVisible();
+  const sec = (title, list, color) => `<div class="rp-panel-title" style="margin:14px 0 8px;display:flex;align-items:center;gap:8px;"><span style="color:${color}">●</span>${title}</div>${list.length ? list.map(optTopRow).join('') : '<div class="screener-status">موردی پیدا نشد</div>'}`;
+  const count = V.calls.length + V.puts.length;
+  const head = `<div style="display:flex;justify-content:flex-end;gap:6px;margin-bottom:4px;"><button class="screener-refresh-btn" id="optTopAll">⚡ تحلیل همه ${count.toLocaleString('fa-IR')} نماد</button><button class="screener-refresh-btn" id="optTopRefresh">🔄 بروزرسانی</button></div>`;
+  const callTitle = V.searching ? `اختیار خرید — ${V.calls.length.toLocaleString('fa-IR')} نتیجه` : '۱۰ اختیار خرید پرحجم' + optTally(V.calls, true);
+  const putTitle = V.searching ? `اختیار فروش — ${V.puts.length.toLocaleString('fa-IR')} نتیجه` : '۱۰ اختیار فروش پرحجم' + optTally(V.puts, false);
+  el.innerHTML = head + (V.searching ? '' : optBestCallHtml()) + sec(callTitle, V.calls, 'var(--green)') + sec(putTitle, V.puts, 'var(--red)');
+  Object.keys(OPT_TOP.open).forEach(k => { if (OPT_TOP.open[k] === 'ok') drawOptCandle(k); });
 }
+async function optAnalyzeBatch(syms, btn){
+  const all = syms.filter(sym => !(OPT_CACHE[sym] && OPT_CACHE[sym].status === 'ok'));
+  if (btn) { btn.disabled = true; btn.textContent = 'در حال تحلیل...'; }
+  let idx = 0;
+  const worker = async () => { while (idx < all.length) { const sym = all[idx++]; await analyzeOptionSymbol(sym); renderOptTop(); } };
+  await Promise.all([worker(), worker(), worker()]);
+  renderOptTop();
+  try { const bp = optBestPick().best; if (bp) ezBuyAlerts([{ sym: bp.o.l18, name: bp.o.l18, label: bp.x.optSig.label, price: bp.x.price }], 'اختیار معامله'); } catch (e) {}
+}
+document.getElementById('optSearchInput').addEventListener('input', (e) => { OPT_TOP.q = e.target.value; renderOptTop(); });
 document.getElementById('optTop').addEventListener('click', async (e) => {
   if (e.target.closest('#optTopRefresh')) { loadOptTop(true); return; }
+  if (e.target.closest('#optTopAll')) { const V = optVisible(); await optAnalyzeBatch(V.calls.concat(V.puts).map(r => r.l18), e.target.closest('#optTopAll')); return; }
+  if (e.target.closest('#optBestBtn')) { await optAnalyzeBatch(OPT_TOP.calls.concat(OPT_TOP.puts).map(r => r.l18), e.target.closest('#optBestBtn')); return; }
   const btn = e.target.closest('.opt-top-btn'); if (!btn) return;
   const sym = btn.dataset.osym, box = document.getElementById('optTD_' + sym);
-  if (OPT_TOP.open[sym]) { OPT_TOP.open[sym] = null; box.style.display = 'none'; btn.textContent = '📊 تحلیل'; return; }
+  if (!box) return;
+  if (OPT_TOP.open[sym]) { OPT_TOP.open[sym] = null; box.style.display = 'none'; btn.textContent = '📊 تحلیل'; renderOptTop(); return; }
   OPT_TOP.open[sym] = 'loading'; box.style.display = 'block'; btn.textContent = '▲ بستن';
   box.innerHTML = '<div class="screener-status">در حال تحلیل...</div>';
   await analyzeOptionSymbol(sym);
   if (!OPT_TOP.open[sym]) return;
   const x = OPT_CACHE[sym];
-  if (x && x.status === 'ok') { OPT_TOP.open[sym] = 'ok'; box.innerHTML = optDetailCard(x); }
+  if (x && x.status === 'ok') { OPT_TOP.open[sym] = 'ok'; renderOptTop(); try { const sg = x.optSig; if (sg && /buy/.test(sg.cls)) ezBuyAlerts([{ sym, name: sym, label: sg.label, price: x.price }], 'اختیار معامله'); } catch (e) {} const b2 = document.getElementById('optTD_' + sym); if (b2) b2.scrollIntoView({ block: 'nearest' }); }
   else { OPT_TOP.open[sym] = 'err'; box.innerHTML = `<div class="rp-full" style="color:var(--red)">⚠ ${escapeHtml((x && x.error) || 'تحلیل ناموفق بود')}</div>`; }
 });
 
@@ -8616,6 +9021,193 @@ if (savedRiskProfile) {
   const riskInputInit = document.getElementById('rrRiskPctInput');
   if (riskInputInit) riskInputInit.value = savedRiskProfile.riskPct;
 }
+
+/* ===== نوتیفیکیشن موبایل + سهام آلارم + اعلان موقعیت خرید ===== */
+const EZ_ALARM_KEY = 'ezzdigi_stock_alarms_v1';
+const EZ_BUYNOTIF_KEY = 'ezzdigi_buy_notif_v1';
+const EZ_SCAN_KEY = 'ezzdigi_buy_scan_v1';
+const EZ_SEEN_KEY = 'ezzdigi_buy_alert_seen_v1';
+const ezFa = n => Math.round(n).toLocaleString('fa-IR');
+function ezLoad(k, def) { try { const r = localStorage.getItem(k); return r ? JSON.parse(r) : def; } catch (e) { return def; } }
+function ezSave(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* ignore */ } }
+
+let ezSwReg = null;
+(function ezInitSW() {
+  try {
+    if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+      navigator.serviceWorker.register('sw.js').then(r => { ezSwReg = r; }).catch(() => {});
+    }
+  } catch (e) { /* ignore */ }
+})();
+
+function ezToast(title, body) {
+  let wrap = document.getElementById('ezToastWrap');
+  if (!wrap) { wrap = document.createElement('div'); wrap.id = 'ezToastWrap'; wrap.className = 'ez-toast-wrap'; document.body.appendChild(wrap); }
+  const t = document.createElement('div');
+  t.className = 'ez-toast';
+  t.innerHTML = '<b></b><span></span>';
+  t.querySelector('b').textContent = title;
+  t.querySelector('span').textContent = body;
+  t.addEventListener('click', () => t.remove());
+  wrap.appendChild(t);
+  setTimeout(() => { if (t.parentNode) t.remove(); }, 9000);
+}
+function ezBeep() {
+  try {
+    const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+    const ac = new AC(), o = ac.createOscillator(), g = ac.createGain();
+    o.connect(g); g.connect(ac.destination); o.frequency.value = 880; g.gain.value = 0.07;
+    o.start(); setTimeout(() => { try { o.stop(); ac.close(); } catch (e) {} }, 250);
+  } catch (e) { /* ignore */ }
+}
+function ezPermState() { return ('Notification' in window) ? Notification.permission : 'unsupported'; }
+async function ezAskPerm() {
+  if (!('Notification' in window)) return 'unsupported';
+  try { return await Notification.requestPermission(); } catch (e) { return 'denied'; }
+}
+// اعلان: همیشه پیام داخل برنامه + لرزش؛ اگر اجازه داده شده باشد اعلان سیستمی (موبایل) هم نشان داده می‌شود
+async function ezNotify(title, body, tag) {
+  ezToast(title, body);
+  try { if (navigator.vibrate) navigator.vibrate([200, 100, 200]); } catch (e) {}
+  try { const tg = window.Telegram && window.Telegram.WebApp; if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch (e) {}
+  ezBeep();
+  if (ezPermState() !== 'granted') return false;
+  const opts = { body, tag: tag || 'ezzdigi', renotify: true, dir: 'rtl', lang: 'fa' };
+  try {
+    if ('serviceWorker' in navigator) {
+      const reg = ezSwReg || await Promise.race([navigator.serviceWorker.ready, new Promise((_, rj) => setTimeout(rj, 1500))]);
+      if (reg && reg.showNotification) { await reg.showNotification(title, opts); return true; }
+    }
+  } catch (e) { /* به روش بعدی می‌رویم */ }
+  try { new Notification(title, opts); return true; } catch (e) { return false; }
+}
+
+function ezBuyEnabled() { return ezLoad(EZ_BUYNOTIF_KEY, true) !== false; }
+// items: [{sym, name, label, price}] — برای هر نماد و منبع، حداکثر هر ۶ ساعت یک‌بار اعلان می‌دهد
+function ezBuyAlerts(items, source) {
+  if (!ezBuyEnabled() || !items || !items.length) return;
+  const seen = ezLoad(EZ_SEEN_KEY, {}), now = Date.now(), COOL = 6 * 3600 * 1000;
+  const fresh = items.filter(it => { const k = source + '|' + it.sym; return !(seen[k] && now - seen[k] < COOL); });
+  if (!fresh.length) return;
+  fresh.forEach(it => { seen[source + '|' + it.sym] = now; });
+  Object.keys(seen).forEach(k => { if (now - seen[k] > 24 * 3600 * 1000) delete seen[k]; });
+  ezSave(EZ_SEEN_KEY, seen);
+  const nm = it => (it.name || it.sym) + (it.label ? ' (' + it.label + ')' : '') + (it.price ? ' · ' + ezFa(it.price) : '');
+  const body = fresh.slice(0, 4).map(nm).join('، ') + (fresh.length > 4 ? ` و ${fresh.length - 4} مورد دیگر` : '');
+  ezNotify('🟢 موقعیت خرید — ' + source, body, 'buy-' + source);
+}
+
+/* ---- سهام آلارم ---- */
+function ezNormSym(s) { return String(s || '').replace(/ي/g, 'ی').replace(/ك/g, 'ک').replace(/\s+/g, ' ').trim(); }
+function ezParseNum(s) { const t = optToEn(String(s || '')).replace(/[,٬،\s]/g, ''); const v = Number(t); return isFinite(v) ? v : NaN; }
+async function ezFetchPrice(sym) {
+  const d = await rpFetchSymbol(sym);
+  if (!d) return null;
+  return [d.pl, d.pc, d.pf].map(Number).find(v => v > 0) || null;
+}
+function ezAlarmMsg(text, isErr) {
+  const el = document.getElementById('alarmMsg'); if (!el) return;
+  if (!text) { el.style.display = 'none'; return; }
+  el.style.display = 'block'; el.style.color = isErr ? 'var(--red)' : 'var(--muted)'; el.textContent = text;
+}
+function ezRenderPerm() {
+  const el = document.getElementById('alarmPerm'); if (!el) return;
+  const m = { granted: '✅ اعلان فعال است', denied: '⛔ اعلان مسدود است (از تنظیمات مرورگر باز کنید)', default: '🔕 اعلان هنوز فعال نشده', unsupported: 'ℹ️ اعلان سیستمی پشتیبانی نمی‌شود (فقط پیام داخل برنامه)' };
+  el.textContent = m[ezPermState()] || '';
+}
+function ezRenderAlarms() {
+  ezRenderPerm();
+  const box = document.getElementById('alarmList'); if (!box) return;
+  const list = ezLoad(EZ_ALARM_KEY, []);
+  if (!list.length) { box.innerHTML = '<div class="screener-status">هنوز آلارمی ثبت نشده است.</div>'; return; }
+  box.innerHTML = list.map(a => {
+    const cur = a.lastPrice, dist = cur ? ((a.target / cur - 1) * 100) : null;
+    const distTxt = dist == null ? '' : ` · فاصله تا هدف ${(dist >= 0 ? '+' : '−') + Math.abs(dist).toFixed(1).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d])}٪`;
+    const dirTxt = a.dir === 'up' ? '⬆ رسیدن به بالا' : '⬇ رسیدن به پایین';
+    if (a.triggered) return `<div class="al-item done"><div><div class="al-sym">✅ ${escapeHtml(a.sym)}</div><div class="al-sub">به ${ezFa(a.triggeredPrice)} رسید (هدف ${ezFa(a.target)}) · ${new Date(a.triggeredAt).toLocaleString('fa-IR')}</div></div><div style="display:flex;gap:6px"><button data-alact="rearm" data-alid="${a.id}">🔁 فعال‌سازی</button><button data-alact="del" data-alid="${a.id}">🗑</button></div></div>`;
+    return `<div class="al-item"><div><div class="al-sym">${escapeHtml(a.sym)} — ${ezFa(a.target)}</div><div class="al-sub">${dirTxt}${cur ? ' · قیمت فعلی ' + ezFa(cur) : ''}${distTxt}</div></div><button data-alact="del" data-alid="${a.id}">🗑</button></div>`;
+  }).join('');
+}
+async function ezAddAlarm() {
+  const symEl = document.getElementById('alarmSym'), tgEl = document.getElementById('alarmTarget'), btn = document.getElementById('alarmAddBtn');
+  const sym = ezNormSym(symEl.value), target = ezParseNum(tgEl.value);
+  if (!sym) { ezAlarmMsg('نام نماد را وارد کنید.', true); return; }
+  if (!(target > 0)) { ezAlarmMsg('قیمت هدف را به‌صورت عدد وارد کنید.', true); return; }
+  if (ezPermState() === 'default') ezAskPerm().then(ezRenderPerm); // باید داخل همین کلیک درخواست شود
+  btn.disabled = true; ezAlarmMsg('در حال بررسی نماد…', false);
+  try {
+    const cur = await ezFetchPrice(sym);
+    if (!cur) { ezAlarmMsg('قیمت این نماد دریافت نشد؛ نام نماد را بررسی کنید یا بعداً دوباره تلاش کنید.', true); return; }
+    if (Math.abs(target / cur - 1) < 0.0005) { ezAlarmMsg('قیمت هدف با قیمت فعلی (' + ezFa(cur) + ') یکسان است.', true); return; }
+    const list = ezLoad(EZ_ALARM_KEY, []);
+    list.unshift({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), sym, target, dir: target > cur ? 'up' : 'down', startPrice: cur, lastPrice: cur, createdAt: Date.now(), triggered: false });
+    ezSave(EZ_ALARM_KEY, list);
+    symEl.value = ''; tgEl.value = '';
+    ezAlarmMsg('✅ آلارم ثبت شد — قیمت فعلی ' + ezFa(cur) + ' ریال', false);
+    setTimeout(() => ezAlarmMsg('', false), 4000);
+    ezRenderAlarms();
+  } finally { btn.disabled = false; }
+}
+let ezChecking = false;
+async function ezCheckAlarms() {
+  if (ezChecking) return;
+  const active = ezLoad(EZ_ALARM_KEY, []).filter(a => !a.triggered);
+  if (!active.length) return;
+  ezChecking = true;
+  try {
+    const syms = Array.from(new Set(active.map(a => a.sym))), prices = {};
+    await mapWithConcurrency(syms, 3, async s => { prices[s] = await ezFetchPrice(s); });
+    const fresh = ezLoad(EZ_ALARM_KEY, []); let changed = false;
+    fresh.forEach(a => {
+      if (a.triggered) return;
+      const p = prices[a.sym]; if (!p) return;
+      a.lastPrice = p; changed = true;
+      if ((a.dir === 'up' && p >= a.target) || (a.dir === 'down' && p <= a.target)) {
+        a.triggered = true; a.triggeredAt = Date.now(); a.triggeredPrice = p;
+        ezNotify('⏰ آلارم ' + a.sym, `قیمت به ${ezFa(p)} رسید (هدف ${ezFa(a.target)})`, 'alarm-' + a.id);
+      }
+    });
+    if (changed) ezSave(EZ_ALARM_KEY, fresh);
+  } finally { ezChecking = false; }
+  ezRenderAlarms();
+}
+document.getElementById('alarmAddBtn').addEventListener('click', ezAddAlarm);
+document.getElementById('alarmTarget').addEventListener('keydown', e => { if (e.key === 'Enter') ezAddAlarm(); });
+document.getElementById('alarmList').addEventListener('click', e => {
+  const b = e.target.closest('[data-alact]'); if (!b) return;
+  let list = ezLoad(EZ_ALARM_KEY, []);
+  if (b.dataset.alact === 'del') list = list.filter(a => a.id !== b.dataset.alid);
+  else if (b.dataset.alact === 'rearm') list.forEach(a => { if (a.id === b.dataset.alid) { a.triggered = false; a.dir = a.target > (a.lastPrice || a.triggeredPrice || a.target) ? 'up' : 'down'; } });
+  ezSave(EZ_ALARM_KEY, list); ezRenderAlarms(); ezCheckAlarms();
+});
+
+/* ---- تنظیمات اعلان ---- */
+(function ezSettingsInit() {
+  const tog = document.getElementById('buyNotifToggle'), sel = document.getElementById('scanIntervalSel');
+  tog.checked = ezBuyEnabled(); sel.value = String(ezLoad(EZ_SCAN_KEY, 0));
+  tog.addEventListener('change', () => ezSave(EZ_BUYNOTIF_KEY, tog.checked));
+  sel.addEventListener('change', () => { ezSave(EZ_SCAN_KEY, Number(sel.value)); ezSetupScan(); });
+  document.getElementById('notifPermBtn').addEventListener('click', async () => { await ezAskPerm(); ezRenderPerm(); });
+  document.getElementById('notifTestBtn').addEventListener('click', async () => {
+    if (ezPermState() === 'default') { await ezAskPerm(); ezRenderPerm(); }
+    ezNotify('🔔 تست اعلان', 'اگر این پیام را می‌بینید اعلان‌ها کار می‌کنند.', 'ez-test');
+  });
+})();
+// بررسی خودکار رد پول (یک دسته درخواست) برای پیدا کردن موقعیت خرید تازه — فقط تا وقتی برنامه باز است
+let ezScanTimer = null;
+function ezSetupScan() {
+  if (ezScanTimer) clearInterval(ezScanTimer);
+  const m = Number(ezLoad(EZ_SCAN_KEY, 0));
+  if (m > 0) ezScanTimer = setInterval(async () => {
+    if (!ezBuyEnabled()) return;
+    try { rpLoaded = false; await loadRadPool(true); } catch (e) { /* ignore */ }
+  }, m * 60000);
+}
+ezSetupScan();
+setInterval(ezCheckAlarms, 10000); // هر ۱۰ ثانیه قیمت آلارم‌های فعال چک می‌شود
+document.addEventListener('visibilitychange', () => { if (!document.hidden) ezCheckAlarms(); });
+setTimeout(ezCheckAlarms, 4000);
+ezRenderAlarms();
 </script>
 <!-- ===================== سهام یکم: ورود / ثبت‌نام / اشتراک ===================== -->
 
