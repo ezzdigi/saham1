@@ -3509,7 +3509,7 @@ input:focus,select:focus,textarea:focus{outline:0;border-color:var(--green)!impo
       <div class="rp-panel-hd">
         <div class="opt-hero"><span class="opt-live"></span><div class="opt-hero-title">اختیار معامله</div><div class="opt-hero-sub">OPTIONS · TERMINAL</div></div>
       </div>
-      <div class="screener-desc">۱۰ اختیار خرید و ۱۰ اختیار فروش پرحجم بازار. روی «تحلیل» بزنید تا سیگنال، ریسک، ارزش ذاتی/زمانی و یونانی‌ها نمایش داده شود.</div>
+      <div class="screener-desc">۱۰ اختیار خرید و ۱۰ اختیار فروش پرحجم بازار (یا هر نماد را جستجو کنید). روی «تحلیل» بزنید تا سیگنال، ریسک، ارزش ذاتی/زمانی و یونانی‌ها نمایش داده شود.</div>
       <div class="search-row" style="margin-bottom:10px;display:none;">
         <input type="text" class="coin-input" id="optSymbolInput" placeholder="نماد (یک یا چند نماد با فاصله): ضخود7020 طخود7020" />
         <button class="analyze-btn" id="optAddBtn">افزودن</button>
@@ -3523,6 +3523,9 @@ input:focus,select:focus,textarea:focus{outline:0;border-color:var(--green)!impo
         <button class="rp-fbtn" data-optf="volume">پرحجم‌ترین 🔊</button>
         <button class="rp-fbtn" data-optf="in">ورود پول زیاد ⬆</button>
         <button class="rp-fbtn" data-optf="out">خروج پول زیاد ⬇</button>
+      </div>
+      <div class="search-row" style="margin-bottom:10px;">
+        <input type="text" class="coin-input" id="optSearchInput" placeholder="🔍 جستجوی اختیار معامله (مثلا ضخود، طخود، خودرو یا قیمت اعمال)" autocomplete="off" />
       </div>
       <div id="optTop"></div>
       <div class="screener-list" id="optList" style="display:none">
@@ -8214,14 +8217,26 @@ function optSignal(candles, under, type, price){
   if (net >= 3) { label = 'خرید قوی'; cls = 'strong-buy'; } else if (net >= 1) { label = 'خرید'; cls = 'buy'; }
   else if (net <= -3) { label = 'فروش قوی'; cls = 'strong-sell'; } else if (net <= -1) { label = 'فروش'; cls = 'sell'; }
   else { label = 'خنثی'; cls = 'neutral'; }
-  let plan = null;
-  if (atr && price) { const risk = 1.5 * atr, stop = Math.max(price - risk, price * 0.3); plan = { entry: price, stop, tps: [1, 2, 3, 4].map(k => price + risk * k) }; }
+  if (type === 'call' && net <= 0) { label = 'بدون سیگنال خرید'; cls = 'neutral'; }
+  const plan = optPlan(candles, price);
   return { rows, label, cls, net, type, plan, atr, buys, sells };
 }
 function optFmtVal(rial){
   const t = rial / 10; // ریال → تومان
-  const fd = v => v.toFixed(1).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
-  return t >= 1e9 ? fd(t / 1e9) + ' میلیارد تومان' : t >= 1e6 ? fd(t / 1e6) + ' میلیون تومان' : Math.round(t).toLocaleString('fa-IR') + ' تومان';
+  const fd = v => (+v.toFixed(2)).toLocaleString('fa-IR');
+  if (t >= 1e12) return fd(t / 1e12) + ' بیلیون تومان';
+  if (t >= 1e9) return fd(t / 1e9) + ' میلیارد تومان';
+  if (t >= 1e6) return fd(t / 1e6) + ' میلیون تومان';
+  return Math.round(t).toLocaleString('fa-IR') + ' تومان';
+}
+// نقشه معامله: ورود + ۱ حد ضرر + ۳ حد سود (بر پایه ATR با سقف ریسک ۲۵٪ قیمت)
+function optPlan(candles, price){
+  if (!price) return null;
+  const atr = candles && candles.length >= 4 ? calcATR(candles) : null;
+  let risk = atr ? 1.5 * atr : price * 0.08;
+  risk = Math.min(Math.max(risk, price * 0.03), price * 0.25);
+  const stop = Math.max(price - risk, price * 0.3), r = price - stop;
+  return { entry: price, stop: Math.round(stop), tps: [1, 2, 3].map(k => Math.round(price + r * k)), atr };
 }
 
 async function analyzeOptionSymbol(sym) {
@@ -8278,9 +8293,6 @@ function optDetailHtml(x){
   let align='';
   if(u){ const up=/buy/.test(u.cls), dn=/sell/.test(u.cls);
     align = (up&&call)||(dn&&!call) ? '<span class="rp-badge bg-g">هم‌جهت با دارایی پایه ✅</span>' : (up&&!call)||(dn&&call) ? '<span class="rp-badge bg-r">خلاف جهت دارایی پایه ⚠</span>' : '<span class="rp-badge bg-b">پایه: خنثی</span>'; }
-  const strat = call
-    ? '<b>خریدار اختیار خرید:</b> سناریوی صعودی؛ حداکثر ضرر = پریمیوم، سود نامحدود.<br><b>کاورد کال:</b> سهم را دارید و کال می‌فروشید تا پریمیوم بگیرید؛ سود سهم در بالای قیمت اعمال سقف می‌خورد.<br><b>فروشنده کال بدون سهم:</b> ریسک زیان بالا + وجه تضمین.'
-    : '<b>خریدار اختیار فروش:</b> سناریوی نزولی یا بیمه؛ حداکثر ضرر = پریمیوم.<br><b>پروتکتیو پوت:</b> سهم را دارید و پوت می‌خرید تا کفِ ضرر مشخص شود.<br><b>فروشنده پوت:</b> یعنی پذیرش خرید سهم در قیمت اعمال؛ نیازمند وجه تضمین.';
   return `<div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;">
       <span class="rp-badge ${call?'bg-g':'bg-r'}">${call?'اختیار خرید':'اختیار فروش'}</span>${expBadge}
       ${k.moneyness?`<span class="rp-badge ${mCls}">${k.moneyness}</span>`:''}${align}
@@ -8292,8 +8304,7 @@ function optDetailHtml(x){
       <td>${fa(k.intrinsic)}</td><td>${fa(k.timeValue)}</td><td>${k.leverage?fd(k.leverage,1)+'×':'—'}</td><td>${k.iv?fd(k.iv*100,0)+'٪':'—'}</td></tr></tbody></table></div>
     ${k.delta!=null?`<div class="rp-tbl-wrap"><table class="rp-tbl"><thead><tr><th>دلتا</th><th>تتا (روزانه)</th><th>وگا (۱٪)</th><th>قیمت تئوریک</th></tr></thead><tbody><tr>
       <td>${fd(k.delta,2)}</td><td style="color:var(--red)">${fa(k.theta)}</td><td>${fa(k.vega)}</td><td>${fa(k.fair)}</td></tr></tbody></table></div>`:''}
-    <details style="font-size:11px;color:var(--muted);line-height:1.9;"><summary style="cursor:pointer;color:var(--text)">📘 توضیح استراتژی‌ها</summary>${strat}</details>
-    <div style="font-size:10px;color:var(--dim);line-height:1.7;">یونانی‌ها با مدل بلک‌شولز و نوسان تاریخی ۲۵ کندل اخیر پایه حساب شده‌اند و تقریبی‌اند.</div>`;
+    `;
 }
 function renderOptChain(){
   const el=document.getElementById('optChain'); if(!el) return;
@@ -8343,7 +8354,7 @@ document.getElementById('optSymbolInput').addEventListener('keydown', (e) => {
 });
 
 // ===== ۱۰ پرحجم‌ترین اختیار خرید و فروش (از Option.php) =====
-const OPT_TOP = { ts: 0, calls: [], puts: [], loading: false, open: {} };
+const OPT_TOP = { ts: 0, calls: [], puts: [], all: [], q: '', loading: false, open: {} };
 function optNum(o, ...keys){ for (const k of keys){ const v = Number(o[k]); if (!isNaN(v) && v > 0) return v; } return 0; }
 async function loadOptTop(force){
   const st = document.getElementById('optStatus');
@@ -8363,6 +8374,7 @@ async function loadOptTop(force){
     }).filter(o => o.l18 && o._t);
     if (!rows.length) throw new Error('داده‌ای دریافت نشد');
     const byVol = (a, b) => (b._vol - a._vol) || (b._val - a._val);
+    OPT_TOP.all = rows.slice().sort(byVol);
     OPT_TOP.calls = rows.filter(o => o._t === 'call').sort(byVol).slice(0, 10);
     OPT_TOP.puts  = rows.filter(o => o._t === 'put').sort(byVol).slice(0, 10);
     OPT_TOP.ts = Date.now();
@@ -8373,31 +8385,118 @@ async function loadOptTop(force){
   OPT_TOP.loading = false;
   renderOptTop();
 }
-function optRowOf(sym){ return OPT_TOP.calls.concat(OPT_TOP.puts).find(r => r.l18 === sym) || null; }
+function optRowOf(sym){ return OPT_TOP.calls.concat(OPT_TOP.puts, OPT_TOP.all).find(r => r.l18 === sym) || null; }
 function optValOf(o){ if (!o) return 0; return o._val || (o._vol && optNum(o,'pl','pc') ? o._vol * optNum(o,'pl','pc') * 1000 : 0); } // قرارداد ۱۰۰۰ سهمی
 function optSigBadge(sg){ return `<span class="rp-badge ${/buy/.test(sg.cls)?'bg-g':/sell/.test(sg.cls)?'bg-r':'bg-b'}">${sg.label}</span>`; }
+function optPlanTable(plan){
+  if (!plan) return '';
+  const f = v => Math.round(v).toLocaleString('fa-IR');
+  const pct = v => { const p = (v / plan.entry - 1) * 100; return (p >= 0 ? '+' : '−') + Math.abs(p).toFixed(0).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]) + '٪'; };
+  const sub = v => `<br><span style="font-size:10px;color:var(--dim)">${pct(v)}</span>`;
+  return `<div class="rp-tbl-wrap"><table class="rp-tbl"><thead><tr><th>ورود</th><th>حد ضرر</th><th>حد سود ۱</th><th>حد سود ۲</th><th>حد سود ۳</th></tr></thead><tbody><tr>
+    <td style="color:var(--blue);font-weight:800">${f(plan.entry)}</td>
+    <td style="color:var(--red);font-weight:800">${f(plan.stop)}${sub(plan.stop)}</td>
+    ${plan.tps.map(v => `<td style="color:var(--green);font-weight:800">${f(v)}${sub(v)}</td>`).join('')}</tr></tbody></table></div>`;
+}
 function optDetailCard(x, o){
-  const sg = x.optSig, call = sg ? sg.type === 'call' : true;
+  const sg = x.optSig;
+  const call = sg ? sg.type === 'call' : (x.contract ? x.contract.type === 'call' : !/^ط/.test(x.sym || ''));
   const val = optValOf(o);
+  const plan = (sg && sg.plan) || optPlan(x.candles, x.price);
   const stats = o ? `<div class="rp-tbl-wrap"><table class="rp-tbl"><thead><tr><th>ارزش معامله</th><th>حجم</th><th>موقعیت باز</th></tr></thead><tbody><tr>
     <td style="font-weight:800;color:var(--amber)">${val ? optFmtVal(val) : '—'}</td><td>${o._vol ? fmtCompact(o._vol) : '—'}</td><td>${o.interest_open ? fmtCompact(Number(o.interest_open)) : '—'}</td></tr></tbody></table></div>` : '';
-  const sigHtml = sg ? `<div class="rp-full" style="margin:10px 0 4px;font-weight:800;">🎯 سیگنال ${call ? 'اختیار خرید (Call)' : 'اختیار فروش (Put)'} با EMA · RSI · MACD · ATR: ${optSigBadge(sg)}</div>
-    ${sg.rows.map(r => `<div class="signal-row"><div class="signal-row-label">${escapeHtml(r.label)}<br><span style="font-size:10.5px;color:var(--dim)">${escapeHtml(r.note)}</span></div><div class="signal-row-badge ${r.verdict}">${r.verdict==='buy'?'خرید':r.verdict==='sell'?'فروش':'خنثی'}</div></div>`).join('')}
-    <div style="font-size:10px;color:var(--dim);margin:4px 0;">«خرید» یعنی شرایط برای خرید خودِ این قرارداد مناسب است و «فروش» یعنی خروج یا عدم ورود. سطوح ورود/حد ضرر/حد سود روی چارت بر پایه ATR است.</div>
-    <div class="rp-full" style="margin:8px 0 4px;">📈 چارت کندل استیک ${escapeHtml(x.sym || '')} با ورود، حد ضرر و حد سود</div>
-    <div style="overflow-x:auto;"><svg class="chart-svg" id="optCS_${escapeHtml(x.sym)}" viewBox="0 0 720 340" style="min-width:520px"></svg></div>` : '';
-  const cls = (x.finalClass==='strong-buy'||x.finalClass==='buy')?'bg-g':(x.finalClass==='strong-sell'||x.finalClass==='sell')?'bg-r':'bg-b';
+  const vv = r => (call && r.verdict === 'sell') ? 'neutral' : r.verdict;
+  const vt = v => v === 'buy' ? 'خرید' : v === 'sell' ? 'فروش' : 'خنثی';
+  const legend = call
+    ? '«خرید» یعنی شرایط ورود به این اختیار خرید مناسب است؛ اگر شرایط مناسب نباشد سیگنال خریدی صادر نمی‌شود.'
+    : '«خرید» یعنی شرایط برای خرید خودِ این قرارداد مناسب است و «فروش» یعنی خروج یا عدم ورود.';
+  const sigHtml = sg ? `<div class="rp-full" style="margin:10px 0 4px;font-weight:800;">🎯 ${call ? 'سیگنال خرید اختیار خرید (Call)' : 'سیگنال اختیار فروش (Put)'} با EMA · RSI · MACD · ATR: ${optSigBadge(sg)}</div>
+    ${sg.rows.map(r => `<div class="signal-row"><div class="signal-row-label">${escapeHtml(r.label)}<br><span style="font-size:10.5px;color:var(--dim)">${escapeHtml(r.note)}</span></div><div class="signal-row-badge ${vv(r)}">${vt(vv(r))}</div></div>`).join('')}
+    <div style="font-size:10px;color:var(--dim);margin:4px 0;">${legend} سطوح ورود/حد ضرر/حد سود روی چارت بر پایه ATR است.</div>` : '';
+  const chartHtml = plan ? `<div class="rp-full" style="margin:8px 0 4px;">📈 چارت کندل‌استیک ${escapeHtml(x.sym || '')} — ۲۰ کندل اخیر با ورود، ۱ حد ضرر و ۳ حد سود</div>
+    <div style="overflow-x:auto;"><svg class="chart-svg" id="optCS_${escapeHtml(x.sym)}" viewBox="0 0 720 340" style="min-width:520px"></svg></div>${optPlanTable(plan)}` : '';
+  const fl = x.finalLabel, fc = x.finalClass;
+  const noBuy = call && /sell/.test(fc);
+  const cls = noBuy ? 'bg-b' : (fc === 'strong-buy' || fc === 'buy') ? 'bg-g' : (fc === 'strong-sell' || fc === 'sell') ? 'bg-r' : 'bg-b';
   return `<div style="display:flex;flex-wrap:wrap;gap:6px;margin:10px 0;">
-    ${sg ? optSigBadge(sg) : `<span class="rp-badge ${cls}">${x.finalLabel}</span>`}
+    ${sg ? optSigBadge(sg) : `<span class="rp-badge ${cls}">${noBuy ? 'بدون سیگنال خرید' : fl}</span>`}
     <span class="rp-badge ${x.moneyFlow.available?x.moneyFlow.cls:'bg-b'}">${x.moneyFlow.available?x.moneyFlow.label:'ورود/خروج پول: در دسترس نیست'}</span>
     <span class="rp-badge ${x.riskPct>=60?'bg-r':x.riskPct>=35?'bg-a':'bg-g'}">ریسک: ٪${x.riskPct}</span></div>
-    ${stats}${sigHtml}${optLevelsTable(x.levels, x)}${optDetailHtml(x)}`;
+    ${stats}${sigHtml}${chartHtml}${optLevelsTable(x.levels, x)}${optDetailHtml(x)}`;
+}
+
+// چارت کندل‌استیک اختصاصی اختیار: ۲۰ کندل، مقیاس عمودی بر اساس خودِ کندل‌ها (تا کندل‌ها روی یک خط جمع نشوند)
+function drawOptionChart(svg, candlesIn, plan) {
+  const cs = (candlesIn || []).filter(c => c && c.o > 0 && c.h > 0 && c.l > 0 && c.c > 0 && isFinite(c.h) && isFinite(c.l)).slice(-20);
+  if (cs.length < 2) { svg.innerHTML = '<text x="360" y="170" text-anchor="middle" fill="#8B93A7" font-size="12" font-family="Vazirmatn">داده کندل کافی نیست</text>'; return; }
+  const W = 720, H = 340, padR = 84, R = W - padR, padTop = 16, padBottom = 24, padX = 12;
+  const n = cs.length, fmt = v => Math.round(v).toLocaleString('fa-IR');
+  let cmin = Math.min(...cs.map(c => c.l)), cmax = Math.max(...cs.map(c => c.h));
+  const minSpan = cmax * 0.04;
+  if (cmax - cmin < minSpan) { const m = (cmax + cmin) / 2; cmin = m - minSpan / 2; cmax = m + minSpan / 2; }
+  const cr = cmax - cmin;
+  let lo = cmin - cr * 0.08, hi = cmax + cr * 0.08;
+  const levels = [];
+  if (plan) {
+    levels.push({ v: plan.tps[2], c: '#3DDC97', t: 'TP3 · حد سود ۳', w: 1.3, d: '6,4' });
+    levels.push({ v: plan.tps[1], c: '#3DDC97', t: 'TP2 · حد سود ۲', w: 1.3, d: '6,4' });
+    levels.push({ v: plan.tps[0], c: '#3DDC97', t: 'TP1 · حد سود ۱', w: 1.3, d: '6,4' });
+    levels.push({ v: plan.entry, c: '#5B9CF6', t: 'ورود', w: 1.6, d: '4,3' });
+    levels.push({ v: plan.stop, c: '#FF5C72', t: 'SL · حد ضرر', w: 1.8, d: '' });
+    levels.forEach(l => {
+      if (l.v > hi && l.v <= cmax + cr * 1.6) hi = l.v + cr * 0.06;
+      if (l.v < lo && l.v >= cmin - cr * 1.0) lo = l.v - cr * 0.06;
+    });
+  }
+  const range = (hi - lo) || 1;
+  const slotW = (R - padX) / n, bodyW = Math.max(3, slotW * 0.6);
+  const yFor = v => padTop + (1 - (v - lo) / range) * (H - padTop - padBottom);
+  const clampY = v => Math.min(H - padBottom, Math.max(padTop, yFor(v)));
+  const xFor = i => padX + i * slotW + slotW / 2;
+
+  let g = `<defs><linearGradient id="ocbg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#101a15"/><stop offset="1" stop-color="#070908"/></linearGradient></defs><rect x="0" y="0" width="${W}" height="${H}" rx="12" fill="url(#ocbg)"/><rect x="${R}" y="0" width="${padR}" height="${H}" fill="#000" opacity="0.35"/>`;
+  for (let k = 0; k <= 4; k++) { const y = padTop + (H - padTop - padBottom) * k / 4; g += `<line x1="${padX}" y1="${y.toFixed(1)}" x2="${R}" y2="${y.toFixed(1)}" stroke="#232A3B" stroke-width="0.6" opacity="0.55"/>`; }
+  const tags = [];
+  if (plan) {
+    const yE = clampY(plan.entry), yS = clampY(plan.stop), yT = clampY(plan.tps[2]);
+    g += `<rect x="${padX}" y="${Math.min(yE, yS).toFixed(1)}" width="${R - padX}" height="${Math.abs(yE - yS).toFixed(1)}" fill="#FF5C72" opacity="0.10"/>`;
+    g += `<rect x="${padX}" y="${Math.min(yE, yT).toFixed(1)}" width="${R - padX}" height="${Math.abs(yE - yT).toFixed(1)}" fill="#3DDC97" opacity="0.07"/>`;
+    levels.forEach(l => {
+      const y = clampY(l.v), clipped = yFor(l.v) < padTop - 0.5 || yFor(l.v) > H - padBottom + 0.5;
+      g += `<line x1="${padX}" y1="${y.toFixed(1)}" x2="${R}" y2="${y.toFixed(1)}" stroke="${l.c}" stroke-width="${l.w}" ${l.d ? `stroke-dasharray="${l.d}"` : ''} opacity="0.95"/>`;
+      tags.push({ y, c: l.c, t: fmt(l.v), label: l.t + (clipped ? (l.v > hi ? ' ▲' : ' ▼') : '') });
+    });
+  }
+  // کندل‌ها
+  cs.forEach((c, i) => {
+    const x = xFor(i), up = c.c >= c.o, color = up ? '#3DDC97' : '#FF5C72';
+    const yO = yFor(c.o), yC = yFor(c.c);
+    g += `<line x1="${x.toFixed(1)}" y1="${yFor(c.h).toFixed(1)}" x2="${x.toFixed(1)}" y2="${yFor(c.l).toFixed(1)}" stroke="${color}" stroke-width="1.4" stroke-linecap="round"/>`;
+    g += `<rect x="${(x - bodyW / 2).toFixed(1)}" y="${Math.min(yO, yC).toFixed(1)}" width="${bodyW.toFixed(1)}" height="${Math.max(1.5, Math.abs(yC - yO)).toFixed(1)}" fill="${color}" rx="1"/>`;
+    if (i % 5 === 0 || i === n - 1) {
+      let lbl = ''; try { lbl = new Date(c.t).toLocaleDateString('fa-IR', { month: 'numeric', day: 'numeric' }); } catch (e) {}
+      if (lbl) g += `<text x="${x.toFixed(1)}" y="${H - 8}" text-anchor="middle" fill="#5A6379" font-size="8.5" font-family="Vazirmatn">${lbl}</text>`;
+    }
+  });
+  // برچسب‌ها (بدون روی‌هم‌افتادگی)
+  tags.sort((a, b) => a.y - b.y);
+  for (let i = 1; i < tags.length; i++) if (tags[i].y - tags[i - 1].y < 15) tags[i].y = tags[i - 1].y + 15;
+  tags.forEach(t => {
+    const w = 11 + t.label.length * 5.2;
+    g += `<rect x="${padX + 3}" y="${(t.y - 8).toFixed(1)}" width="${w.toFixed(0)}" height="15" rx="4" fill="#0B1020" stroke="${t.c}" stroke-width="0.7" opacity="0.92"/>`;
+    g += `<text x="${padX + 8}" y="${(t.y + 3).toFixed(1)}" fill="${t.c}" font-size="9.5" font-weight="800" font-family="Vazirmatn">${t.label}</text>`;
+    g += `<polygon points="${R},${t.y.toFixed(1)} ${R + 5},${(t.y - 7).toFixed(1)} ${R + 5},${(t.y + 7).toFixed(1)}" fill="${t.c}"/><rect x="${R + 5}" y="${(t.y - 7).toFixed(1)}" width="${padR - 7}" height="14" rx="3" fill="${t.c}"/>`;
+    g += `<text x="${(R + 5 + (padR - 7) / 2).toFixed(1)}" y="${(t.y + 3.5).toFixed(1)}" text-anchor="middle" fill="#04120b" font-size="9.5" font-weight="800" font-family="Vazirmatn">${t.t}</text>`;
+  });
+  svg.__geom = { candles: cs, padX, slotW, W, n, fmt };
+  g += '<g id="chartCross" pointer-events="none"></g>';
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.innerHTML = g;
 }
 function drawOptCandle(sym){
   const x = OPT_CACHE[sym], svg = document.getElementById('optCS_' + sym);
-  if (!x || x.status !== 'ok' || !svg || !x.d) return;
-  const d = x.d;
-  drawCandleChart(d.candles.slice(-25), d.support, d.resistance, d.orderBlock, d.liquidity || {}, true, d.pullback, d.breakout, { svgEl: svg, plan: x.optSig ? x.optSig.plan : null });
+  if (!x || x.status !== 'ok' || !svg) return;
+  drawOptionChart(svg, x.candles, (x.optSig && x.optSig.plan) || optPlan(x.candles, x.price));
 }
 function optTopRow(o){
   const fa = n => Math.round(n).toLocaleString('fa-IR');
@@ -8423,42 +8522,77 @@ function optTopRow(o){
       ${o.interest_open?`<span class="rp-badge bg-b">موقعیت باز ${fmtCompact(Number(o.interest_open))}</span>`:''}
       <button class="screener-refresh-btn opt-top-btn" data-osym="${sym}" style="margin-inline-start:auto;">${OPT_TOP.open[o.l18]?'▲ بستن':'📊 تحلیل'}</button>
     </div>
-    <div id="optTD_${sym}" style="display:${OPT_TOP.open[o.l18]?'block':'none'};">${OPT_TOP.open[o.l18]==='ok'&&OPT_CACHE[o.l18]&&OPT_CACHE[o.l18].status==='ok'?optDetailCard(OPT_CACHE[o.l18], o):''}</div>
+    <div id="optTD_${sym}" style="display:${OPT_TOP.open[o.l18]?'block':'none'};">${OPT_TOP.open[o.l18]==='ok'&&OPT_CACHE[o.l18]&&OPT_CACHE[o.l18].status==='ok'?optDetailCard(OPT_CACHE[o.l18], o):(OPT_TOP.open[o.l18]==='loading'?'<div class="screener-status">در حال تحلیل...</div>':'')}</div>
   </div>`;
 }
-function optTally(list){
+function optTally(list, buyOnly){
   const g = list.map(o => OPT_CACHE[o.l18] && OPT_CACHE[o.l18].optSig).filter(Boolean); if (!g.length) return '';
   const b = g.filter(x => /buy/.test(x.cls)).length, r = g.filter(x => /sell/.test(x.cls)).length;
-  return ` — ${b.toLocaleString('fa-IR')} خرید · ${r.toLocaleString('fa-IR')} فروش`;
+  return buyOnly ? ` — ${b.toLocaleString('fa-IR')} سیگنال خرید` : ` — ${b.toLocaleString('fa-IR')} خرید · ${r.toLocaleString('fa-IR')} فروش`;
+}
+function optNorm(s){ return optToEn(String(s == null ? '' : s)).replace(/ي/g, 'ی').replace(/ك/g, 'ک').replace(/[\s\u200c]+/g, '').toLowerCase(); }
+function optVisible(){
+  const q = optNorm(OPT_TOP.q);
+  if (!q) return { calls: OPT_TOP.calls, puts: OPT_TOP.puts, searching: false };
+  const hit = o => [o.l18, o.base_l18, o.l30, o.price_strike].some(v => v != null && optNorm(v).includes(q));
+  const found = OPT_TOP.all.filter(hit);
+  return { calls: found.filter(o => o._t === 'call').slice(0, 30), puts: found.filter(o => o._t === 'put').slice(0, 30), searching: true, total: found.length };
+}
+// بهترین سیگنال خرید بین اختیارهای خرید پرحجم (فقط خرید؛ هیچ سیگنال فروشی نمایش داده نمی‌شود)
+function optBestCallHtml(){
+  const f = v => Math.round(v).toLocaleString('fa-IR'), fd = v => (+v).toLocaleString('fa-IR');
+  const box = inner => `<div style="background:linear-gradient(135deg,rgba(61,220,151,.12),rgba(61,220,151,.03));border:1px solid rgba(61,220,151,.35);border-radius:12px;padding:12px;margin:10px 0;">${inner}</div>`;
+  const ready = OPT_TOP.calls.map(o => ({ o, x: OPT_CACHE[o.l18] })).filter(r => r.x && r.x.status === 'ok' && r.x.optSig);
+  const pending = OPT_TOP.calls.length - ready.length;
+  const findBtn = `<button class="screener-refresh-btn" id="optBestBtn">${ready.length ? '🔄 تحلیل بقیه' : '🏆 پیدا کردن بهترین سیگنال خرید'}</button>`;
+  if (!ready.length) return box(`<div class="rp-full" style="font-weight:800;margin-bottom:8px;">🏆 بهترین سیگنال اختیار خرید</div><div style="font-size:11.5px;color:var(--muted);margin-bottom:8px;">۱۰ اختیار خرید پرحجم تحلیل می‌شوند و بهترین سیگنال خرید معرفی می‌شود.</div>${findBtn}`);
+  const buys = ready.filter(r => /buy/.test(r.x.optSig.cls))
+    .sort((a, b) => (b.x.optSig.net - a.x.optSig.net) || (a.x.riskPct - b.x.riskPct) || ((b.x.volume || 0) - (a.x.volume || 0)));
+  const tail = pending > 0 ? `<div style="margin-top:8px;">${findBtn}</div>` : '';
+  if (!buys.length) return box(`<div class="rp-full" style="font-weight:800;">🏆 بهترین سیگنال اختیار خرید</div><div style="font-size:11.5px;color:var(--muted);margin-top:6px;">در ${fd(ready.length)} اختیار خرید تحلیل‌شده فعلاً سیگنال خریدی وجود ندارد.</div>${tail}`);
+  const { o, x } = buys[0], pl = x.optSig.plan;
+  return box(`<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
+      <div><div class="rp-full" style="font-weight:800;">🏆 بهترین سیگنال خرید</div><div class="rp-sym">${escapeHtml(o.l18)}</div></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">${optSigBadge(x.optSig)}<span class="rp-badge ${x.riskPct>=60?'bg-r':x.riskPct>=35?'bg-a':'bg-g'}">ریسک: ٪${fd(x.riskPct)}</span></div></div>
+    ${pl ? `<div style="font-size:11.5px;line-height:2;margin-top:6px;">ورود <b style="color:var(--blue)">${f(pl.entry)}</b> · حد ضرر <b style="color:var(--red)">${f(pl.stop)}</b><br>حد سود: <b style="color:var(--green)">${f(pl.tps[0])}</b> · <b style="color:var(--green)">${f(pl.tps[1])}</b> · <b style="color:var(--green)">${f(pl.tps[2])}</b></div>` : ''}
+    <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;"><button class="screener-refresh-btn opt-top-btn" data-osym="${escapeHtml(o.l18)}">${OPT_TOP.open[o.l18] ? '▲ بستن' : '📊 مشاهده تحلیل و چارت'}</button>${pending > 0 ? findBtn : ''}</div>`);
 }
 function renderOptTop(){
   const el = document.getElementById('optTop'); if (!el) return;
   if (OPT_TOP.loading && !OPT_TOP.calls.length) { el.innerHTML = '<div class="screener-status">در حال دریافت...</div>'; return; }
   if (!OPT_TOP.calls.length && !OPT_TOP.puts.length) { el.innerHTML = '<button class="screener-refresh-btn" id="optTopRefresh">🔄 تلاش دوباره</button>'; return; }
-  const sec = (title, list, color) => `<div class="rp-panel-title" style="margin:14px 0 8px;display:flex;align-items:center;gap:8px;"><span style="color:${color}">●</span>${title}</div>${list.map(optTopRow).join('')}`;
-  el.innerHTML = `<div style="display:flex;justify-content:flex-end;gap:6px;margin-bottom:4px;"><button class="screener-refresh-btn" id="optTopAll">⚡ تحلیل همه ۲۰ نماد</button><button class="screener-refresh-btn" id="optTopRefresh">🔄 بروزرسانی</button></div>`
-    + sec('۱۰ اختیار خرید پرحجم' + optTally(OPT_TOP.calls), OPT_TOP.calls, 'var(--green)') + sec('۱۰ اختیار فروش پرحجم' + optTally(OPT_TOP.puts), OPT_TOP.puts, 'var(--red)');
+  const V = optVisible();
+  const sec = (title, list, color) => `<div class="rp-panel-title" style="margin:14px 0 8px;display:flex;align-items:center;gap:8px;"><span style="color:${color}">●</span>${title}</div>${list.length ? list.map(optTopRow).join('') : '<div class="screener-status">موردی پیدا نشد</div>'}`;
+  const count = V.calls.length + V.puts.length;
+  const head = `<div style="display:flex;justify-content:flex-end;gap:6px;margin-bottom:4px;"><button class="screener-refresh-btn" id="optTopAll">⚡ تحلیل همه ${count.toLocaleString('fa-IR')} نماد</button><button class="screener-refresh-btn" id="optTopRefresh">🔄 بروزرسانی</button></div>`;
+  const callTitle = V.searching ? `اختیار خرید — ${V.calls.length.toLocaleString('fa-IR')} نتیجه` : '۱۰ اختیار خرید پرحجم' + optTally(V.calls, true);
+  const putTitle = V.searching ? `اختیار فروش — ${V.puts.length.toLocaleString('fa-IR')} نتیجه` : '۱۰ اختیار فروش پرحجم' + optTally(V.puts, false);
+  el.innerHTML = head + (V.searching ? '' : optBestCallHtml()) + sec(callTitle, V.calls, 'var(--green)') + sec(putTitle, V.puts, 'var(--red)');
   Object.keys(OPT_TOP.open).forEach(k => { if (OPT_TOP.open[k] === 'ok') drawOptCandle(k); });
 }
+async function optAnalyzeBatch(syms, btn){
+  const all = syms.filter(sym => !(OPT_CACHE[sym] && OPT_CACHE[sym].status === 'ok'));
+  if (btn) { btn.disabled = true; btn.textContent = 'در حال تحلیل...'; }
+  let idx = 0;
+  const worker = async () => { while (idx < all.length) { const sym = all[idx++]; await analyzeOptionSymbol(sym); renderOptTop(); } };
+  await Promise.all([worker(), worker(), worker()]);
+  renderOptTop();
+}
+document.getElementById('optSearchInput').addEventListener('input', (e) => { OPT_TOP.q = e.target.value; renderOptTop(); });
 document.getElementById('optTop').addEventListener('click', async (e) => {
   if (e.target.closest('#optTopRefresh')) { loadOptTop(true); return; }
-  if (e.target.closest('#optTopAll')) {
-    const all = OPT_TOP.calls.concat(OPT_TOP.puts).map(r => r.l18).filter(sym => !(OPT_CACHE[sym] && OPT_CACHE[sym].status === 'ok'));
-    const b = e.target.closest('#optTopAll'); b.disabled = true; b.textContent = 'در حال تحلیل...';
-    let idx = 0;
-    const worker = async () => { while (idx < all.length) { const sym = all[idx++]; await analyzeOptionSymbol(sym); renderOptTop(); } };
-    await Promise.all([worker(), worker(), worker()]);
-    renderOptTop(); return;
-  }
+  if (e.target.closest('#optTopAll')) { const V = optVisible(); await optAnalyzeBatch(V.calls.concat(V.puts).map(r => r.l18), e.target.closest('#optTopAll')); return; }
+  if (e.target.closest('#optBestBtn')) { await optAnalyzeBatch(OPT_TOP.calls.map(r => r.l18), e.target.closest('#optBestBtn')); return; }
   const btn = e.target.closest('.opt-top-btn'); if (!btn) return;
   const sym = btn.dataset.osym, box = document.getElementById('optTD_' + sym);
-  if (OPT_TOP.open[sym]) { OPT_TOP.open[sym] = null; box.style.display = 'none'; btn.textContent = '📊 تحلیل'; return; }
+  if (!box) return;
+  if (OPT_TOP.open[sym]) { OPT_TOP.open[sym] = null; box.style.display = 'none'; btn.textContent = '📊 تحلیل'; renderOptTop(); return; }
   OPT_TOP.open[sym] = 'loading'; box.style.display = 'block'; btn.textContent = '▲ بستن';
   box.innerHTML = '<div class="screener-status">در حال تحلیل...</div>';
   await analyzeOptionSymbol(sym);
   if (!OPT_TOP.open[sym]) return;
   const x = OPT_CACHE[sym];
-  if (x && x.status === 'ok') { OPT_TOP.open[sym] = 'ok'; box.innerHTML = optDetailCard(x, optRowOf(sym)); drawOptCandle(sym); renderOptTop(); }
+  if (x && x.status === 'ok') { OPT_TOP.open[sym] = 'ok'; renderOptTop(); const b2 = document.getElementById('optTD_' + sym); if (b2) b2.scrollIntoView({ block: 'nearest' }); }
   else { OPT_TOP.open[sym] = 'err'; box.innerHTML = `<div class="rp-full" style="color:var(--red)">⚠ ${escapeHtml((x && x.error) || 'تحلیل ناموفق بود')}</div>`; }
 });
 
