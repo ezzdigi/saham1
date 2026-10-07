@@ -3804,6 +3804,10 @@ input:focus,select:focus,textarea:focus{outline:0;border-color:var(--green)!impo
       <div class="settings-link-row">
         دریافت کلید رایگان شخصی: <a href="https://brsapi.ir/tsetmc-exchange-free-bourse-api-key-request/" target="_blank" rel="noopener noreferrer">brsapi.ir</a>
       </div>
+      <label class="settings-link-row" style="display:flex;align-items:center;gap:8px;margin-top:10px;cursor:pointer">
+        <input type="checkbox" id="settingsBrsAioToggle" />
+        <span>من کاربر بسته AIO هستم (فاصله‌ی درخواست‌ها کمتر می‌شود)</span>
+      </label>
     </div>
 
   </div><!-- /#settingsView -->
@@ -3893,12 +3897,48 @@ function fetchWithTimeout(url, ms) {
   return fetch(url, { signal: controller.signal }).finally(() => clearTimeout(timer));
 }
 
+// ---- رعایت قوانین استفاده منصفانه BrsApi ----
+// ۱) فاصله‌ی «شروع» دو درخواست متوالی برای هر کلید: حداقل ۳۰۰ms (کاربر AIO: حداقل ۵۰ms) — با حاشیه‌ی امن
+// ۲) سقف ۲۰ درخواست در ثانیه برای هر IP — با فاصله‌ی ۳۲۰ms حدود ۳ درخواست در ثانیه می‌شود
+// همه‌ی درخواست‌ها (مستقیم، پراکسی، تلاش مجدد) از یک صف مرکزی عبور می‌کنند تا هیچ‌وقت موازی/پشت‌سرهم نروند.
+const BRS_AIO_STORAGE = 'ezzdigi_brsapi_aio';
+const BRS_GAP_NORMAL = 320, BRS_GAP_AIO = 70;
+function isBrsAio() { try { return localStorage.getItem(BRS_AIO_STORAGE) === '1'; } catch (e) { return false; } }
+let brsNextSlot = 0;
+function brsSlot() {
+  const now = Date.now();
+  const at = Math.max(now, brsNextSlot);
+  brsNextSlot = at + (isBrsAio() ? BRS_GAP_AIO : BRS_GAP_NORMAL);
+  return at > now ? new Promise(r => setTimeout(r, at - now)) : Promise.resolve();
+}
+function brsBackoff(ms) { brsNextSlot = Math.max(brsNextSlot, Date.now() + ms); } // بعد از 429 مکث بیشتر
+
+// کش کوتاه‌مدت: درخواست‌های کاملاً یکسان (مثلاً Symbol.php یک نماد که در یک تحلیل دو بار لازم می‌شود)
+// در ۶ ثانیه فقط یک بار به API می‌رسند. هر مصرف‌کننده clone مستقل پاسخ را می‌گیرد.
+const BRS_CACHE_TTL = 6000;
+const brsCache = new Map();
 async function brsFetch(url) {
+  const now = Date.now();
+  for (const [k, v] of brsCache) if (now - v.ts > BRS_CACHE_TTL) brsCache.delete(k);
+  let entry = brsCache.get(url);
+  if (!entry) {
+    const p = brsFetchRaw(url);
+    entry = { ts: now, p };
+    brsCache.set(url, entry);
+    p.catch(() => { if (brsCache.get(url) === entry) brsCache.delete(url); });
+  }
+  const res = await entry.p;
+  return res.clone();
+}
+
+async function brsFetchRaw(url) {
   let directErr = '';
   try {
+    await brsSlot();
     const res = await fetchWithTimeout(url, 10000);
     if (res && res.ok) return res;
     directErr = 'HTTP ' + (res ? res.status : '?');
+    if (res && res.status === 429) brsBackoff(2500);
   } catch (e) {
     directErr = (e && e.name ? e.name : 'Error') + ': ' + (e && e.message ? e.message : e);
   }
@@ -3908,8 +3948,10 @@ async function brsFetch(url) {
   }
   console.warn('[BrsApi] اتصال مستقیم ناموفق بود (' + directErr + ')، تلاش از طریق پراکسی...');
   try {
+    await brsSlot();
     const res2 = await fetchWithTimeout(CORS_PROXY + encodeURIComponent(url), 15000);
     if (res2 && res2.ok) return res2;
+    if (res2 && res2.status === 429) brsBackoff(2500);
     throw new Error('HTTP ' + (res2 ? res2.status : '?'));
   } catch (e2) {
     const proxyErr = (e2 && e2.name ? e2.name : 'Error') + ': ' + (e2 && e2.message ? e2.message : e2);
@@ -4515,12 +4557,12 @@ async function loadScreener(symbols, isBourse, tf, statusElId, listElId) {
   statusEl.textContent = 'در حال دریافت پیشنهادها…';
   listEl.innerHTML = '';
 
-  const results = await Promise.allSettled(symbols.map(async sym => {
+  const results = await mapWithConcurrency(symbols, 3, async sym => {
     const d = await buildAnalysisData(sym, tf, isBourse, false);
     const fmtAny = (n) => isBourse ? fmtRial(n) : fmtPrice(n);
     const { votes, finalLabel, finalClass } = computeSignalVotes(d, fmtAny);
     return { symbol: sym, d, votes, finalLabel, finalClass, fmtAny };
-  }));
+  });
 
   const succeeded = results
     .map((r, i) => ({ r, sym: symbols[i] }))
@@ -8219,6 +8261,14 @@ document.getElementById('settingsBrsClearBtn').addEventListener('click', () => {
   emaLoaded = false;
   fetchMarketOverview();
 });
+(function () {
+  const t = document.getElementById('settingsBrsAioToggle');
+  if (!t) return;
+  t.checked = isBrsAio();
+  t.addEventListener('change', () => {
+    try { localStorage.setItem(BRS_AIO_STORAGE, t.checked ? '1' : '0'); } catch (e) { /* ignore */ }
+  });
+})();
 refreshSettingsBrsStatus();
 
 // --- تب «اختیار معامله» ---
