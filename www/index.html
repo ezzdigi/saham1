@@ -3697,16 +3697,47 @@ const BRS_DEFAULT_KEY_CACHE = 'ezzdigi_brsapi_default_key_cache';
 const BRS_USER_KEY_STORAGE = 'ezzdigi_brsapi_user_key';
 let brsDefaultKeyRuntime = null; // در حافظه، بعد از اولین دریافت موفق از سرور
 
+// استخراج کلید با پشتیبانی از ساختارهای مختلف JSON بک‌اند
+// (مثلاً brsapi_key در ریشه یا داخل data/config/result).
+function extractSharedBrsApiKey(payload) {
+  const keyNames = ['brsapi_key', 'brsApiKey', 'brs_api_key', 'api_key', 'apiKey', 'key'];
+  const visited = new Set();
+  function walk(value, depth) {
+    if (!value || typeof value !== 'object' || depth > 5 || visited.has(value)) return '';
+    visited.add(value);
+    for (const name of keyNames) {
+      const candidate = value[name];
+      if (typeof candidate === 'string') {
+        const key = candidate.trim();
+        if (/^[A-Za-z0-9._-]{16,256}$/.test(key) && !/^(undefined|null|your[_-]?key|change[_-]?me|not[_-]?configured)$/i.test(key)) return key;
+      }
+    }
+    for (const name of ['data', 'config', 'result', 'settings', 'public_config', 'credentials']) {
+      const found = walk(value[name], depth + 1);
+      if (found) return found;
+    }
+    return '';
+  }
+  return walk(payload, 0);
+}
+
 // در اولین اجرای اپ، کلید مشترک فعلی رو از بک‌اند می‌گیره و کش می‌کنه
 async function refreshDefaultBrsApiKey() {
   try {
     const res = await fetchWithTimeout('https://sahmyekom.ir/backend/api/public_config.php', 8000);
-    if (res && res.ok) {
-      const data = await res.json();
-      if (data && typeof data.brsapi_key === 'string' && /^[A-Za-z0-9]{16,64}$/.test(data.brsapi_key)) {
-        brsDefaultKeyRuntime = data.brsapi_key;
-        try { localStorage.setItem(BRS_DEFAULT_KEY_CACHE, data.brsapi_key); } catch (e) {}
-      }
+    if (!res || !res.ok) return;
+    const text = await res.text();
+    let data = null;
+    try { data = JSON.parse(text.replace(/^\uFEFF/, '').trim()); } catch (e) {
+      console.warn('[BrsApi] پاسخ public_config.php JSON معتبر نیست');
+      return;
+    }
+    const key = extractSharedBrsApiKey(data);
+    if (key) {
+      brsDefaultKeyRuntime = key;
+      try { localStorage.setItem(BRS_DEFAULT_KEY_CACHE, key); } catch (e) {}
+    } else {
+      console.warn('[BrsApi] پاسخ سرور دریافت شد اما فیلد کلید شناخته‌شده پیدا نشد', data && typeof data === 'object' ? Object.keys(data) : typeof data);
     }
   } catch (e) {
     console.warn('[BrsApi] گرفتن کلید مشترک از سرور ناموفق بود، از کش/مقدار قبلی استفاده می‌شود', e);
@@ -3721,7 +3752,7 @@ function getBrsApiKey() {
   if (brsDefaultKeyRuntime) return brsDefaultKeyRuntime;
   try {
     const cached = localStorage.getItem(BRS_DEFAULT_KEY_CACHE);
-    if (cached && /^[A-Za-z0-9]{16,64}$/.test(cached.trim())) return cached.trim();
+    if (cached && /^[A-Za-z0-9._-]{16,256}$/.test(cached.trim())) return cached.trim();
   } catch (e) {}
   return ''; // کلیدی در کد اپ نگهداری نمی‌شود؛ کلید مشترک فقط از سرور گرفته می‌شود یا کاربر کلید شخصی وارد می‌کند
 }
@@ -7907,11 +7938,16 @@ document.querySelectorAll('#resTfTabs [data-restf]').forEach(btn => {
   const tests = [
     { name: 'سرور کلید مشترک (sahmyekom.ir)', run: async () => {
         const r = await timedFetch('https://sahmyekom.ir/backend/api/public_config.php', 8000);
-        if (!r.res.ok) return { ok: false, msg: 'HTTP ' + r.res.status };
-        const k = r.json && r.json.brsapi_key;
-        return (typeof k === 'string' && /^[A-Za-z0-9]{16,64}$/.test(k))
-          ? { ok: true, msg: 'کلید مشترک از سرور دریافت شد' }
-          : { ok: false, msg: 'سرور جواب داد ولی کلید معتبری در پاسخ نبود' };
+        if (!r.res.ok) return { ok: false, msg: 'HTTP ' + r.res.status + (serverMsg(r.text) ? ' — ' + serverMsg(r.text) : '') };
+        const k = extractSharedBrsApiKey(r.json);
+        if (k) {
+          brsDefaultKeyRuntime = k;
+          try { localStorage.setItem(BRS_DEFAULT_KEY_CACHE, k); } catch (e) {}
+          return { ok: true, msg: 'کلید مشترک دریافت و ذخیره شد' };
+        }
+        const fields = r.json && typeof r.json === 'object' ? Object.keys(r.json).join(', ') : (r.json === null ? 'پاسخ JSON نیست' : typeof r.json);
+        const detail = serverMsg(r.text);
+        return { ok: false, msg: detail ? detail : 'فیلد کلید پیدا نشد؛ فیلدهای پاسخ: ' + (fields || 'خالی') };
     } },
     { name: 'BrsApi — اتصال مستقیم', run: async () => {
         if (!getBrsApiKey()) return { ok: false, msg: 'کلیدی در دسترس نیست (کلید مشترک هنوز از سرور نیامده و کلید شخصی هم وارد نشده)' };
