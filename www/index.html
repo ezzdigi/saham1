@@ -104,6 +104,10 @@ body {
 .mo-cell-change.down { color: var(--red); }
 .mo-status { font-size: 11px; color: var(--dim); text-align: center; margin-top: 8px; line-height: 1.7; }
 
+.mo-cell-value.mo-ffv{direction:rtl;background:none!important;-webkit-background-clip:border-box!important;background-clip:border-box!important;-webkit-text-fill-color:currentColor;font-size:13px}
+.mo-cell-value.mo-ffv.in{color:var(--green)}
+.mo-cell-value.mo-ffv.out{color:var(--red)}
+
 /* Risk Profile Questionnaire */
 .risk-profile-card {
   background: var(--panel);
@@ -2419,118 +2423,6 @@ input:focus,select:focus,textarea:focus{outline:0;border-color:var(--green)!impo
 .moneybox>div{background:var(--panel-raised);border:1px solid var(--line);border-radius:12px;padding:9px 6px;text-align:center;font-size:13px}
 .moneybox small{display:block;font-size:10px;color:var(--dim);margin-bottom:4px}
 </style>
-<style id="sgStyle">
-/* ===== تب «سیگنال‌های موفق» ===== */
-#successView{padding-bottom:34px}
-.sg-hero{position:relative;overflow:hidden;border-radius:20px;padding:18px 16px 16px;margin-bottom:14px;border:1px solid rgba(24,230,160,.22)}
-.sg-hero::before{content:"";position:absolute;inset:-70%;background:conic-gradient(from 0deg,transparent 0 68%,rgba(24,230,160,.55) 82%,rgba(72,167,255,.45) 92%,transparent 100%);animation:sgSpin 6s linear infinite;opacity:.55}
-.sg-hero::after{content:"";position:absolute;inset:1.5px;border-radius:18.5px;background:linear-gradient(135deg,#0B1620,#0A0F18 60%,#0E1424)}
-.sg-hero>*{position:relative;z-index:1}
-.sg-hero-top{display:flex;align-items:center;gap:12px}
-.sg-trophy{font-size:40px;line-height:1;animation:sgFloat 2.6s ease-in-out infinite;filter:drop-shadow(0 6px 16px rgba(255,176,32,.5))}
-.sg-title{font-size:19px;font-weight:900;background:linear-gradient(90deg,#18E6A0,#48A7FF,#A77BFF,#18E6A0);background-size:240% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:sgShimmer 5s linear infinite}
-.sg-sub{font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.8}
-.sg-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.sg-btn{border:1px solid rgba(24,230,160,.35);background:rgba(24,230,160,.08);color:var(--green,#18E6A0);font:inherit;font-size:12px;font-weight:700;padding:8px 13px;border-radius:999px;cursor:pointer;transition:transform .15s,box-shadow .2s,background .2s}
-.sg-btn:hover{background:rgba(24,230,160,.16);box-shadow:0 0 16px rgba(24,230,160,.25);transform:translateY(-1px)}
-.sg-btn:disabled{opacity:.55;cursor:wait}
-.sg-btn.sg-danger{border-color:rgba(255,91,114,.35);color:#FF5B72;background:rgba(255,91,114,.07)}
-.sg-btn.spin .sg-ico{display:inline-block;animation:sgSpin 1s linear infinite}
-.sg-status{font-size:11px;color:var(--dim);margin-top:9px;min-height:16px}
-
-.sg-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
-@media(min-width:700px){.sg-stats{grid-template-columns:repeat(4,1fr)}}
-.sg-stat{position:relative;overflow:hidden;border-radius:16px;padding:14px 10px;text-align:center;background:rgba(18,28,46,.72);border:1px solid rgba(111,129,156,.22);animation:sgIn .6s cubic-bezier(.2,.8,.2,1) both}
-.sg-stat:nth-child(2){animation-delay:.08s}.sg-stat:nth-child(3){animation-delay:.16s}.sg-stat:nth-child(4){animation-delay:.24s}
-.sg-stat::after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.07),transparent);transform:skewX(-18deg);animation:sgSweep 4.5s ease-in-out infinite}
-.sg-stat-val{font-size:25px;font-weight:900;direction:ltr;font-variant-numeric:tabular-nums;color:var(--green,#18E6A0)}
-.sg-stat-lbl{font-size:11px;color:var(--muted);margin-top:3px}
-.sg-ring{width:74px;height:74px;display:block;margin:0 auto 2px}
-.sg-ring circle{fill:none;stroke-width:8;stroke-linecap:round}
-.sg-ring .bg{stroke:rgba(255,255,255,.08)}
-.sg-ring .fg{stroke:url(#sgGrad);stroke-dasharray:264;stroke-dashoffset:264;transition:stroke-dashoffset 1.6s cubic-bezier(.2,.8,.2,1);transform:rotate(-90deg);transform-origin:50% 50%}
-.sg-ring-wrap{position:relative}
-.sg-ring-txt{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:900;direction:ltr;color:var(--text)}
-
-.sg-panel{border-radius:16px;padding:13px;margin-bottom:14px;background:rgba(18,28,46,.6);border:1px solid rgba(111,129,156,.2)}
-.sg-panel-t{font-size:12.5px;font-weight:800;margin-bottom:10px;color:var(--text)}
-.sg-bar-row{display:grid;grid-template-columns:104px 1fr 54px;gap:8px;align-items:center;margin:7px 0;font-size:11.5px}
-.sg-bar-name{color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sg-bar-track{height:9px;border-radius:9px;background:rgba(255,255,255,.07);overflow:hidden;direction:ltr}
-.sg-bar-fill{height:100%;width:0;border-radius:9px;background:linear-gradient(90deg,#18E6A0,#48A7FF);transition:width 1.3s cubic-bezier(.2,.8,.2,1);box-shadow:0 0 12px rgba(24,230,160,.45)}
-.sg-bar-n{font-weight:800;color:var(--green,#18E6A0);text-align:left;direction:ltr;font-variant-numeric:tabular-nums}
-
-.sg-tabs{display:flex;gap:6px;margin-bottom:10px;background:rgba(13,20,34,.92);border:1px solid #24324A;border-radius:999px;padding:4px}
-.sg-tab{flex:1;text-align:center;padding:8px 4px;border-radius:999px;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;transition:all .2s;white-space:nowrap}
-.sg-tab.active{background:linear-gradient(135deg,#18E6A0,#48A7FF);color:#06101B;box-shadow:0 5px 18px rgba(24,230,160,.25)}
-.sg-chips{display:flex;gap:6px;overflow-x:auto;padding:2px 0 10px;scrollbar-width:none}
-.sg-chips::-webkit-scrollbar{display:none}
-.sg-chip{flex:0 0 auto;font-size:11px;padding:5px 11px;border-radius:999px;border:1px solid rgba(111,129,156,.3);color:var(--muted);cursor:pointer;transition:all .2s;background:rgba(18,28,46,.6)}
-.sg-chip.active{border-color:var(--green,#18E6A0);color:#fff;background:rgba(24,230,160,.15);box-shadow:0 0 14px rgba(24,230,160,.2)}
-
-.sg-card{position:relative;overflow:hidden;border-radius:18px;padding:13px 13px 12px;margin-bottom:11px;background:linear-gradient(160deg,rgba(18,28,46,.9),rgba(10,14,24,.9));border:1px solid rgba(111,129,156,.22);cursor:pointer;animation:sgIn .6s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i,0)*80ms);transition:transform .2s,box-shadow .25s,border-color .25s}
-.sg-card:hover{transform:translateY(-3px)}
-.sg-card.hit{border-color:rgba(24,230,160,.38);box-shadow:0 8px 28px rgba(24,230,160,.08)}
-.sg-card.hit:hover{box-shadow:0 12px 34px rgba(24,230,160,.22)}
-.sg-card.hit::before{content:"";position:absolute;top:0;left:-70%;width:45%;height:100%;background:linear-gradient(100deg,transparent,rgba(24,230,160,.13),transparent);transform:skewX(-18deg);animation:sgSweep 5s ease-in-out infinite;animation-delay:calc(var(--i,0)*.5s)}
-.sg-card.fail{opacity:.82;border-color:rgba(255,91,114,.22)}
-.sg-card.pend{border-color:rgba(255,176,32,.28)}
-.sg-card.live{border-color:rgba(72,167,255,.3)}
-.sg-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.sg-sym{font-size:17px;font-weight:900;color:var(--text)}
-.sg-full{font-size:10.5px;color:var(--dim);margin-top:2px}
-.sg-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
-.sg-tag{font-size:10px;padding:2px 8px;border-radius:999px;background:rgba(72,167,255,.1);color:var(--blue,#48A7FF);border:1px solid rgba(72,167,255,.2)}
-.sg-tag.g{background:rgba(24,230,160,.1);color:var(--green,#18E6A0);border-color:rgba(24,230,160,.25)}
-.sg-tag.r{background:rgba(255,91,114,.1);color:#FF5B72;border-color:rgba(255,91,114,.25)}
-.sg-tag.a{background:rgba(255,176,32,.1);color:#FFB020;border-color:rgba(255,176,32,.25)}
-.sg-pct{flex:0 0 auto;text-align:center;border-radius:14px;padding:8px 12px;background:linear-gradient(135deg,rgba(24,230,160,.2),rgba(72,167,255,.14));border:1px solid rgba(24,230,160,.4);animation:sgGlow 2.2s ease-in-out infinite}
-.sg-pct b{display:block;font-size:20px;font-weight:900;direction:ltr;color:#18E6A0;font-variant-numeric:tabular-nums}
-.sg-pct span{font-size:10px;color:var(--muted)}
-.sg-pct.neg{background:rgba(255,91,114,.1);border-color:rgba(255,91,114,.35);animation:none}
-.sg-pct.neg b{color:#FF5B72}
-.sg-pct.neu{background:rgba(72,167,255,.1);border-color:rgba(72,167,255,.35);animation:none}
-.sg-pct.neu b{color:#48A7FF}
-.sg-new{position:absolute;top:10px;left:-30px;transform:rotate(-35deg);background:linear-gradient(90deg,#FFB020,#FF5B72);color:#fff;font-size:9.5px;font-weight:900;padding:2px 34px;letter-spacing:.5px;animation:sgBlink 1.6s ease-in-out infinite}
-
-.sg-track{position:relative;height:62px;margin:14px 26px 0;direction:ltr}
-.sg-rail{position:absolute;left:0;right:0;top:12px;height:7px;border-radius:7px;background:rgba(255,255,255,.08);overflow:hidden}
-.sg-fill{height:100%;width:0;border-radius:7px;background:linear-gradient(90deg,#18E6A0,#48A7FF);transition:width 1.5s cubic-bezier(.2,.8,.2,1);box-shadow:0 0 14px rgba(24,230,160,.5)}
-.sg-card.live .sg-fill{background:linear-gradient(90deg,#48A7FF,#A77BFF);box-shadow:0 0 12px rgba(72,167,255,.4)}
-.sg-node{position:absolute;top:0;transform:translateX(-50%);text-align:center;width:64px}
-.sg-dot{width:14px;height:14px;border-radius:50%;margin:8.5px auto 0;background:#1B2740;border:2px solid #3A4B6B;position:relative;transition:background .4s,border-color .4s}
-.sg-dot.on{background:#18E6A0;border-color:#9BFFE0}
-.sg-dot.on::after{content:"";position:absolute;inset:-5px;border-radius:50%;border:2px solid rgba(24,230,160,.6);animation:sgPing 1.9s ease-out infinite}
-.sg-dot.entry{background:#48A7FF;border-color:#A8D4FF}
-.sg-dot.sl{background:#FF5B72;border-color:#FFB3BE}
-.sg-lbl{font-size:9.5px;color:var(--dim);margin-top:6px;line-height:1.35;white-space:nowrap}
-.sg-lbl b{display:block;font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums}
-.sg-lbl.on b{color:#18E6A0}
-.sg-live-dot{position:absolute;top:9.5px;width:13px;height:13px;border-radius:50%;background:#FFB020;border:2px solid #fff;transform:translateX(-50%);transition:left 1.5s cubic-bezier(.2,.8,.2,1);box-shadow:0 0 0 0 rgba(255,176,32,.6);animation:sgPulse 1.8s infinite;z-index:2}
-.sg-meta{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:10.5px;color:var(--dim);margin-top:4px;padding-top:8px;border-top:1px dashed rgba(111,129,156,.2)}
-
-.sg-empty{text-align:center;padding:34px 12px;color:var(--muted);font-size:12.5px;line-height:2;animation:sgIn .6s both}
-.sg-radar{width:92px;height:92px;margin:0 auto 12px;border-radius:50%;position:relative;border:1px solid rgba(24,230,160,.35);background:radial-gradient(circle,rgba(24,230,160,.08),transparent 70%)}
-.sg-radar::before{content:"";position:absolute;inset:14px;border-radius:50%;border:1px solid rgba(24,230,160,.25)}
-.sg-radar::after{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,rgba(24,230,160,.45),transparent 28%);animation:sgSpin 2.4s linear infinite}
-.sg-note{font-size:10.5px;color:var(--dim);line-height:1.9;text-align:center;margin-top:6px}
-.sg-nav-badge{margin-right:auto;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:#18E6A0;color:#06101B;font-size:10px;font-weight:900;display:none;align-items:center;justify-content:center;animation:sgPulse 2s infinite}
-.sg-nav-badge.on{display:inline-flex}
-#sgConfetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:9999}
-.sg-noanim,.sg-noanim *{animation:none!important}
-.sg-noanim .sg-card,.sg-noanim .sg-stat{animation:none!important}
-
-@keyframes sgIn{from{opacity:0;transform:translateY(22px) scale(.97)}to{opacity:1;transform:none}}
-@keyframes sgSpin{to{transform:rotate(360deg)}}
-@keyframes sgFloat{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-7px) rotate(4deg)}}
-@keyframes sgShimmer{to{background-position:240% 0}}
-@keyframes sgSweep{0%,55%{left:-70%}100%{left:130%}}
-@keyframes sgGlow{0%,100%{box-shadow:0 0 0 0 rgba(24,230,160,.0)}50%{box-shadow:0 0 18px 2px rgba(24,230,160,.35)}}
-@keyframes sgPing{0%{transform:scale(.6);opacity:1}100%{transform:scale(1.9);opacity:0}}
-@keyframes sgPulse{0%{box-shadow:0 0 0 0 rgba(255,176,32,.55)}70%{box-shadow:0 0 0 10px rgba(255,176,32,0)}100%{box-shadow:0 0 0 0 rgba(255,176,32,0)}}
-@keyframes sgBlink{0%,100%{opacity:1}50%{opacity:.7}}
-@media (prefers-reduced-motion:reduce){.sg-hero::before,.sg-trophy,.sg-title,.sg-stat::after,.sg-card::before,.sg-pct,.sg-dot.on::after,.sg-live-dot,.sg-radar::after,.sg-new{animation:none!important}}
-</style>
 </head>
 <body>
 
@@ -2597,6 +2489,18 @@ input:focus,select:focus,textarea:focus{outline:0;border-color:var(--green)!impo
         <div class="mo-cell-label">طلای ۱۸ عیار</div>
         <div class="mo-cell-value" id="moGoldValue">—</div>
         <div class="mo-cell-change" id="moGoldChange">—</div>
+      </div>
+    </div>
+    <div class="mo-grid" style="margin-top:8px;">
+      <div class="mo-cell">
+        <div class="mo-cell-label">💵 ورود پول صندوق‌های درآمد ثابت</div>
+        <div class="mo-cell-value mo-ffv in" id="moFfInValue">—</div>
+        <div class="mo-cell-change" id="moFfInChange">—</div>
+      </div>
+      <div class="mo-cell">
+        <div class="mo-cell-label">💵 خروج پول صندوق‌های درآمد ثابت</div>
+        <div class="mo-cell-value mo-ffv out" id="moFfOutValue">—</div>
+        <div class="mo-cell-change" id="moFfOutChange">—</div>
       </div>
     </div>
     <div class="mo-status" id="moStatus" style="display:none;"></div>
@@ -2681,12 +2585,10 @@ input:focus,select:focus,textarea:focus{outline:0;border-color:var(--green)!impo
       <div class="main-nav-tab" data-view="bourseScreener">🏛️ پیشنهاد بورس</div>
       <div class="main-nav-tab" data-view="cryptoScreener">🪙 پیشنهاد ارز دیجیتال</div>
       <div class="main-nav-tab" data-view="rantScreener">💎 سهام پرپتانسیل</div>
-      <div class="main-nav-tab" data-view="fibPullback">📐 ورود فیبوناچی + پولبک</div>
     </div>
 
     <div class="main-nav-section">
       <div class="main-nav-section-title">سیگنال‌ها و پول هوشمند</div>
-      <div class="main-nav-tab" data-view="successSignals">🏆 سیگنال‌های موفق <span class="sg-nav-badge" id="sgNavBadge"></span></div>
       <div class="main-nav-tab" data-view="smartList">💰 رد پول</div>
       <div class="main-nav-tab" data-view="options">🧾 اختیار معامله</div>
 
@@ -2748,6 +2650,7 @@ input:focus,select:focus,textarea:focus{outline:0;border-color:var(--green)!impo
     <div class="chip bourse" data-coin="عیار">عیار (طلا)</div>
     <div class="chip bourse" data-coin="افق ملت">افق ملت (درآمد ثابت)</div>
   </div>
+
 
   <div class="error-box" id="errorBox"></div>
 
@@ -3541,69 +3444,6 @@ input:focus,select:focus,textarea:focus{outline:0;border-color:var(--green)!impo
 
   </div><!-- /#resSignalsView -->
 
-  <div id="fibPullbackView" style="display:none;">
-
-    <div class="rp-grid">
-      <div class="rp-stat g">
-        <div class="rp-stat-label">فرصت ورود (پولبک فیبو)</div>
-        <div class="rp-stat-val" id="fibStatBuy">—</div>
-      </div>
-      <div class="rp-stat b">
-        <div class="rp-stat-label">نماد بررسی‌شده</div>
-        <div class="rp-stat-val" id="fibStatChecked">—</div>
-      </div>
-      <div class="rp-stat a">
-        <div class="rp-stat-label">وضعیت API</div>
-        <div class="rp-stat-val" id="fibApiStatus" style="font-size:13px;font-weight:600">در انتظار...</div>
-      </div>
-    </div>
-
-    <div class="rp-panel">
-      <div class="rp-panel-hd">
-        <div class="rp-panel-title">📐 نقطه ورود فیبوناچی + پولبک به مقاومت</div>
-        <button class="rp-refresh-btn" id="fibRefreshBtn">⟲ اسکن نقاط ورود</button>
-      </div>
-      <div class="screener-desc">
-        برای هر نماد، آخرین موج صعودی (کف تا سقف) پیدا و سطوح فیبوناچی پولبک (۲۳.۶٪ تا ۷۸.۶٪) روی آن رسم می‌شود. وقتی قیمت فعلی نزدیک یکی از این سطوح (به‌ویژه سطح طلایی ۶۱.۸٪) باشد و این سطح هم‌زمان نزدیک یک ناحیه حمایت/مقاومت شکسته‌شده (پولبک به مقاومت قبلی که حالا نقش حمایت دارد) باشد، به‌عنوان نقطه ورود پیشنهاد می‌شود؛ هدف سود اول، نزدیک‌ترین مقاومت پیش‌رو و هدف دوم، سقف موج قبلی است — هر دو به‌صورت درصد سود نسبت به نقطه ورود محاسبه می‌شوند.
-      </div>
-      <div id="fibKeyWarning" style="display:none;font-size:11.5px;line-height:1.9;background:rgba(242,184,75,0.1);border:1px solid rgba(242,184,75,0.35);color:var(--amber);border-radius:10px;padding:10px 12px;margin-bottom:12px;">
-        ⚠️ داری از کلید رایگان مشترک BrsApi استفاده می‌کنی که بین همه‌ی کاربرای این اپ مشترکه و زود به محدودیت نرخ می‌خوره. برای اسکن قابل‌اعتماد، یه کلید رایگان شخصی از BrsApi.ir بگیر و تو تب «⚙️ تنظیمات» وارد کن.
-      </div>
-      <div class="rp-filters">
-        <input class="rp-search" id="fibSearch" type="text" placeholder="جستجوی نماد..." style="flex:1" />
-      </div>
-      <div id="fibProgress" style="font-size:11px;color:var(--dim);text-align:center;padding:6px 4px;display:none;"></div>
-      <div class="rp-tbl-wrap">
-        <table class="rp-tbl">
-          <thead>
-            <tr>
-              <th>نماد</th>
-              <th>سطح فیبو</th>
-              <th>نقطه ورود</th>
-              <th>هدف اول (سود)</th>
-              <th>هدف دوم (سود)</th>
-            </tr>
-          </thead>
-          <tbody id="fibTableBody">
-            <tr><td colspan="5" class="rp-loading">برای مشاهده نقاط ورود روی «اسکن نقاط ورود» بزنید...</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="rp-info">ℹ️ داده از وب‌سرویس BrsApi.ir (کندل روزانه) · فیبوناچی روی آخرین موج سوئینگ صعودی محاسبه می‌شود · فقط نمادهایی که ساختار بازارشان خنثی/صعودی است و قیمت‌شان نزدیک یک سطح فیبوست نمایش داده می‌شوند · این ابزار مشاوره مالی نیست</div>
-    </div>
-
-    <div class="rp-panel">
-      <div class="rp-panel-hd">
-        <div class="rp-panel-title">🎯 بهترین نقاط ورود فیبوناچی</div>
-        <span id="fibSuggestBadge" style="font-size:11px;color:var(--muted)"></span>
-      </div>
-      <div class="rp-suggest" id="fibSuggestGrid">
-        <div class="rp-loading" style="grid-column:span 2">در انتظار اسکن...</div>
-      </div>
-      <div class="rp-info">💡 نقطه ورود = سطح فیبو نزدیک قیمت فعلی · هدف اول = نزدیک‌ترین مقاومت · هدف دوم = سقف موج قبلی · حتماً حد ضرر زیر کف موج تعیین کنید</div>
-    </div>
-
-  </div><!-- /#fibPullbackView -->
 
   <div id="indexAnalysisView" style="display:none;">
 
@@ -3768,25 +3608,6 @@ input:focus,select:focus,textarea:focus{outline:0;border-color:var(--green)!impo
 
   </div><!-- /#tableauView -->
 
-  <div id="successView" style="display:none;">
-    <div class="sg-hero">
-      <div class="sg-hero-top">
-        <div class="sg-trophy">🏆</div>
-        <div>
-          <div class="sg-title">سیگنال‌های موفق</div>
-        </div>
-      </div>
-      <div class="sg-actions">
-        <button class="sg-btn" id="sgCheckBtn"><span class="sg-ico">🔄</span> بررسی قیمت‌ها</button>
-        <button class="sg-btn" id="sgScanBtn"><span class="sg-ico">📡</span> جمع‌آوری سیگنال از همه تب‌ها</button>
-        <button class="sg-btn sg-danger" id="sgClearBtn">🗑 پاک‌کردن</button>
-      </div>
-      <div class="sg-status" id="sgStatus"></div>
-    </div>
-    <div id="sgBody"></div>
-    <div class="sg-note">قیمت سیگنال‌ها فقط وقتی برنامه باز است بررسی می‌شود؛ پس ممکن است لمس لحظه‌ای هدف بین دو بررسی ثبت نشود. سیگنال‌ها توصیه مالی نیستند و عملکرد گذشته تضمین آینده نیست.</div>
-    <canvas id="sgConfetti"></canvas>
-  </div>
 
   <div id="settingsView" style="display:none;">
 
@@ -3808,6 +3629,33 @@ input:focus,select:focus,textarea:focus{outline:0;border-color:var(--green)!impo
         <input type="checkbox" id="settingsBrsAioToggle" />
         <span>من کاربر بسته AIO هستم (فاصله‌ی درخواست‌ها کمتر می‌شود)</span>
       </label>
+    </div>
+
+    <div class="settings-card" id="apiTestCard">
+      <style>
+        .apt-row{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+        .apt-row:first-of-type{border-top:none}
+        .apt-ico{width:22px;text-align:center;font-size:15px;flex:none;line-height:1.6}
+        .apt-main{flex:1;min-width:0}
+        .apt-name{font-size:12.5px;font-weight:700}
+        .apt-msg{font-size:11px;color:var(--muted);line-height:1.8;word-break:break-word;margin-top:2px}
+        .apt-ms{font-size:10.5px;color:var(--dim);flex:none;direction:ltr;padding-top:2px}
+        .apt-row.ok .apt-name{color:var(--green)}
+        .apt-row.bad .apt-name{color:var(--red)}
+        .apt-row.run .apt-ico{animation:aptSpin 1s linear infinite;display:inline-block}
+        @keyframes aptSpin{to{transform:rotate(360deg)}}
+        .apt-sum{font-size:11.5px;border-radius:9px;padding:8px 12px;margin-bottom:10px;display:none}
+        .apt-sum.ok{display:block;color:var(--green);background:rgba(61,220,151,0.1)}
+        .apt-sum.warn{display:block;color:var(--amber);background:rgba(242,184,75,0.1)}
+        .apt-sum.bad{display:block;color:var(--red);background:rgba(255,92,114,0.1)}
+      </style>
+      <div class="settings-card-title">🔌 تست اتصال API</div>
+      <div class="settings-card-desc">
+        با یک کلیک بررسی کنید که سرویس‌های مورد استفاده‌ی برنامه (کلید مشترک، BrsApi مستقیم و از طریق پراکسی، ارز دیجیتال و فلزات) وصل هستند یا نه. اگر سرویسی خطا بدهد، پیام دقیق همان سرویس زیر آن نمایش داده می‌شود.
+      </div>
+      <div class="apt-sum" id="aptSummary"></div>
+      <div id="aptList"></div>
+      <button class="settings-save-btn" id="aptRunBtn" style="width:100%;padding:11px;margin-top:10px">▶ اجرای تست اتصال</button>
     </div>
 
   </div><!-- /#settingsView -->
@@ -4520,7 +4368,6 @@ function jumpToAnalyzer(symbolValue) {
   if (optionsView) optionsView.style.display = 'none';
   if (rightsView) rightsView.style.display = 'none';
   if (tableauView) tableauView.style.display = 'none';
-  { const sgV0 = document.getElementById('successView'); if (sgV0) sgV0.style.display = 'none'; }
   if (typeof stockAlarmView !== 'undefined' && stockAlarmView) stockAlarmView.style.display = 'none';
   coinInput.value = symbolValue;
   analyze(symbolValue);
@@ -4602,17 +4449,6 @@ async function loadScreener(symbols, isBourse, tf, statusElId, listElId) {
     });
   });
 
-  try {
-    succeeded.filter(i => /buy/.test(i.finalClass) && !i.d.synthetic).forEach(i => {
-      const p = rantPlan(i.d), r = p.entry - p.stop;
-      ezSigRecord({
-        sym: i.symbol, name: i.d.isBourse ? (i.d.bourseName || i.symbol) : (persianNames[i.symbol] || i.symbol),
-        source: isRant ? 'سهام پرپتانسیل' : (isBourse ? 'پیشنهاد بورس' : 'پیشنهاد ارز دیجیتال'),
-        mkt: i.d.isBourse ? 'bourse' : 'crypto', price: i.d.price, entry: p.entry, sl: p.stop,
-        tps: [p.tps[0], p.tps[1], p.entry + r * 4.5]
-      });
-    });
-  } catch (e) { /* ثبت سیگنال اختیاری است */ }
   try {
     const buys = succeeded.filter(i => /buy/.test(i.finalClass)).map(i => ({
       sym: i.symbol, name: i.d.isBourse ? (i.d.bourseName || i.symbol) : (persianNames[i.symbol] || i.symbol),
@@ -6080,7 +5916,6 @@ function renderResult(d) {
 
   currentRR = { entryPrice, stopPrice, targetPrice, riskPerUnit, rewardPerUnit, rrRatio, fmtAny };
   currentTradePlan = { entry: entryPrice, stop: stopPrice, tps: [tp1, tp2, tp3, tp4] };
-  try { if (verdictClass === 'buy' && !d.isMetal && !d.synthetic) ezSigRecord({ sym: d.symbol, name: d.isBourse ? (d.bourseName || d.symbol) : (persianNames[d.symbol] || d.symbol), source: 'تحلیل‌گر', mkt: d.isBourse ? 'bourse' : 'crypto', price: d.price, entry: entryPrice, sl: stopPrice, tps: [tp1, tp2, tp3, tp4] }); } catch (e) {}
   redrawChartWithZoom();
   updateRiskRewardCalc();
   populateSignalTab(d, fmtAny);
@@ -6400,7 +6235,6 @@ const bourseScreenerView = document.getElementById('bourseScreenerView');
 const cryptoScreenerView = document.getElementById('cryptoScreenerView');
 const resSignalsView = document.getElementById('resSignalsView');
 const rantScreenerView = document.getElementById('rantScreenerView');
-const fibPullbackView = document.getElementById('fibPullbackView');
 const indexAnalysisView = document.getElementById('indexAnalysisView');
 const optionsView = document.getElementById('optionsView');
 const rightsView = document.getElementById('rightsView');
@@ -6446,13 +6280,11 @@ document.querySelectorAll('.main-nav-tab').forEach(tab => {
     emaSignalsView.style.display = 'none';
     resSignalsView.style.display = 'none';
     rantScreenerView.style.display = 'none';
-    fibPullbackView.style.display = 'none';
     indexAnalysisView.style.display = 'none';
     optionsView.style.display = 'none';
     rightsView.style.display = 'none';
     tableauView.style.display = 'none';
     if (stockAlarmView) stockAlarmView.style.display = 'none';
-    const sgV = document.getElementById('successView'); if (sgV) sgV.style.display = 'none';
     if (tab.dataset.view === 'wallet') {
       walletView.style.display = 'block';
       refreshWallet();
@@ -6460,9 +6292,6 @@ document.querySelectorAll('.main-nav-tab').forEach(tab => {
       stockAlarmView.style.display = 'block';
       ezRenderAlarms();
       ezCheckAlarms();
-    } else if (tab.dataset.view === 'successSignals') {
-      sgV.style.display = 'block';
-      ezSigOpen();
     } else if (tab.dataset.view === 'settings') {
       settingsView.style.display = 'block';
     } else if (tab.dataset.view === 'bourseScreener') {
@@ -6476,11 +6305,6 @@ document.querySelectorAll('.main-nav-tab').forEach(tab => {
     } else if (tab.dataset.view === 'rantScreener') {
       rantScreenerView.style.display = 'block';
       loadRantScreener(false);
-    } else if (tab.dataset.view === 'fibPullback') {
-      fibPullbackView.style.display = 'block';
-      const w3 = document.getElementById('fibKeyWarning');
-      if (w3) w3.style.display = (isUsingSharedKey()) ? 'block' : 'none';
-      if (!fibLoaded) loadFibSignals(false);
     } else if (tab.dataset.view === 'smartList') {
       smartListView.style.display = 'block';
       loadActiveSmartListTab();
@@ -7221,7 +7045,6 @@ function rpRenderBest() {
   if (d.legalSellPower < 0.85) reasons.push(`قدرت فروش حقوقی پایین (${d.legalSellPower})`);
   if (d.change > 0) reasons.push(`تغییر مثبت ${d.change}٪`);
   const strong = d.status === 'strong_buy';
-  try { if (d.fromAPI) ezSigRecord({ sym: d.sym, name: d.sym, source: 'رد پول', mkt: 'bourse', price: d.price, entry, sl, tps: [tp1, tp2] }); } catch (e) {}
   box.innerHTML = `<div class="ez-best" onclick="jumpToAnalyzer('${d.sym}')">
     <div class="ez-best-tag">🏆 بهترین سهم و موقعیت رد پول</div>
     <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:6px">
@@ -7273,7 +7096,6 @@ function rpRenderSuggestions() {
     const tp1   = isBuy ? Math.round(d.price*(1+0.05)) : Math.round(d.price*(1-0.05));
     const tp2   = isBuy ? Math.round(d.price*(1+0.10)) : Math.round(d.price*(1-0.10));
     const sl    = isBuy ? Math.round(d.price*(1-0.04)) : Math.round(d.price*(1+0.04));
-    try { if (isBuy && d.fromAPI) ezSigRecord({ sym: d.sym, name: d.sym, source: 'رد پول', mkt: 'bourse', price: d.price, entry: d.price, sl, tps: [tp1, tp2] }); } catch (e) {}
     const reasons = [];
     if (d.ratio>1.5)        reasons.push(`نسبت سرانه ${d.ratio} (قوی)`);
     else if(d.ratio>1.0)    reasons.push(`نسبت سرانه ${d.ratio}`);
@@ -8039,211 +7861,114 @@ document.querySelectorAll('#resTfTabs [data-restf]').forEach(btn => {
   });
 });
 
-// ═══════════════════════════════════════════════════════════════
-// نقطه ورود فیبوناچی + پولبک به مقاومت (بورس) — از موتور تحلیل موجود
-// (analyzeStructure / findPullbackZones / calcSupportResistance) استفاده می‌کند
-// ═══════════════════════════════════════════════════════════════
-let fibData = {};       // sym -> { status:'loading'|'ok'|'error', full, result, error }
-let fibLoaded = false;
-let fibCancelled = false;
-let fibScanning = false;
-const FIB_MAX_SCAN = 10; // حداکثر تعداد نماد در هر اسکن (برای جلوگیری از اتمام سهمیه درخواست)
-let fibScanTotal = FIB_MAX_SCAN;
-const fibSleep = ms => new Promise(r => setTimeout(r, ms));
 
-// یک نماد را واکشی و تحلیل می‌کند: آیا قیمت فعلی نزدیک یک سطح فیبوناچی پولبکِ هم‌راستا با ساختار بازار است؟
-async function fibAnalyzeSymbol(sym) {
-  const data = await fetchBourseData(sym, '1d');
-  const candles = data.candles;
-  if (!candles || candles.length < 15) return null;
 
-  const structure = analyzeStructure(candles);
-  if (structure.type === 'bearish') return null; // فقط پولبک در راستای ساختار خنثی/صعودی
+// ===== تست اتصال API (تنظیمات) =====
+(function aptInit() {
+  const listEl = document.getElementById('aptList');
+  const sumEl = document.getElementById('aptSummary');
+  const btn = document.getElementById('aptRunBtn');
+  if (!listEl || !btn) return;
+  const esc = t => String(t == null ? '' : t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-  const pullback = findPullbackZones(candles, structure.type);
-  if (!pullback || !pullback.legUp) return null; // فقط موج صعودی اخیر (پولبک رو به پایین محتمل)
-  if (pullback.alignsWithStructure === false) return null;
-
-  const { resistance } = calcSupportResistance(candles, data);
-  const price = data.price;
-  const nearest = pullback.nearest;
-  if (!nearest) return null;
-
-  const distPct = Math.abs(price - nearest.price) / nearest.price * 100;
-  if (distPct > 3.5) return null; // فقط وقتی قیمت واقعاً نزدیک سطح فیبوناچی است
-
-  const entry = nearest.price;
-  const target1 = resistance;
-  const target2 = pullback.legHighPrice;
-  const profit1 = ((target1 - entry) / entry) * 100;
-  const profit2 = ((target2 - entry) / entry) * 100;
-  if (profit1 <= 0.3) return null; // هدف باید واقعاً بالاتر از نقطه ورود باشد
-
-  return {
-    full: data.fullName, price, entry,
-    fibPct: Math.round(nearest.fib * 1000) / 10,
-    golden: !!nearest.golden,
-    target1, profit1,
-    target2: target2 > target1 ? target2 : null,
-    profit2: target2 > target1 ? profit2 : null,
-    structureLabel: structure.label
-  };
-}
-
-async function loadFibSignals(force) {
-  if (fibScanning) return;
-  if (fibLoaded && !force) { fibRenderAll(); return; }
-  fibScanning = true;
-  fibCancelled = false;
-  fibData = {};
-  const btn = document.getElementById('fibRefreshBtn');
-  const progress = document.getElementById('fibProgress');
-  const apiEl = document.getElementById('fibApiStatus');
-  const origLabel = btn.textContent;
-  btn.disabled = true;
-  btn.textContent = 'در حال اسکن...';
-  if (progress) { progress.style.display = 'block'; progress.textContent = 'شروع اسکن...'; }
-  const warnEl = document.getElementById('fibKeyWarning');
-  const usingSharedKey = isUsingSharedKey();
-  if (warnEl) warnEl.style.display = usingSharedKey ? 'block' : 'none';
-
-  // فقط ۱۰ نمادی که بیشترین ورود پول حقیقی را دارند اسکن می‌شوند (از داده‌ی تب «رد پول»، بدون درخواست اضافه)
-  let batch;
-  const live = (typeof rpData !== 'undefined' ? rpData : []).filter(d => d && d.fromAPI);
-  if (live.length >= FIB_MAX_SCAN) {
-    batch = live
-      .slice()
-      .sort((x, y) => ((y.buyFlow - y.sellFlow) - (x.buyFlow - x.sellFlow)) || ((y.volMult || 0) - (x.volMult || 0)))
-      .slice(0, FIB_MAX_SCAN)
-      .map(d => ({ sym: d.sym, full: d.full }));
-  } else {
-    batch = RP_SYMBOLS.slice(0, FIB_MAX_SCAN);
-    if (progress) progress.textContent = 'داده‌ی ورود پول هنوز لود نشده؛ ۱۰ نماد اول بررسی می‌شود. برای انتخاب بر اساس ورود پول، اول تب «رد پول» را باز کن.';
-  }
-  const total = batch.length;
-  fibScanTotal = total;
-  let done = 0, ok = 0;
-  for (const item of batch) {
-    if (fibCancelled) break;
-    const sym = item.sym;
-    fibData[sym] = { status: 'loading', full: item.full };
-    if (done % 8 === 0) fibRenderAll();
-
+  function serverMsg(text) {
+    // پیام خود سرویس (JSON با message/error/msg یا متن ساده) برای نمایش دقیق علت خطا
+    if (!text) return '';
     try {
-      const result = await fibAnalyzeSymbol(sym);
-      fibData[sym] = { status: 'ok', full: item.full, result };
-      ok++;
-      try { if (result && result.target2) ezSigRecord({ sym, name: sym, source: 'ورود فیبوناچی + پولبک', mkt: 'bourse', price: result.price, entry: result.entry, sl: null, tps: [result.target1, result.target2] }); } catch (e) {}
-    } catch (err) {
-      fibData[sym] = { status: 'error', full: item.full, error: err.message || 'خطا' };
-      if (usingSharedKey && /NOT_FOUND|HTTP 429/i.test(String(err.message))) {
-        // با کلید مشترک ممکن است زود به محدودیت بخوریم؛ برای جلوگیری از انتظار طولانی کمی مکث می‌کنیم
-        progress.textContent = `تأخیر برای جلوگیری از محدودیت نرخ... (${sym})`;
-        await fibSleep(4000);
+      const j = JSON.parse(text);
+      if (j && typeof j === 'object') {
+        for (const k of ['message', 'msg', 'error', 'detail', 'status']) {
+          if (typeof j[k] === 'string' && j[k].trim()) return j[k].trim().slice(0, 220);
+        }
+        return '';
       }
-    }
-    done++;
-    if (apiEl) apiEl.textContent = `✓ ${ok}/${done}`;
-    if (fibCancelled) break;
-    fibRenderAll();
-    if (!fibCancelled && done < total) await fibSleep(1100);
+    } catch (e) {}
+    return String(text).replace(/\s+/g, ' ').trim().slice(0, 220);
   }
 
-  fibLoaded = true;
-  fibScanning = false;
-  btn.disabled = false;
-  btn.textContent = origLabel;
-  progress.textContent = fibCancelled ? `متوقف شد — ${done} از ${total} بررسی شد.` : `اسکن کامل شد — ${total} نماد بررسی شد.`;
-  fibRenderAll();
-}
-
-function fibRenderAll() {
-  fibRenderTable();
-  fibRenderSuggestions();
-}
-
-function fibRenderTable(q) {
-  const tbody = document.getElementById('fibTableBody');
-  if (!tbody) return;
-  const checkedEl = document.getElementById('fibStatChecked');
-  const buyEl = document.getElementById('fibStatBuy');
-
-  const syms = Object.keys(fibData);
-  if (checkedEl) checkedEl.textContent = syms.length ? `${syms.length}/${fibScanTotal}` : '—';
-
-  const rows = syms.map(sym => ({ sym, d: fibData[sym] }));
-  if (buyEl) buyEl.textContent = rows.filter(r => r.d.status === 'ok' && r.d.result).length || '۰';
-
-  let filtered = rows.filter(r => (r.d.status === 'ok' && r.d.result) || r.d.status === 'loading' || r.d.status === 'error');
-  const sq = (q ?? document.getElementById('fibSearch').value ?? '').trim();
-  if (sq) filtered = filtered.filter(r => (r.sym + (r.d.full || '')).includes(sq));
-
-  const rank = r => r.d.status === 'error' ? 2 : (r.d.result ? 0 : 1);
-  filtered.sort((a, b) => rank(a) - rank(b));
-
-  if (!filtered.length) {
-    tbody.innerHTML = '<tr><td colspan="5" class="rp-loading">' + (syms.length ? 'فعلاً نمادی نزدیک سطح فیبوناچی پیدا نشد' : 'برای مشاهده نقاط ورود روی «اسکن نقاط ورود» بزنید...') + '</td></tr>';
-    return;
+  // هر تست: { name, run } — run باید { ok, msg } برگرداند
+  async function timedFetch(url, ms) {
+    const res = await fetchWithTimeout(url, ms);
+    const text = await res.text();
+    let json = null; try { json = JSON.parse(text); } catch (e) {}
+    return { res, text, json };
+  }
+  function brsUrl() { return 'https://Api.BrsApi.ir/Tsetmc/Index.php?key=' + encodeURIComponent(getBrsApiKey()) + '&type=1'; }
+  function judgeBrs(r) {
+    if (!r.res.ok) return { ok: false, msg: 'HTTP ' + r.res.status + (serverMsg(r.text) ? ' — ' + serverMsg(r.text) : '') };
+    if (r.json == null) return { ok: false, msg: 'پاسخ JSON معتبر نبود' + (serverMsg(r.text) ? ' — ' + serverMsg(r.text) : '') };
+    const m = (!Array.isArray(r.json) && typeof r.json === 'object') ? serverMsg(r.text) : '';
+    const hasData = Array.isArray(r.json) ? r.json.length > 0 : Object.keys(r.json).length > 0;
+    if (!hasData) return { ok: false, msg: 'پاسخ خالی بود' };
+    if (m && /(error|خطا|limit|محدود|سرور|key|کلید)/i.test(m)) return { ok: false, msg: m };
+    return { ok: true, msg: 'پاسخ دریافت شد (HTTP ' + r.res.status + ')' };
   }
 
-  tbody.innerHTML = filtered.map(r => {
-    const { sym, d } = r;
-    if (d.status === 'loading') {
-      return `<tr><td><div class="rp-sym">${sym}</div><div class="rp-full">${d.full || ''}</div></td><td colspan="4" class="rp-loading">در حال دریافت...</td></tr>`;
-    }
-    if (d.status === 'error') {
-      return `<tr><td><div class="rp-sym">${sym}</div><div class="rp-full">${d.full || ''}</div></td><td colspan="4" style="color:var(--red);font-size:11px;">⚠ ${d.error}</td></tr>`;
-    }
-    if (!d.result) {
-      return `<tr><td><div class="rp-sym">${sym}</div><div class="rp-full">${d.full || ''}</div></td><td><span class="rp-badge bg-b">بدون نقطه ورود فعال</span></td><td>—</td><td>—</td><td>—</td></tr>`;
-    }
-    const x = d.result;
-    const fibLabel = `${x.fibPct}٪` + (x.golden ? ' 🟡طلایی' : '');
-    return `<tr>
-      <td><div class="rp-sym">${sym}</div><div class="rp-full">${d.full || ''}</div></td>
-      <td><span class="rp-badge bg-g">خرید 🟢</span> <span style="font-size:10px;color:var(--muted)">${fibLabel}</span></td>
-      <td style="font-weight:700;color:var(--green)">${x.entry.toLocaleString('fa-IR')}</td>
-      <td style="font-size:11px;color:var(--muted)">${x.target1.toLocaleString('fa-IR')} <span style="color:var(--green)">(+${x.profit1.toFixed(1)}٪)</span></td>
-      <td style="font-size:11px;color:var(--muted)">${x.target2 ? x.target2.toLocaleString('fa-IR') + ' <span style="color:var(--green)">(+' + x.profit2.toFixed(1) + '٪)</span>' : '—'}</td>
-    </tr>`;
-  }).join('');
-}
+  const tests = [
+    { name: 'سرور کلید مشترک (sahmyekom.ir)', run: async () => {
+        const r = await timedFetch('https://sahmyekom.ir/backend/api/public_config.php', 8000);
+        if (!r.res.ok) return { ok: false, msg: 'HTTP ' + r.res.status };
+        const k = r.json && r.json.brsapi_key;
+        return (typeof k === 'string' && /^[A-Za-z0-9]{16,64}$/.test(k))
+          ? { ok: true, msg: 'کلید مشترک از سرور دریافت شد' }
+          : { ok: false, msg: 'سرور جواب داد ولی کلید معتبری در پاسخ نبود' };
+    } },
+    { name: 'BrsApi — اتصال مستقیم', run: async () => {
+        if (!getBrsApiKey()) return { ok: false, msg: 'کلیدی در دسترس نیست (کلید مشترک هنوز از سرور نیامده و کلید شخصی هم وارد نشده)' };
+        await brsSlot();
+        const out = judgeBrs(await timedFetch(brsUrl(), 10000));
+        out.msg = (isUsingSharedKey() ? 'کلید مشترک · ' : 'کلید شخصی · ') + out.msg;
+        return out;
+    } },
+    { name: 'BrsApi — از طریق پراکسی سرور', run: async () => {
+        if (!isUsingSharedKey()) return { ok: true, skip: true, msg: 'با کلید شخصی از پراکسی استفاده نمی‌شود (رد شد)' };
+        if (!getBrsApiKey()) return { ok: false, msg: 'کلید مشترک در دسترس نیست' };
+        await brsSlot();
+        return judgeBrs(await timedFetch(CORS_PROXY + encodeURIComponent(brsUrl()), 15000));
+    } },
+    { name: 'ارز دیجیتال (CoinGecko)', run: async () => {
+        const r = await timedFetch('https://api.coingecko.com/api/v3/ping', 10000);
+        return r.res.ok ? { ok: true, msg: 'متصل (HTTP ' + r.res.status + ')' } : { ok: false, msg: 'HTTP ' + r.res.status + (serverMsg(r.text) ? ' — ' + serverMsg(r.text) : '') };
+    } },
+    { name: 'فلزات گران‌بها (gold-api)', run: async () => {
+        const r = await timedFetch('https://api.gold-api.com/price/XAU', 10000);
+        if (!r.res.ok) return { ok: false, msg: 'HTTP ' + r.res.status };
+        return (r.json && r.json.price != null) ? { ok: true, msg: 'متصل — قیمت دریافت شد' } : { ok: false, msg: 'پاسخ بدون قیمت بود' };
+    } }
+  ];
 
-function fibRenderSuggestions() {
-  const grid = document.getElementById('fibSuggestGrid');
-  const badge = document.getElementById('fibSuggestBadge');
-  if (!grid) return;
-
-  const picks = Object.keys(fibData)
-    .filter(s => fibData[s].status === 'ok' && fibData[s].result)
-    .map(s => ({ sym: s, full: fibData[s].full, x: fibData[s].result }))
-    .sort((a, b) => b.x.profit1 - a.x.profit1)
-    .slice(0, 6);
-
-  if (badge) badge.textContent = `${picks.length} فرصت`;
-
-  if (!picks.length) {
-    grid.innerHTML = '<div class="rp-loading" style="grid-column:span 2">فعلاً نقطه ورود فیبوناچی پیدا نشد — اسکن را بروزرسانی کنید</div>';
-    return;
+  function rowHtml(i, state, msg, ms) {
+    const ico = state === 'run' ? '⏳' : state === 'ok' ? '✅' : state === 'bad' ? '❌' : '•';
+    return '<div class="apt-row ' + state + '" id="aptRow' + i + '"><div class="apt-ico">' + ico + '</div><div class="apt-main"><div class="apt-name">' + esc(tests[i].name) + '</div><div class="apt-msg">' + esc(msg) + '</div></div><div class="apt-ms">' + (ms != null ? ms + ' ms' : '') + '</div></div>';
+  }
+  function setRow(i, state, msg, ms) {
+    const el = document.getElementById('aptRow' + i);
+    if (el) el.outerHTML = rowHtml(i, state, msg, ms);
   }
 
-  grid.innerHTML = picks.map(p => {
-    const x = p.x;
-    return `<div class="rp-suggest-card buy">
-      <div class="rp-suggest-sym">${p.sym} 🟢</div>
-      <div style="font-size:10px;color:var(--muted);margin-bottom:5px">${p.full || ''}</div>
-      <div class="rp-suggest-reason">پولبک به سطح ${x.fibPct}٪ فیبوناچی${x.golden ? ' (طلایی)' : ''} · ${x.structureLabel}</div>
-      <div class="rp-suggest-targets">
-        <span class="rp-target t-buy">ورود: ${x.entry.toLocaleString('fa-IR')}</span>
-        <span class="rp-target t-tp">هدف ۱: +${x.profit1.toFixed(1)}٪</span>
-        ${x.target2 ? `<span class="rp-target t-sell">هدف ۲: +${x.profit2.toFixed(1)}٪</span>` : ''}
-      </div>
-    </div>`;
-  }).join('');
-}
-
-document.getElementById('fibRefreshBtn').addEventListener('click', () => loadFibSignals(true));
-document.getElementById('fibSearch').addEventListener('input', e => fibRenderTable(e.target.value));
+  btn.addEventListener('click', async () => {
+    if (btn.disabled) return;
+    btn.disabled = true; btn.textContent = '⏳ در حال تست...';
+    sumEl.className = 'apt-sum'; sumEl.textContent = '';
+    listEl.innerHTML = tests.map((t, i) => rowHtml(i, 'run', 'در حال بررسی...', null)).join('');
+    let okN = 0, bad = [], total = 0;
+    // ترتیبی اجرا می‌شود تا به محدودیت نرخ BrsApi نخوریم
+    for (let i = 0; i < tests.length; i++) {
+      const t0 = performance.now();
+      let r;
+      try { r = await tests[i].run(); }
+      catch (e) { r = { ok: false, msg: (e && e.name === 'AbortError') ? 'پاسخی نیامد (تایم‌اوت)' : ('خطای شبکه/CORS — ' + (e && e.message ? e.message : e)) }; }
+      const ms = Math.round(performance.now() - t0);
+      setRow(i, r.ok ? 'ok' : 'bad', r.msg, r.skip ? null : ms);
+      if (!r.skip) { total++; if (r.ok) okN++; else bad.push(tests[i].name); }
+    }
+    const fa = n => Number(n).toLocaleString('fa-IR');
+    if (okN === total) { sumEl.className = 'apt-sum ok'; sumEl.textContent = '✅ همه‌ی سرویس‌ها وصل هستند (' + fa(okN) + ' از ' + fa(total) + ')'; }
+    else if (okN === 0) { sumEl.className = 'apt-sum bad'; sumEl.textContent = '❌ هیچ سرویسی وصل نیست — اینترنت یا فیلترشکن را بررسی کنید.'; }
+    else { sumEl.className = 'apt-sum warn'; sumEl.textContent = '⚠️ ' + fa(okN) + ' از ' + fa(total) + ' سرویس وصل است · مشکل‌دار: ' + bad.join('، '); }
+    btn.disabled = false; btn.textContent = '▶ اجرای دوباره‌ی تست';
+  });
+})();
 
 document.getElementById('settingsBrsSaveBtn').addEventListener('click', () => {
   const val = document.getElementById('settingsBrsKeyInput').value.trim();
@@ -8330,7 +8055,7 @@ function renderOptionMiniChart(containerId, candles, levels, fmtAny) {
     if (wrap) wrap.innerHTML = '<div class="mo-spark-empty">داده کندل کافی نیست</div>';
     return;
   }
-  const cs = candles.slice(-30);
+  const cs = candles.slice(-CANDLE_COUNT);
   const W = 640, H = 200, padTop = 14, padBottom = 10, padX = 8;
   const allVals = cs.flatMap(c => [c.h, c.l]).concat([levels.entry, levels.exit1d, levels.exit1w, levels.exit1m]);
   const min = Math.min(...allVals), max = Math.max(...allVals);
@@ -8631,19 +8356,100 @@ function optChartCandles(d, raw){
 }
 
 function jal2greg(jy,jm,jd){jy-=979;jm-=1;jd-=1;const J=[31,31,31,31,31,31,30,30,30,30,30,29];let n=365*jy+Math.floor(jy/33)*8+Math.floor((jy%33+3)/4);for(let i=0;i<jm;i++)n+=J[i];n+=jd;let g=n+79,y=1600+400*Math.floor(g/146097),lp=true;g%=146097;if(g>=36525){g--;y+=100*Math.floor(g/36524);g%=36524;if(g>=365)g++;else lp=false;}y+=4*Math.floor(g/1461);g%=1461;if(g>=366){lp=false;g--;y+=Math.floor(g/365);g%=365;}const G=[31,lp?29:28,31,30,31,30,31,31,30,31,30,31];let i=0;for(;g>=G[i];i++)g-=G[i];return new Date(y,i,g+1).getTime();}
-async function optFetchHistory(sym){
-  const res = await brsFetch(`https://Api.BrsApi.ir/Tsetmc/History.php?key=${encodeURIComponent(getBrsApiKey())}&type=0&l18=${encodeURIComponent(sym)}`);
-  if (!res.ok) return [];
-  const raw = await res.json();
-  const pts = Array.isArray(raw) ? raw : (raw.candles || raw.data || raw.result || raw.history || []);
-  const N = v => { const x = Number(v); return x > 0 ? x : 0; };
-  return pts.filter(p => p && !Array.isArray(p)).map(p => {
-    const c = N(p.pc ?? p.close ?? p.c ?? p.pl), o = N(p.pf ?? p.open ?? p.o) || c, h = N(p.pmax ?? p.high ?? p.h), l = N(p.pmin ?? p.low ?? p.l);
-    const m = String(p.date ?? p.jdate ?? p.d ?? p.dEven ?? p.time ?? '').match(/(\d{4})\D?(\d{2})\D?(\d{2})/);
-    const t = m ? (+m[1] < 1700 ? jal2greg(+m[1], +m[2], +m[3]) : new Date(+m[1], +m[2] - 1, +m[3]).getTime()) : 0;
-    return { t, o, h: Math.max(h, o, c), l: Math.min(l || c, o, c), c, v: N(p.tvol ?? p.volume ?? p.vol ?? p.v) };
-  }).filter(x => x.c > 0 && x.t > 0).sort((a, b) => a.t - b.t);
+const OPT_HIST_CACHE = {};
+function optRowTime(p){
+  const raw = p.date ?? p.jdate ?? p.d ?? p.dEven ?? p.time ?? p.t ?? p.datetime ?? p.dateTime ?? p.Date;
+  if (raw == null || raw === '') return 0;
+  const s = optToEn(String(raw)).trim();
+  if (/^\d{13}$/.test(s)) return +s;
+  if (/^\d{10}$/.test(s)) return +s * 1000;
+  const m = s.match(/(\d{4})\D?(\d{1,2})\D?(\d{1,2})/);
+  if (!m) { const d = new Date(s); return isNaN(d) ? 0 : d.getTime(); }
+  const y = +m[1], mo = +m[2], da = +m[3];
+  return y < 1700 ? jal2greg(y, mo, da) : new Date(y, mo - 1, da).getTime();
 }
+function optFixT(t){ // تاریخ شمسی که اشتباهی میلادی خوانده شده را اصلاح می‌کند
+  if (!t) return 0; const d = new Date(t);
+  return d.getFullYear() < 1700 ? jal2greg(d.getFullYear(), d.getMonth() + 1, d.getDate()) : t;
+}
+function optDayKey(t){ const d = new Date(t); return d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate(); }
+function optFindRows(raw, depth){
+  depth = depth || 0; if (!raw || depth > 4) return [];
+  if (Array.isArray(raw)) return raw.length && (typeof raw[0] === 'object') ? raw : [];
+  if (typeof raw !== 'object') return [];
+  let best = [];
+  for (const k of Object.keys(raw)) { const r = optFindRows(raw[k], depth + 1); if (r.length > best.length) best = r; }
+  return best;
+}
+function optParseRows(raw){
+  const N = v => { const x = Number(v); return x > 0 && isFinite(x) ? x : 0; };
+  const out = [];
+  optFindRows(raw).forEach(p => {
+    if (!p) return;
+    let t, o, h, l, c, v;
+    if (Array.isArray(p)) { t = optFixT(Number(p[0]) > 1e12 ? Number(p[0]) : Number(p[0]) * 1000); o = N(p[1]); h = N(p[2]); l = N(p[3]); c = N(p[4]); v = N(p[5]); }
+    else {
+      t = optRowTime(p);
+      c = N(p.pc ?? p.close ?? p.c ?? p.pClosing ?? p.priceLast ?? p.pl ?? p.last);
+      o = N(p.pf ?? p.open ?? p.o ?? p.priceFirst ?? p.first);
+      h = N(p.pmax ?? p.high ?? p.h ?? p.priceMax ?? p.max);
+      l = N(p.pmin ?? p.low ?? p.l ?? p.priceMin ?? p.min);
+      v = N(p.tvol ?? p.volume ?? p.vol ?? p.v ?? p.qTotTran5J);
+    }
+    if (!t || !c) return;
+    out.push({ t, o, h, l, c, v });
+  });
+  return out;
+}
+// ادغام چند منبع بر اساس روز؛ منبع‌های بعدی (مثلاً قیمت زنده امروز) جایگزین قبلی‌ها می‌شوند
+function optMergeCandles(){
+  const map = new Map();
+  Array.prototype.slice.call(arguments).forEach(list => (list || []).forEach(x => {
+    if (!x || !(x.c > 0)) return;
+    const t = optFixT(x.t); if (!t) return;
+    const k = optDayKey(t), prev = map.get(k);
+    const better = !prev || (x.h > 0 && x.l > 0) || !(prev.h > 0 && prev.l > 0);
+    if (better) map.set(k, Object.assign({}, prev || {}, x, { t }));
+  }));
+  const arr = Array.from(map.values()).sort((a, b) => a.t - b.t);
+  let prevC = 0;
+  return arr.map(x => {
+    const c = x.c, o = x.o > 0 ? x.o : (prevC || c);
+    const h = Math.max(x.h || 0, o, c), l = Math.min(x.l > 0 ? x.l : c, o, c);
+    prevC = c; return { t: x.t, o, h, l, c, v: x.v || 0 };
+  });
+}
+async function optFetchHistory(sym){
+  const hit = OPT_HIST_CACHE[sym];
+  if (hit && Date.now() - hit.ts < 300000) return hit.c;
+  const key = encodeURIComponent(getBrsApiKey()), s = encodeURIComponent(sym), base = 'https://Api.BrsApi.ir/Tsetmc';
+  const urls = [`${base}/History.php?key=${key}&type=0&l18=${s}`, `${base}/Candlestick.php?key=${key}&type=1&l18=${s}`, `${base}/History.php?key=${key}&type=1&l18=${s}`];
+  let best = [];
+  for (const u of urls) {
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        const res = await brsFetch(u);
+        if (!res.ok) { if (res.status === 429) { brsBackoff(2500); continue; } break; }
+        best = optMergeCandles(best, optParseRows(await res.json()));
+        break;
+      } catch (e) { /* تلاش بعدی / منبع بعدی */ }
+    }
+    if (best.length >= CANDLE_COUNT) break;
+  }
+  OPT_HIST_CACHE[sym] = { ts: Date.now(), c: best };
+  return best;
+}
+// ۲۵ کندل واقعی: تاریخچه + کندل‌های روزانه‌ی دریافت‌شده + کندل زنده‌ی امروز (بدون هیچ کندل ساختگی)
+function optBuildChartCandles(hist, realCandles, raw){
+  const n = v => Number(v) > 0 ? Number(v) : 0;
+  let live = [];
+  if (raw) {
+    const o = n(raw.pf) || n(raw.py), h = n(raw.pmax), l = n(raw.pmin), c = n(raw.pl) || n(raw.pc);
+    if (o && c) live = [{ t: Date.now(), o, h: h || Math.max(o, c), l: l || Math.min(o, c), c, v: n(raw.tvol) }];
+  }
+  return optMergeCandles(hist, realCandles, live).slice(-CANDLE_COUNT);
+}
+
 function optMoneyHtml(x){const m=x.moneyFlow;if(!m||!m.available)return '';return `<div class="moneybox"><div><small>خرید حقیقی (حجم)</small>${bigHtml(m.buyVol)}</div><div><small>فروش حقیقی (حجم)</small>${bigHtml(m.sellVol)}</div><div><small>خالص پول حقیقی (ریال)</small>${bigHtml(m.net*(x.price||0),true)}</div></div>`;}
 async function analyzeOptionSymbol(sym) {
   OPT_CACHE[sym] = { status: 'loading' };
@@ -8655,7 +8461,7 @@ async function analyzeOptionSymbol(sym) {
     ]);
     const { votes, finalLabel, finalClass } = computeSignalVotes(d, fmtRial);
     const moneyFlow = extractRealMoneyFlow(rawSymbolData);
-    let hist = []; if ((d.realCandles || []).length < 8) { try { hist = await optFetchHistory(sym); } catch (e) { hist = []; } }
+    let hist = []; try { hist = await optFetchHistory(sym); } catch (e) { hist = []; }
     const fullName = (rawSymbolData && rawSymbolData.l30) || d.bourseName || d.fullName || '';
     const contract = parseOptionContract(fullName, sym);
     let under = null, calc = null;
@@ -8675,7 +8481,7 @@ async function analyzeOptionSymbol(sym) {
       status: 'ok', full: fullName || d.bourseName || sym, price: d.price,
       sym, d, optSig: optBuildSignal(d, under, (contract && contract.type) || (/^ط/.test(sym) ? 'put' : 'call'), d.price),
       finalLabel, finalClass, votes, riskPct, moneyFlow, levels, contract, under, calc,
-      candles: d.candles, chartCandles: hist.length >= 2 ? hist.slice(-30) : optChartCandles(d, rawSymbolData), realCount: (d.realCandles || []).length,
+      candles: d.candles, chartCandles: optBuildChartCandles(hist, d.realCandles, rawSymbolData), realCount: (d.realCandles || []).length,
       volume: d.volume || 0, hasVolume: !!d.hasVolume,
       chartOpen: (OPT_CACHE[sym] && OPT_CACHE[sym].chartOpen) || false
     };
@@ -8822,7 +8628,7 @@ function optDetailCard(x, o){
     ${sg.rows.map(r => `<div class="signal-row"><div class="signal-row-label">${escapeHtml(r.label)}<br><span style="font-size:10.5px;color:var(--dim)">${escapeHtml(r.note)}</span></div><div class="signal-row-badge ${vv(r)}">${vt(vv(r))}</div></div>`).join('')}
     <div style="font-size:10px;color:var(--dim);margin:4px 0;">${legend} سطوح ورود/حد ضرر/حد سود روی چارت بر پایه ATR است.</div>` : '';
   const chartHtml = plan ? `<div class="rp-full" style="margin:8px 0 4px;">📈 چارت کندل‌استیک ${escapeHtml(x.sym || '')} — ۳۰ کندل اخیر با ورود، ۱ حد ضرر و ۳ حد سود</div>
-    <div style="overflow-x:auto;"><svg class="chart-svg" id="optCS_${escapeHtml(x.sym)}" viewBox="0 0 720 420" style="min-width:560px"></svg></div>${(x.chartCandles || []).length < 8 ? `<div style="font-size:10.5px;color:var(--amber);margin:4px 0;">⚠ فقط ${(x.chartCandles || []).length.toLocaleString('fa-IR')} کندل واقعی برای این قرارداد از سرور دریافت شد؛ کندل ساختگی نمایش داده نمی‌شود.</div>` : ''}${optPlanTable(plan)}` : '';
+    <div style="overflow-x:auto;"><svg class="chart-svg" id="optCS_${escapeHtml(x.sym)}" viewBox="0 0 720 420" style="min-width:560px"></svg></div>${(x.chartCandles || []).length < CANDLE_COUNT ? `<div style="font-size:10.5px;color:var(--amber);margin:4px 0;">⚠ فقط ${(x.chartCandles || []).length.toLocaleString('fa-IR')} کندل واقعی برای این قرارداد از سرور دریافت شد؛ کندل ساختگی نمایش داده نمی‌شود.</div>` : ''}${optPlanTable(plan)}` : '';
   const fl = x.finalLabel, fc = x.finalClass;
   const noBuy = call && /sell/.test(fc);
   const cls = noBuy ? 'bg-b' : (fc === 'strong-buy' || fc === 'buy') ? 'bg-g' : (fc === 'strong-sell' || fc === 'sell') ? 'bg-r' : 'bg-b';
@@ -8835,12 +8641,12 @@ function optDetailCard(x, o){
 
 // چارت کندل‌استیک اختصاصی اختیار: فقط کندل واقعی، مقیاس عمودی بر پایه خودِ کندل‌ها تا کندل‌ها درشت و کشیده دیده شوند
 function drawOptionChart(svg, candlesIn, plan) {
-  const cs = (candlesIn || []).filter(c => c && c.o > 0 && c.h > 0 && c.l > 0 && c.c > 0 && isFinite(c.h) && isFinite(c.l)).slice(-30);
+  const cs = (candlesIn || []).filter(c => c && c.o > 0 && c.h > 0 && c.l > 0 && c.c > 0 && isFinite(c.h) && isFinite(c.l)).slice(-CANDLE_COUNT);
   if (cs.length < 1) { svg.setAttribute('viewBox', '0 0 720 160'); svg.innerHTML = '<text x="360" y="80" text-anchor="middle" fill="#8B93A7" font-size="12" font-family="Vazirmatn">داده کندل واقعی برای این قرارداد دریافت نشد</text>'; return; }
   const W = 720, H = 420, padR = 84, R = W - padR, padTop = 20, padBottom = 28, padX = 12;
   const n = cs.length, fmt = v => Math.round(v).toLocaleString('fa-IR');
   let cmin = Math.min(...cs.map(c => c.l)), cmax = Math.max(...cs.map(c => c.h));
-  let cr = cmax - cmin; const minCr = cmax * 0.06;
+  let cr = cmax - cmin; const minCr = cmax * 0.02;
   if (cr < minCr) { const m = (cmax + cmin) / 2; cmin = m - minCr / 2; cmax = m + minCr / 2; cr = minCr; }
   let lo = cmin - cr * 0.10, hi = cmax + cr * 0.10;
   const levels = [];
@@ -8857,8 +8663,8 @@ function drawOptionChart(svg, candlesIn, plan) {
     });
   }
   const range = (hi - lo) || 1;
-  const slots = Math.max(n, 12), slotW = (R - padX) / slots, offset = (R - padX) - n * slotW;
-  const bodyW = Math.min(30, Math.max(6, slotW * 0.72));
+  const slots = Math.max(n, CANDLE_COUNT), slotW = (R - padX) / slots, offset = (R - padX) - n * slotW;
+  const bodyW = Math.min(22, Math.max(5, slotW * 0.62));
   const yFor = v => padTop + (1 - (v - lo) / range) * (H - padTop - padBottom);
   const clampY = v => Math.min(H - padBottom, Math.max(padTop, yFor(v)));
   const xFor = i => padX + offset + i * slotW + slotW / 2;
@@ -8884,7 +8690,7 @@ function drawOptionChart(svg, candlesIn, plan) {
     const yO = yFor(c.o), yC = yFor(c.c);
     const bodyTop = Math.min(yO, yC), bodyH = Math.max(5, Math.abs(yC - yO));
     const top = Math.abs(yC - yO) < 5 ? (yC - 2.5) : bodyTop;
-    g += `<line x1="${x.toFixed(1)}" y1="${yFor(c.h).toFixed(1)}" x2="${x.toFixed(1)}" y2="${yFor(c.l).toFixed(1)}" stroke="${color}" stroke-width="2.2" stroke-linecap="round"/>`;
+    g += `<line x1="${x.toFixed(1)}" y1="${yFor(c.h).toFixed(1)}" x2="${x.toFixed(1)}" y2="${yFor(c.l).toFixed(1)}" stroke="${color}" stroke-width="1.5" stroke-linecap="round"/>`;
     g += `<rect x="${(x - bodyW / 2).toFixed(1)}" y="${top.toFixed(1)}" width="${bodyW.toFixed(1)}" height="${bodyH.toFixed(1)}" fill="${color}" stroke="${color}" stroke-width="0.8" rx="1.5"/>`;
     if (i % 4 === 0 || i === n - 1) {
       let lbl = ''; try { lbl = new Date(c.t).toLocaleDateString('fa-IR', { month: 'numeric', day: 'numeric' }); } catch (e) {}
@@ -9002,7 +8808,6 @@ async function optAnalyzeBatch(syms, btn){
   const worker = async () => { while (idx < all.length) { const sym = all[idx++]; await analyzeOptionSymbol(sym); renderOptTop(); } };
   await Promise.all([worker(), worker(), worker()]);
   renderOptTop();
-  try { const bp0 = optBestPick().best; if (bp0) ezSigRecOpt(bp0.o.l18, bp0.x); } catch (e) {}
   try { const bp = optBestPick().best; if (bp) ezBuyAlerts([{ sym: bp.o.l18, name: bp.o.l18, label: bp.x.optSig.label, price: bp.x.price }], 'اختیار معامله'); } catch (e) {}
 }
 document.getElementById('optSearchInput').addEventListener('input', (e) => { OPT_TOP.q = e.target.value; renderOptTop(); });
@@ -9019,7 +8824,7 @@ document.getElementById('optTop').addEventListener('click', async (e) => {
   await analyzeOptionSymbol(sym);
   if (!OPT_TOP.open[sym]) return;
   const x = OPT_CACHE[sym];
-  if (x && x.status === 'ok') { OPT_TOP.open[sym] = 'ok'; renderOptTop(); try { const sg = x.optSig; if (sg && /buy/.test(sg.cls)) ezSigRecOpt(sym, x); if (sg && /buy/.test(sg.cls)) ezBuyAlerts([{ sym, name: sym, label: sg.label, price: x.price }], 'اختیار معامله'); } catch (e) {} const b2 = document.getElementById('optTD_' + sym); if (b2) b2.scrollIntoView({ block: 'nearest' }); }
+  if (x && x.status === 'ok') { OPT_TOP.open[sym] = 'ok'; renderOptTop(); try { const sg = x.optSig; if (sg && /buy/.test(sg.cls)) ezBuyAlerts([{ sym, name: sym, label: sg.label, price: x.price }], 'اختیار معامله'); } catch (e) {} const b2 = document.getElementById('optTD_' + sym); if (b2) b2.scrollIntoView({ block: 'nearest' }); }
   else { OPT_TOP.open[sym] = 'err'; box.innerHTML = `<div class="rp-full" style="color:var(--red)">⚠ ${escapeHtml((x && x.error) || 'تحلیل ناموفق بود')}</div>`; }
 });
 
@@ -9051,7 +8856,6 @@ function renderRightsTopPicks() {
   }
   grid.innerHTML = picks.map(p => {
     const x = p.x, L = x.levels;
-    try { ezSigRecord({ sym: p.sym, name: p.sym, source: 'حق تقدم', mkt: 'bourse', price: x.price, entry: L.entry, sl: null, tps: [L.exit1w, L.exit1m] }); } catch (e) {}
     return `<div class="rp-suggest-card buy">
       <div class="rp-suggest-sym">${escapeHtml(p.sym)} ${x.finalClass === 'strong-buy' ? '🟢🟢' : '🟢'}</div>
       <div style="font-size:10px;color:var(--muted);margin-bottom:5px">${escapeHtml(x.full || '')} · ${escapeHtml(x.finalLabel)}</div>
@@ -9448,290 +9252,46 @@ document.addEventListener('visibilitychange', () => { if (!document.hidden) ezCh
 setTimeout(ezCheckAlarms, 4000);
 ezRenderAlarms();
 
-/* ===== تب «سیگنال‌های موفق»: ثبت سیگنال همه تب‌ها + بررسی رسیدن به حد سود ===== */
-const EZ_SIG_KEY = 'ezzdigi_signals_v1';
-const SG_MAX_AGE = 30 * 864e5, SG_PEND_AGE = 7 * 864e5, SG_KEEP = 300, SG_COOL = 12 * 36e5;
-const sgFaD = s => String(s).replace(/\d/g, k => '۰۱۲۳۴۵۶۷۸۹'[k]);
-function sgNum(n) { return Number(n).toLocaleString('fa-IR'); }
-function sgFmt(v, mkt) {
-  v = Number(v); if (!isFinite(v)) return '—';
-  if (mkt === 'crypto') return v.toLocaleString('fa-IR', { maximumFractionDigits: v >= 100 ? 2 : v >= 1 ? 3 : v >= 0.01 ? 4 : 6 });
-  return Math.round(v).toLocaleString('fa-IR');
-}
-function sgPct(v, dec) { dec = dec == null ? 1 : dec; return (v >= 0 ? '+' : '−') + sgFaD(Math.abs(v).toFixed(dec)).replace('.', '٫') + '٪'; }
-function ezSigAll() { const l = ezLoad(EZ_SIG_KEY, []); return Array.isArray(l) ? l : []; }
-function sgActive(s) { return s.status === 'pending' || s.status === 'open' || (s.status === 'hit' && !s.done); }
 
-// ثبت یک سیگنال خرید: {sym,name,source,mkt:'bourse'|'crypto',price,entry,sl,tps:[...]}
-function ezSigRecord(r) {
-  try {
-    if (!r || !r.sym) return;
-    const tps = (r.tps || []).map(Number).filter(v => isFinite(v) && v > 0);
-    const entry = Number(r.entry), price = Number(r.price) > 0 ? Number(r.price) : entry;
-    if (!(entry > 0) || tps.length < 2 || !(tps[0] > entry)) return;
-    for (let i = 1; i < tps.length; i++) if (!(tps[i] > tps[i - 1])) return;
-    const list = ezSigAll(), now = Date.now();
-    if (list.some(s => s.sym === r.sym && s.source === r.source && (sgActive(s) || now - s.createdAt < SG_COOL))) return;
-    const sl = Number(r.sl);
-    list.unshift({
-      id: now.toString(36) + Math.random().toString(36).slice(2, 6),
-      sym: r.sym, name: r.name || r.sym, source: r.source, mkt: r.mkt || 'bourse',
-      entry, sl: (sl > 0 && sl < entry) ? sl : null, tps, createdAt: now,
-      status: entry < price * 0.995 ? 'pending' : 'open', hitLevel: 0, lastPrice: price
-    });
-    ezSave(EZ_SIG_KEY, list.slice(0, SG_KEEP));
-    sgBadge();
-  } catch (e) { /* ثبت سیگنال اختیاری است */ }
+// ===== ورود و خروج پول صندوق‌های درآمد ثابت (کنار نمای کلی بازار) =====
+const FF_STORE = 'ezzdigi_ff_symbols';
+const FF_DEFAULT = ['افق ملت','کارا','آرام','ثابت','هما','سپر','کمند','لوتوس','پایا','اعتماد','نشان','داریک'];
+function ffSymbols(){ try { const a = JSON.parse(localStorage.getItem(FF_STORE) || 'null'); if (Array.isArray(a) && a.length) return a; } catch (e) {} return FF_DEFAULT.slice(); }
+function ffFa(x, d){ return Number(x).toLocaleString('fa-IR', { minimumFractionDigits: d || 0, maximumFractionDigits: d || 0 }); }
+function ffAmount(n){ const [a, u] = bigParts(n); const dec = String(a).indexOf('.') >= 0 ? String(a).split('.')[1].length : 0; return ffFa(a, dec) + (u ? ' ' + u : '') + ' ریال'; }
+async function ffLoadOne(sym){
+  const s = await rpFetchSymbol(sym); if (!s) return null;
+  const N = (...ks) => { for (const k of ks) { const v = Number(s[k]); if (v > 0) return v; } return 0; };
+  const buy = N('Buy_I_Volume','buy_I_Volume','buyIVol'), sell = N('Sell_I_Volume','sell_I_Volume','sellIVol');
+  const price = N('pc','pl','pf');
+  if (!price || !(buy + sell)) return { sym, none: true };
+  return { sym, buyVal: buy * price, sellVal: sell * price };
 }
-function ezSigRecOpt(sym, x) {
+let ffBusy = false;
+async function ffRender(){
+  if (ffBusy) return; ffBusy = true;
+  const el = id => document.getElementById(id);
+  const inV = el('moFfInValue'), inC = el('moFfInChange'), outV = el('moFfOutValue'), outC = el('moFfOutChange');
+  if (!inV) { ffBusy = false; return; }
   try {
-    const pl = x && x.optSig && x.optSig.plan; if (!pl) return;
-    ezSigRecord({ sym, name: sym, source: 'اختیار معامله', mkt: 'bourse', price: x.price, entry: pl.entry, sl: pl.stop, tps: pl.tps });
-  } catch (e) {}
-}
-
-async function sgQuote(sym, mkt) {
-  try {
-    if (mkt === 'crypto') {
-      const id = await resolveCoinId(sym);
-      const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=' + encodeURIComponent(id) + '&vs_currencies=usd');
-      if (!r.ok) return null;
-      const j = await r.json(), v = j && j[id] && Number(j[id].usd);
-      return v > 0 ? v : null;
+    const syms = ffSymbols(), res = []; let i = 0;
+    await Promise.all([0, 1, 2].map(async () => { while (i < syms.length) { const s = syms[i++]; try { const r = await ffLoadOne(s); if (r) res.push(r); } catch (e) {} } }));
+    const ok = res.filter(r => !r.none);
+    if (!ok.length) {
+      [inV, outV].forEach(e => { e.textContent = '—'; });
+      [inC, outC].forEach(e => { e.textContent = 'داده‌ای دریافت نشد'; e.className = 'mo-cell-change'; });
+      return;
     }
-    const d = await rpFetchSymbol(sym); if (!d) return null;
-    return [d.pl, d.pc, d.pf].map(Number).find(v => v > 0) || null;
-  } catch (e) { return null; }
+    const totIn = ok.reduce((x, r) => x + r.buyVal, 0), totOut = ok.reduce((x, r) => x + r.sellVal, 0);
+    const inP = totIn / (totIn + totOut) * 100, outP = 100 - inP;
+    inV.textContent = ffAmount(totIn);   inC.textContent = ffFa(inP, 1) + '٪';   inC.className = 'mo-cell-change up';
+    outV.textContent = ffAmount(totOut); outC.textContent = ffFa(outP, 1) + '٪'; outC.className = 'mo-cell-change down';
+  } finally { ffBusy = false; }
 }
-
-let sgChecking = false;
-async function ezSigCheck(manual) {
-  if (sgChecking) return;
-  const act = ezSigAll().filter(sgActive);
-  if (!act.length) { sgStatus(manual ? 'سیگنال فعالی برای بررسی وجود ندارد.' : null); sgRenderIfVisible(false); return; }
-  sgChecking = true;
-  const btn = document.getElementById('sgCheckBtn'); if (btn) { btn.disabled = true; btn.classList.add('spin'); }
-  try {
-    const keys = Array.from(new Set(act.slice().sort((a, b) => (a.lastCheck || 0) - (b.lastCheck || 0)).slice(0, 25).map(s => s.sym + '|' + s.mkt)));
-    const q = {};
-    await mapWithConcurrency(keys, 3, async k => { const p = k.split('|'); q[k] = await sgQuote(p[0], p[1]); });
-    const fresh = ezSigAll(), now = Date.now(), newHits = [];
-    fresh.forEach(s => {
-      if (!sgActive(s)) return;
-      const price = q[s.sym + '|' + s.mkt];
-      s.lastCheck = now;
-      if (price) {
-        s.lastPrice = price;
-        if (s.status === 'pending') {
-          if (price <= s.entry * 1.003) { s.status = 'open'; s.activatedAt = now; }
-        } else {
-          if (s.status === 'open' && s.sl && price <= s.sl) { s.status = 'stopped'; s.closedAt = now; return; }
-          let lvl = 0; s.tps.forEach((t, i) => { if (price >= t) lvl = i + 1; });
-          if (lvl > s.hitLevel) {
-            const wasOpen = s.status === 'open';
-            s.hitLevel = lvl; s.hitPrice = s.tps[lvl - 1]; s.hitAt = now;
-            if (lvl >= 2) { s.status = 'hit'; s.pct = (s.hitPrice / s.entry - 1) * 100; if (wasOpen) newHits.push(s); }
-          }
-          if (s.status === 'hit' && (s.hitLevel >= s.tps.length || now - s.hitAt > 3 * 864e5)) s.done = true;
-        }
-      }
-      if (s.status === 'pending' && now - s.createdAt > SG_PEND_AGE) { s.status = 'expired'; s.closedAt = now; }
-      else if (s.status === 'open' && now - s.createdAt > SG_MAX_AGE) { s.status = 'expired'; s.closedAt = now; }
-    });
-    ezSave(EZ_SIG_KEY, fresh);
-    newHits.forEach(s => { try { ezNotify('🏆 سیگنال موفق — ' + s.name, 'به هدف ' + sgFaD(s.hitLevel) + ' رسید (' + sgPct(s.pct) + ') · ' + s.source, 'sig-' + s.id); } catch (e) {} });
-    sgStatus('آخرین بررسی: ' + new Date().toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' }) + (newHits.length ? ' · ' + sgNum(newHits.length) + ' سیگنال تازه به هدف رسید 🎉' : ''));
-    sgRenderIfVisible(false);
-    if (newHits.length && sgVisible()) sgConfetti();
-  } finally {
-    sgChecking = false;
-    if (btn) { btn.disabled = false; btn.classList.remove('spin'); }
-    sgBadge();
-  }
-}
-
-// اسکن همه تب‌های سیگنال‌دهنده تا سیگنال‌های تازه ثبت شوند
-async function ezSigScanAll() {
-  const btn = document.getElementById('sgScanBtn'); if (btn) { btn.disabled = true; btn.classList.add('spin'); }
-  const steps = [
-    ['پیشنهاد بورس', () => loadBourseScreener(true)],
-    ['پیشنهاد ارز دیجیتال', () => loadCryptoScreener(true)],
-    ['سهام پرپتانسیل', () => loadRantScreener(true)],
-    ['رد پول', () => { rpLoaded = false; return loadRadPool(true); }]
-  ];
-  try {
-    for (let i = 0; i < steps.length; i++) {
-      sgStatus('در حال اسکن «' + steps[i][0] + '» (' + sgFaD(i + 1) + ' از ' + sgFaD(steps.length) + ')…');
-      try { await steps[i][1](); } catch (e) { /* ادامه با تب بعدی */ }
-    }
-    await ezSigCheck(false);
-    sgStatus('اسکن کامل شد · ' + sgNum(ezSigAll().length) + ' سیگنال در حال پایش است.');
-  } finally { if (btn) { btn.disabled = false; btn.classList.remove('spin'); } sgRenderIfVisible(true); }
-}
-
-function sgStatus(t) { const el = document.getElementById('sgStatus'); if (el && t != null) el.textContent = t; }
-function sgVisible() { const v = document.getElementById('successView'); return !!(v && v.style.display !== 'none'); }
-function sgRenderIfVisible(anim) { if (sgVisible()) ezSigRender(anim); }
-function sgBadge() {
-  const el = document.getElementById('sgNavBadge'); if (!el) return;
-  const n = ezSigAll().filter(s => s.status === 'hit').length;
-  el.textContent = n ? sgFaD(n) : ''; el.classList.toggle('on', n > 0);
-}
-
-/* ---------- نمایش ---------- */
-let sgTabSel = 'hit', sgSrcSel = 'all', sgOpened = false;
-function sgProgress(s) {
-  const pts = [s.entry].concat(s.tps), p = s.lastPrice, n = s.tps.length;
-  if (!(p > s.entry)) return 0;
-  for (let i = 0; i < n; i++) if (p < pts[i + 1]) return Math.min(1, (i + (p - pts[i]) / (pts[i + 1] - pts[i])) / n);
-  return 1;
-}
-function sgDur(ms) {
-  const m = Math.max(1, Math.round(ms / 6e4));
-  if (m < 60) return sgNum(m) + ' دقیقه';
-  const h = Math.round(m / 60); if (h < 48) return sgNum(h) + ' ساعت';
-  return sgNum(Math.round(h / 24)) + ' روز';
-}
-function sgCard(s, kind, i) {
-  const n = s.tps.length, isHit = kind === 'hit';
-  const dots = ['<div class="sg-node" style="left:0"><div class="sg-dot entry"></div><div class="sg-lbl">ورود<b>' + sgFmt(s.entry, s.mkt) + '</b></div></div>']
-    .concat(s.tps.map((t, k) => {
-      const on = s.hitLevel >= k + 1;
-      return '<div class="sg-node" style="left:' + ((k + 1) / n * 100) + '%"><div class="sg-dot' + (on ? ' on' : '') + '"></div><div class="sg-lbl' + (on ? ' on' : '') + '">هدف ' + sgFaD(k + 1) + '<b>' + sgFmt(t, s.mkt) + '</b></div></div>';
-    })).join('');
-  const w = isHit ? (s.hitLevel / n * 100) : (kind === 'live' ? sgProgress(s) * 100 : 0);
-  const liveDot = kind === 'live' ? '<div class="sg-live-dot" data-w="' + w + '" style="left:0"></div>' : '';
-  let badge, tags = '<span class="sg-tag">' + escapeHtml(s.source) + '</span><span class="sg-tag">' + (s.mkt === 'crypto' ? 'ارز دیجیتال' : 'بورس') + '</span>';
-  if (isHit) {
-    badge = '<div class="sg-pct"><b data-count="' + s.pct.toFixed(2) + '" data-pfx="+" data-sfx="٪">' + sgPct(s.pct) + '</b><span>رسید به هدف ' + sgFaD(s.hitLevel) + ' ✓</span></div>';
-    tags += '<span class="sg-tag g">موفق</span>';
-  } else if (kind === 'live') {
-    const pl = (s.lastPrice / s.entry - 1) * 100;
-    badge = '<div class="sg-pct ' + (pl >= 0 ? 'neu' : 'neg') + '"><b>' + sgPct(pl) + '</b><span>سود/زیان فعلی</span></div>';
-    tags += s.status === 'pending' ? '<span class="sg-tag a">منتظر رسیدن به ورود</span>' : '<span class="sg-tag">در جریان</span>';
-  } else {
-    badge = '<div class="sg-pct neg"><b>' + sgPct((s.lastPrice / s.entry - 1) * 100) + '</b><span>' + (s.status === 'stopped' ? 'حد ضرر خورد' : 'منقضی شد') + '</span></div>';
-    tags += '<span class="sg-tag r">' + (s.status === 'stopped' ? 'ناموفق' : 'بدون نتیجه') + '</span>';
-  }
-  const fresh = isHit && s.hitAt && Date.now() - s.hitAt < 864e5;
-  const d1 = new Date(s.createdAt).toLocaleDateString('fa-IR'), d2 = s.hitAt ? new Date(s.hitAt).toLocaleDateString('fa-IR') : '';
-  const meta = isHit
-    ? '<span>صدور: ' + d1 + '</span><span>رسیدن به هدف: ' + d2 + '</span><span>⏱ ' + sgDur(s.hitAt - (s.activatedAt || s.createdAt)) + '</span>'
-    : '<span>صدور: ' + d1 + '</span><span>قیمت فعلی: ' + sgFmt(s.lastPrice, s.mkt) + '</span>' + (s.sl ? '<span>حد ضرر: ' + sgFmt(s.sl, s.mkt) + '</span>' : '');
-  return '<div class="sg-card ' + kind + (kind === 'live' && s.status === 'pending' ? ' pend' : '') + '" style="--i:' + i + '" data-sym="' + escapeHtml(s.sym) + '" data-mkt="' + s.mkt + '">' +
-    (fresh ? '<div class="sg-new">جدید</div>' : '') +
-    '<div class="sg-head"><div><div class="sg-sym">' + escapeHtml(s.name) + '</div><div class="sg-tags">' + tags + '</div></div>' + badge + '</div>' +
-    '<div class="sg-track"><div class="sg-rail"><div class="sg-fill" data-w="' + w + '"></div></div>' + dots + liveDot + '</div>' +
-    '<div class="sg-meta">' + meta + '</div></div>';
-}
-function sgCountAll(root, animate) {
-  root.querySelectorAll('[data-count]').forEach(el => {
-    const to = Number(el.dataset.count), dec = Number(el.dataset.dec || 2), pfx = el.dataset.pfx || '', sfx = el.dataset.sfx || '';
-    const fmt = v => (pfx === '+' ? (v < 0 ? '−' : '+') : pfx) + sgFaD(Math.abs(v).toFixed(dec)).replace('.', '٫') + sfx;
-    if (!animate) { el.textContent = fmt(to); return; }
-    const t0 = performance.now(), dur = 1300;
-    (function step(t) {
-      const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3);
-      el.textContent = fmt(to * e);
-      if (k < 1) requestAnimationFrame(step);
-    })(t0);
-  });
-}
-function ezSigRender(animate) {
-  const box = document.getElementById('sgBody'); if (!box) return;
-  const all = ezSigAll();
-  const hits = all.filter(s => s.status === 'hit');
-  const live = all.filter(s => s.status === 'open' || s.status === 'pending');
-  const fails = all.filter(s => s.status === 'stopped' || s.status === 'expired');
-  const resolved = hits.length + fails.length;
-  const rate = resolved ? hits.length / resolved * 100 : 0;
-  const avg = hits.length ? hits.reduce((a, s) => a + s.pct, 0) / hits.length : 0;
-  const best = hits.length ? Math.max.apply(null, hits.map(s => s.pct)) : 0;
-  const stat = (v, lbl, inner) => '<div class="sg-stat">' + inner + '<div class="sg-stat-lbl">' + lbl + '</div></div>';
-  const stats = '<div class="sg-stats">' +
-    stat(0, 'سیگنال موفق', '<div class="sg-stat-val" data-count="' + hits.length + '" data-dec="0">۰</div>') +
-    stat(0, 'میانگین سود', '<div class="sg-stat-val" data-count="' + avg.toFixed(2) + '" data-dec="1" data-pfx="+" data-sfx="٪">۰</div>') +
-    stat(0, 'بیشترین سود', '<div class="sg-stat-val" data-count="' + best.toFixed(2) + '" data-dec="1" data-pfx="+" data-sfx="٪">۰</div>') +
-    '<div class="sg-stat"><div class="sg-ring-wrap"><svg class="sg-ring" viewBox="0 0 100 100"><defs><linearGradient id="sgGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#18E6A0"/><stop offset="1" stop-color="#48A7FF"/></linearGradient></defs><circle class="bg" cx="50" cy="50" r="42"/><circle class="fg" cx="50" cy="50" r="42" data-rate="' + rate + '"/></svg><div class="sg-ring-txt">' + (resolved ? '<span data-count="' + rate.toFixed(1) + '" data-dec="0" data-sfx="٪">۰٪</span>' : '—') + '</div></div><div class="sg-stat-lbl">نرخ موفقیت (' + sgNum(resolved) + ' سیگنال بسته‌شده)</div></div>' +
-    '</div>';
-  // عملکرد هر تب
-  const bySrc = {};
-  all.forEach(s => { const b = bySrc[s.source] || (bySrc[s.source] = { t: 0, h: 0 }); b.t++; if (s.status === 'hit') b.h++; });
-  const srcs = Object.keys(bySrc).sort((a, b) => bySrc[b].h - bySrc[a].h || bySrc[b].t - bySrc[a].t);
-  const bars = srcs.length
-    ? '<div class="sg-panel"><div class="sg-panel-t">📊 خروجی تب‌ها (موفق از کل سیگنال‌ها)</div>' + srcs.map(k => '<div class="sg-bar-row"><div class="sg-bar-name">' + escapeHtml(k) + '</div><div class="sg-bar-track"><div class="sg-bar-fill" data-w="' + (bySrc[k].h / bySrc[k].t * 100) + '"></div></div><div class="sg-bar-n">' + sgNum(bySrc[k].h) + '/' + sgNum(bySrc[k].t) + '</div></div>').join('') + '</div>'
-    : '';
-  const lists = { hit: hits.slice().sort((a, b) => b.hitAt - a.hitAt), live: live, fail: fails.slice().sort((a, b) => (b.closedAt || 0) - (a.closedAt || 0)) };
-  const tabs = '<div class="sg-tabs">' + [['hit', '🏆 موفق', hits.length], ['live', '⏳ در جریان', live.length], ['fail', '✖ ناموفق', fails.length]].map(t => '<div class="sg-tab' + (sgTabSel === t[0] ? ' active' : '') + '" data-sgt="' + t[0] + '">' + t[1] + ' (' + sgNum(t[2]) + ')</div>').join('') + '</div>';
-  sgTabSel = 'hit'; sgSrcSel = 'all';
-  const cur = lists.hit.slice(0, 10);
-  const srcInTab = Array.from(new Set(cur.map(s => s.source)));
-  if (sgSrcSel !== 'all' && srcInTab.indexOf(sgSrcSel) < 0) sgSrcSel = 'all';
-  const chips = srcInTab.length > 1 ? '<div class="sg-chips"><div class="sg-chip' + (sgSrcSel === 'all' ? ' active' : '') + '" data-sgs="all">همه (' + sgNum(cur.length) + ')</div>' + srcInTab.map(k => '<div class="sg-chip' + (sgSrcSel === k ? ' active' : '') + '" data-sgs="' + escapeHtml(k) + '">' + escapeHtml(k) + ' (' + sgNum(cur.filter(s => s.source === k).length) + ')</div>').join('') + '</div>' : '';
-  const shown = sgSrcSel === 'all' ? cur : cur.filter(s => s.source === sgSrcSel);
-  let body;
-  if (shown.length) body = shown.map((s, i) => sgCard(s, sgTabSel, Math.min(i, 12))).join('');
-  else {
-    const msg = { hit: 'هنوز سیگنالی به هدف دوم یا سوم نرسیده.<br>سیگنال‌های تب‌ها ثبت و پایش می‌شوند؛ به‌محض رسیدن به هدف، اینجا با درصد سود نمایش داده می‌شوند.', live: 'سیگنال در جریانی وجود ندارد.<br>با دکمه «جمع‌آوری سیگنال از همه تب‌ها» سیگنال‌های تازه ثبت کنید.', fail: 'سیگنال ناموفقی ثبت نشده است. 👌' }[sgTabSel];
-    body = '<div class="sg-empty"><div class="sg-radar"></div>' + msg + '</div>';
-  }
-  box.className = animate === false ? 'sg-noanim' : '';
-  box.innerHTML = stats + bars + body;
-  sgCountAll(box, animate !== false);
-  // پرکردن انیمیشنی نوارها
-  requestAnimationFrame(() => requestAnimationFrame(() => {
-    box.querySelectorAll('.sg-fill,.sg-bar-fill').forEach(el => { el.style.width = (el.dataset.w || 0) + '%'; });
-    box.querySelectorAll('.sg-live-dot').forEach(el => { el.style.left = (el.dataset.w || 0) + '%'; });
-    const fg = box.querySelector('.sg-ring .fg'); if (fg) fg.style.strokeDashoffset = String(264 - 264 * Math.min(100, Number(fg.dataset.rate || 0)) / 100);
-  }));
-}
-function ezSigOpen() {
-  sgBadge();
-  const first = !sgOpened; sgOpened = true;
-  ezSigRender(true);
-  if (ezSigAll().some(s => s.status === 'hit')) setTimeout(sgConfetti, 450);
-  ezSigCheck(false);
-}
-
-/* ---------- کانفتی ---------- */
-function sgConfetti() {
-  try {
-    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const cv = document.getElementById('sgConfetti'); if (!cv) return;
-    const ctx = cv.getContext('2d'), W = cv.width = innerWidth, H = cv.height = innerHeight;
-    const cols = ['#18E6A0', '#48A7FF', '#A77BFF', '#FFB020', '#FF5B72'];
-    const ps = Array.from({ length: 110 }, () => ({ x: W / 2 + (Math.random() - .5) * 80, y: H * .32, vx: (Math.random() - .5) * 11, vy: -Math.random() * 11 - 3, s: 4 + Math.random() * 5, r: Math.random() * 6.28, vr: (Math.random() - .5) * .4, c: cols[(Math.random() * cols.length) | 0] }));
-    const t0 = performance.now();
-    (function frame(t) {
-      const k = (t - t0) / 2400; ctx.clearRect(0, 0, W, H);
-      if (k >= 1) return;
-      ps.forEach(p => { p.vy += .28; p.x += p.vx; p.y += p.vy; p.r += p.vr; ctx.save(); ctx.globalAlpha = 1 - k; ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.fillStyle = p.c; ctx.fillRect(-p.s / 2, -p.s / 2, p.s, p.s * .6); ctx.restore(); });
-      requestAnimationFrame(frame);
-    })(t0);
-  } catch (e) { /* افکت اختیاری است */ }
-}
-
-/* ---------- رویدادها ---------- */
-(function sgInit() {
-  const v = document.getElementById('successView'); if (!v) return;
-  v.addEventListener('click', e => {
-    const t = e.target.closest('[data-sgt]');
-    if (t) { sgTabSel = t.dataset.sgt; sgSrcSel = 'all'; ezSigRender(true); return; }
-    const c = e.target.closest('[data-sgs]');
-    if (c) { sgSrcSel = c.dataset.sgs; ezSigRender(true); return; }
-    const card = e.target.closest('.sg-card');
-    if (card && card.dataset.sym && typeof jumpToAnalyzer === 'function') jumpToAnalyzer(card.dataset.sym);
-  });
-  document.getElementById('sgCheckBtn').addEventListener('click', () => ezSigCheck(true));
-  document.getElementById('sgScanBtn').addEventListener('click', ezSigScanAll);
-  document.getElementById('sgClearBtn').addEventListener('click', () => {
-    if (!ezSigAll().length) return;
-    if (confirm('تمام تاریخچه سیگنال‌های ثبت‌شده پاک شود؟')) { ezSave(EZ_SIG_KEY, []); sgBadge(); ezSigRender(true); sgStatus('تاریخچه پاک شد.'); }
-  });
-  sgBadge();
-  setInterval(() => { if (!document.hidden) ezSigCheck(false); }, 180000);
-  document.addEventListener('visibilitychange', () => { if (!document.hidden) ezSigCheck(false); });
-  setTimeout(() => ezSigCheck(false), 6000);
+(function(){
+  const r = document.getElementById('moRefreshBtn');
+  if (r) r.addEventListener('click', ffRender);
+  setTimeout(ffRender, 800);
 })();
 </script>
 <!-- ===================== سهام یکم: ورود / ثبت‌نام / اشتراک ===================== -->
