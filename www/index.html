@@ -3709,7 +3709,7 @@ function brsEndpointOf(url) { return url.split('?')[0]; }
 function brsCacheTtl(url) {
   if (/\/(History|Candlestick)\.php/i.test(url)) return 6 * 3600 * 1000;      // کندل روزانه: ۶ ساعت
   if (/AllSymbols\.php/i.test(url)) return 5 * 60 * 1000;                      // کل بازار: ۵ دقیقه
-  if (/\/(Symbol|Index|Gold_Currency)\.php/i.test(url)) return 3 * 60 * 1000;  // قیمت‌ها: ۳ دقیقه
+  if (/\/(Symbol|Index|Gold_Currency|Option)\.php/i.test(url)) return 3 * 60 * 1000;  // قیمت‌ها: ۳ دقیقه
   return 0;
 }
 function brsCacheKey(url) { return url.replace(/([?&])key=[^&]*&?/i, '$1').replace(/[?&]$/, ''); }
